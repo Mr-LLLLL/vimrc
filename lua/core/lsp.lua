@@ -311,6 +311,35 @@ local function set_lsp()
         single_file_support = true,
         root_dir = lspconfig.util.find_git_ancestor
     }
+
+    require 'lspconfig'.vimls.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        flags = lsp_flags,
+        cmd = { "vim-language-server", "--stdio" },
+        filetypes = {"vim"},
+        init_options = {
+            diagnostic = {
+                enable = true
+            },
+            indexes = {
+                count = 3,
+                gap = 100,
+                projectRootPatterns = { "runtime", "nvim", ".git", "autoload", "plugin" },
+                runtimepath = true
+            },
+            isNeovim = true,
+            iskeyword = "@,48-57,_,192-255,-#",
+            runtimepath = "",
+            suggest = {
+                fromRuntimepath = true,
+                fromVimruntime = true
+            },
+            vimruntime = ""
+        },
+        root_dir = lspconfig.util.find_git_ancestor,
+        single_file_support = true,
+    }
 end
 
 local function load_lsp()
