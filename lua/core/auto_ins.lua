@@ -125,7 +125,7 @@ m.startup = function()
                 "folke/todo-comments.nvim",
             }
             use { 'windwp/nvim-spectre' }
-            use { 'GZzzzzzzzzzzzzzz/vim-interestingwords' }
+            use { 'MR-LLLLL/vim-interestingwords' }
             use { 'kylechui/nvim-surround', tag = "*" }
             -- it's not smarter than auto-pairs
             -- use { "windwp/nvim-autopairs" }
