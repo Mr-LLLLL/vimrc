@@ -1,0 +1,4 @@
+plugged
+.*
+packer_compiled.lua
+lua/private/
