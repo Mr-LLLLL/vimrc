@@ -280,9 +280,14 @@ local function load_lualine()
             },
             lualine_b = {
                 'branch',
-                { 'diff',
-                                    symbols = { added = glyphs["added"] .. ' ', modified = glyphs["modified"] .. ' ',
-                        removed = glyphs["deleted"] .. ' ' } },
+                {
+                    'diff',
+                    symbols = {
+                        added = glyphs["added"] .. ' ',
+                        modified = glyphs["modified"] .. ' ',
+                        removed = glyphs["deleted"] .. ' '
+                    }
+                },
                 'diagnostics',
                 { 'fileformat', separator = { right = '' } }
             },
@@ -417,8 +422,8 @@ local function load_lualine()
                     packer = 'Packer',
                     fzf = 'FZF',
                     alpha = 'Alpha'
-                },                                            -- Shows specific window name for that filetype ( { `filetype` = `window_name`, ... } )
-                disabled_buftypes = { 'quickfix', 'prompt' }, -- Hide a window if its buffer's type is disabled,
+                },                                                     -- Shows specific window name for that filetype ( { `filetype` = `window_name`, ... } )
+                disabled_buftypes = { 'quickfix', 'prompt' },          -- Hide a window if its buffer's type is disabled,
                 windows_color = {
                     active = { fg = colors.fg, bg = colors.color },    -- Color for active window.
                     inactive = { fg = colors.fg2, bg = colors.color }, -- Color for inactive window.
@@ -484,6 +489,8 @@ local function load_nvim_tree()
             mappings = {
                 list = {
                     { key = "<C-e>", action = "" },
+                    { key = "<C-x>", action = "" },
+                    { key = "<C-s>", action = "split" },
                 },
             },
         },
@@ -666,7 +673,28 @@ local function load_gitsigns()
     })
 end
 
+local function load_guihua()
+    require("guihua").setup({
+        maps = {
+            close_view = '<esc>',
+            send_qf = '<C-q>',
+            save = '<C-s>',
+            jump_to_list = '<C-w>k',
+            jump_to_preview = '<C-w>j',
+            prev = '<C-k>',
+            next = '<C-j>',
+            pageup = '<C-b>',
+            pagedown = '<C-f>',
+            confirm = '<cr>',
+            split = '<C-s>',
+            vsplit = '<C-v>',
+            tabnew = '<C-t>',
+        },
+    })
+end
+
 m.setup = function()
+    load_guihua()
     load_notify()
     load_noice()
     load_dress()

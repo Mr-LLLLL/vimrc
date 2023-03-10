@@ -5,14 +5,14 @@ local mod = {}
 local function load_telescope()
     local glyphs = require("core.common").glyphs
     local actions = require("telescope.actions")
-    local action_set = require "telescope.actions.set"
     require('telescope').setup({
         defaults = {
             winblend = 20,
             mappings = {
                 i = {
                         ["<CR>"] = actions.select_default + actions.center,
-                        ["<C-x>"] = actions.select_horizontal + actions.center,
+                        ["<C-s>"] = actions.select_horizontal + actions.center,
+                        ["<C-x>"] = false,
                         ["<C-v>"] = actions.select_vertical + actions.center,
                         ["<C-t>"] = actions.select_tab + actions.center,
                         ["<C-l>"] = false,
@@ -33,7 +33,8 @@ local function load_telescope()
                 },
                 n = {
                         ["<CR>"] = actions.select_default + actions.center,
-                        ["<C-x>"] = actions.select_horizontal + actions.center,
+                        ["<C-s>"] = actions.select_horizontal + actions.center,
+                        ["<C-x>"] = false,
                         ["<C-v>"] = actions.select_vertical + actions.center,
                         ["<C-t>"] = actions.select_tab + actions.center,
                         ["<C-u>"] = false,
@@ -148,13 +149,13 @@ local function load_telescope()
                 mappings = {
                     i = {
                             ["<CR>"] = require("telescope.actions").select_default,
-                            ["<C-x>"] = actions.select_horizontal,
+                            ["<C-s>"] = actions.select_horizontal,
                             ["<C-v>"] = actions.select_vertical,
                             ["<C-t>"] = actions.select_tab,
                     },
                     n = {
                             ["<CR>"] = require("telescope.actions").select_default,
-                            ["<C-x>"] = actions.select_horizontal,
+                            ["<C-s>"] = actions.select_horizontal,
                             ["<C-v>"] = actions.select_vertical,
                             ["<C-t>"] = actions.select_tab,
                     },
