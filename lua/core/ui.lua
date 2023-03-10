@@ -618,8 +618,12 @@ end
 
 local function load_cursor_word()
     require('illuminate').configure({
-        modes_allowlist = { 'n' },
+        modes_allowlist = { 'n' ,'v'},
     })
+
+    km.set("v", "<a-n>", require("illuminate").goto_next_reference, { noremap = true, silent = true })
+    km.set("v", "<a-p>", require("illuminate").goto_prev_reference, { noremap = true, silent = true })
+    km.set("n", "<a-i>", require("illuminate").textobj_select, { noremap = true, silent = true })
 end
 
 local function load_gitsigns()
