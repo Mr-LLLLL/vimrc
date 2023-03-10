@@ -185,6 +185,7 @@ end
 
 local function load_yanky()
     local mapping = require("yanky.telescope.mapping")
+    local actions = require("telescope.actions")
     require("yanky").setup({
         highlight = {
             on_put = true,
@@ -198,12 +199,14 @@ local function load_yanky()
             telescope = {
                 mappings = {
                     i = {
-                            ["<c-k>"] = nil,
-                            ["<c-p>"] = nil,
+                            ["<C-k>"] = actions.move_selection_previous,
+                            ["<C-p>"] = actions.preview_scrolling_up,
                             ["<cr>"] = mapping.put("p"),
                     },
                     n = {
                             ["<cr>"] = mapping.put("p"),
+                            ["<C-k>"] = actions.move_selection_previous,
+                            ["<C-p>"] = actions.preview_scrolling_up,
                     }
                 }
             },
