@@ -618,7 +618,7 @@ end
 
 local function load_cursor_word()
     require('illuminate').configure({
-        modes_allowlist = { 'n' ,'v'},
+        modes_allowlist = { 'n', 'v', 'V', ''},
     })
 
     km.set("v", "<a-n>", require("illuminate").goto_next_reference, { noremap = true, silent = true })
