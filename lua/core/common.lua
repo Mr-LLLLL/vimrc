@@ -168,7 +168,7 @@ end
 
 m.revert_key_map     = function(module)
     for k in pairs(keymaps[module] or {}) do
-        local cmd = 'silent! unmap ' .. k
+        local cmd = 'silent! nunmap ' .. k
         vim.cmd(cmd)
     end
 
