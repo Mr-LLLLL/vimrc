@@ -153,7 +153,13 @@ local keymaps_backup = {}
 local keymaps        = {}
 
 m.set_key_map        = function(module, keys)
-    keymaps_backup[module] = vim.api.nvim_get_keymap('n')
+    local old_keymap_list = vim.api.nvim_get_keymap('n')
+    keymaps_backup[module] = {}
+    for _,v in pairs(old_keymap_list) do
+        if keys[v.lhs] ~= nil then
+            keymaps_backup[module][v.lhs] = v
+        end
+    end
     keymaps[module] = keys
     for k, v in pairs(keys) do
         vim.keymap.set('n', k, v.f, { noremap = true, silent = true, desc = v.desc })
@@ -161,29 +167,32 @@ m.set_key_map        = function(module, keys)
 end
 
 m.revert_key_map     = function(module)
-    for k in pairs(keymaps[module]) do
+    for k in pairs(keymaps[module] or {}) do
         local cmd = 'silent! unmap ' .. k
         vim.cmd(cmd)
     end
 
     for _, v in pairs(keymaps_backup[module] or {}) do
-        local nr = (v.noremap == 1)
-        local sl = (v.slient == 1)
-        local exp = (v.expr == 1)
-        local mode = v.mode
-        local desc = v.desc
-        if v.mode == ' ' then
-            mode = { 'n', 'v' }
+        local opt = {
+            noremap = v.noremap == 1,
+            silent = v.slient == 1,
+            expr = v.expr == 1,
+            nowait = v.nowait == 1,
+            desc = v.desc,
+        }
+        if v.buffer ~= 0 then
+            opt["buffer"] = v.buffer
         end
 
         vim.keymap.set(
-            mode,
+            'n',
             v.lhs,
             v.rhs or v.callback,
-            { noremap = nr, silent = sl, expr = exp, desc = desc }
+            opt
         )
     end
-    keymaps_backup = {}
+    keymaps_backup[module] = {}
+    keymaps[module] = {}
 end
 
 return m
