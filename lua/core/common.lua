@@ -90,22 +90,22 @@ m.get_dapui_conf     = function()
             {
                 elements = {
                     -- Elements can be strings or table with id and size keys.
-                    { id = "scopes",      size = 0.70 },
-                    { id = "watches",     size = 0.15 },
-                    { id = "breakpoints", size = 0.15 }
+                    { id = "scopes",  size = 0.80 },
+                    { id = "watches", size = 0.20 },
+                    -- { id = "breakpoints", size = 0.15 }
                 },
                 size = 40, -- 40 columns
                 position = "left",
             },
-            {
-                elements = {
-                    "repl",
-                    "stacks",
-                    -- "console",
-                },
-                size = 0.25, -- 25% of total lines
-                position = "bottom",
-            },
+            -- {
+            --     elements = {
+            --         "repl",
+            --         "stacks",
+            --         -- "console",
+            --     },
+            --     size = 0.25, -- 25% of total lines
+            --     position = "bottom",
+            -- },
         },
         controls = {
             -- Requires Neovim nightly (or 0.8 when released)
@@ -150,33 +150,40 @@ m.skip_next_char     = function(char)
 end
 
 local keymaps_backup = {}
+local keymaps        = {}
 
-m.set_key_map        = function(module, mode, key, f)
-    keymaps_backup[module] = vim.api.nvim_buf_get_keymap(0, 'n')
-    vim.keymap.set(mode, key, f, { noremap = true, silent = true, buffer = true })
+m.set_key_map        = function(module, keys)
+    keymaps_backup[module] = vim.api.nvim_get_keymap('n')
+    keymaps[module] = keys
+    for k, v in pairs(keys) do
+        vim.keymap.set('n', k, v.f, { noremap = true, silent = true, desc = v.desc })
+    end
 end
 
-m.revert_key_map     = function(module, mode, revert_key)
-    local reverted = false
-    for _, v in pairs(keymaps_backup[module] or {}) do
-        if v.lhs == revert_key then
-            local nr = (v.noremap == 1)
-            local sl = (v.slient == 1)
-            local exp = (v.expr == 1)
-            local desc = v.desc or 'go-dap'
+m.revert_key_map     = function(module)
+    for k in pairs(keymaps[module]) do
+        local cmd = 'silent! unmap ' .. k
+        vim.cmd(cmd)
+    end
 
-            vim.keymap.set(
-                v.mode,
-                v.lhs,
-                v.rhs or v.callback,
-                { noremap = nr, silent = sl, expr = exp, desc = desc, buffer = true }
-            )
-            reverted = true
+    for _, v in pairs(keymaps_backup[module] or {}) do
+        local nr = (v.noremap == 1)
+        local sl = (v.slient == 1)
+        local exp = (v.expr == 1)
+        local mode = v.mode
+        local desc = v.desc
+        if v.mode == ' ' then
+            mode = { 'n', 'v' }
         end
+
+        vim.keymap.set(
+            mode,
+            v.lhs,
+            v.rhs or v.callback,
+            { noremap = nr, silent = sl, expr = exp, desc = desc }
+        )
     end
-    if not reverted then
-        vim.keymap.del(mode, revert_key, { buffer = true })
-    end
+    keymaps_backup = {}
 end
 
 return m

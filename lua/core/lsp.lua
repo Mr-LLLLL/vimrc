@@ -317,7 +317,7 @@ local function set_lsp()
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "vim-language-server", "--stdio" },
-        filetypes = {"vim"},
+        filetypes = { "vim" },
         init_options = {
             diagnostic = {
                 enable = true
@@ -850,27 +850,27 @@ local function load_go()
         gocoverage_sign = "█",
         sign_priority = 5,         -- change to a higher number to override other signs
         dap_debug = true,          -- set to false to disable dap
-        dap_debug_keymap = true, --[[ true: use keymap for debugger defined in go/dap.lua
+        dap_debug_keymap = false, --[[ true: use keymap for debugger defined in go/dap.lua
                                       false: do not use keymap in go/dap.lua.  you must define your own.
                                       windows: use visual studio keymap ]]
-        dap_debug_gui = require("core.common").get_dapui_conf(), -- bool|table put your dap-ui setup here set to false to disable
-        dap_debug_vt = require("core.common").get_dapvt_conf(),  -- bool|table put your dap-virtual-text setup here set to false to disable
-        dap_port = -1,                                           -- can be set to a number, if set to -1 go.nvim will pickup a random port
-        dap_timeout = 15,                                        --  see dap option initialize_timeout_sec = 15,
-        dap_retries = 20,                                        -- see dap option max_retries
-        build_tags = "",                                         -- set default build tags
-        textobjects = false,                                     -- enable default text jobects through treesittter-text-objects
-        test_runner = 'go',                                      -- one of {`go`, `richgo`, `dlv`, `ginkgo`, `gotestsum`}
-        verbose_tests = true,                                    -- set to add verbose flag to tests deprecated, see '-v' option
-        run_in_floaterm = true,                                  -- set to true to run in float window. :GoTermClose closes the floatterm
+        dap_debug_gui = false,    -- bool|table put your dap-ui setup here set to false to disable
+        dap_debug_vt = false,     -- bool|table put your dap-virtual-text setup here set to false to disable
+        dap_port = -1,            -- can be set to a number, if set to -1 go.nvim will pickup a random port
+        dap_timeout = 15,         --  see dap option initialize_timeout_sec = 15,
+        dap_retries = 20,         -- see dap option max_retries
+        build_tags = "",          -- set default build tags
+        textobjects = false,      -- enable default text jobects through treesittter-text-objects
+        test_runner = 'go',       -- one of {`go`, `richgo`, `dlv`, `ginkgo`, `gotestsum`}
+        verbose_tests = true,     -- set to add verbose flag to tests deprecated, see '-v' option
+        run_in_floaterm = true,   -- set to true to run in float window. :GoTermClose closes the floatterm
         floaterm = {
-            posititon = 'center',                                -- one of {`top`, `bottom`, `left`, `right`, `center`, `auto`}
-            width = 0.50,                                        -- width of float window if not auto
-            height = 0.50,                                       -- height of float window if not auto
+            posititon = 'center', -- one of {`top`, `bottom`, `left`, `right`, `center`, `auto`}
+            width = 0.50,         -- width of float window if not auto
+            height = 0.50,        -- height of float window if not auto
         },
-        trouble = false,                                         -- true: use trouble to open quickfix
-        test_efm = false,                                        -- errorfomat for quickfix, default mix mode, set to true will be efm only
-        luasnip = true,                                          -- enable included luasnip snippets. you can also disable while add lua/snips folder to luasnip load
+        trouble = false,          -- true: use trouble to open quickfix
+        test_efm = false,         -- errorfomat for quickfix, default mix mode, set to true will be efm only
+        luasnip = true,           -- enable included luasnip snippets. you can also disable while add lua/snips folder to luasnip load
         --  Do not enable this if you already added the path, that will duplicate the entries
     })
 

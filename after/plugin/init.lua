@@ -82,6 +82,14 @@ local function load_custom_map()
     km.set({ 'n' }, "<m-k>", "O<esc>", { noremap = true, silent = true })
     km.set({ 'n' }, "<m-j>", "o<esc>", { noremap = true, silent = true })
 
+    km.set('n', "<c-t>", function()
+        if vim.fn.gettagstack().curidx == 1 then
+            vim.notify("tags is empty")
+            return
+        end
+        vim.cmd(":pop")
+        vim.cmd(":normal! zz")
+    end, { noremap = true, silent = true })
     km.set('n', "<leader>m", require("utils.pick_visual").colorn, { noremap = true, silent = true })
     km.set('x', "<leader>m", ":<c-u>lua require('utils.pick_visual').colorv()<cr>", { noremap = true, silent = true })
     km.set('n', "<leader>M", "<cmd>noh<CR>", { noremap = true, silent = true })
