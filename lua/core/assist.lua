@@ -100,74 +100,88 @@ local function load_toggle_term_map()
         end
     end
 
-    km.set({ 'n', 't' }, "<M-w>", function()
+    local function get_curr_value()
         if currTerm == 0 then
-            currTerm = 1
-            max_value = 1
+            max_value = max_value + 1
+            currTerm = max_value
         end
-        cmd(currTerm .. 'ToggleTerm')
+        return currTerm
+    end
+
+    local function set_curr_value(v)
+        if v > max_value then
+            max_value = v
+        end
+        currTerm = v
+    end
+
+    local function get_max_value()
+        return max_value
+    end
+
+    km.set({ 'n', 't' }, "<M-w>", function()
+        cmd(get_curr_value() .. 'ToggleTerm')
     end, { noremap = true, silent = true })
     km.set({ 'n', 't' }, "<M-e>", function()
-        if currTerm == get_next_value(currTerm) then
+        if get_curr_value() == get_next_value(get_curr_value()) then
             return
         else
-            currTerm = get_next_value(currTerm)
+            set_curr_value(get_next_value(get_curr_value()))
         end
-        cmd(currTerm .. 'ToggleTerm')
+        cmd(get_curr_value() .. 'ToggleTerm')
     end, { noremap = true, silent = true })
     km.set({ 'n', 't' }, "<M-q>", function()
-        if currTerm == get_prev_value(currTerm) then
+        if get_curr_value() == get_prev_value(get_curr_value()) then
             return
         else
-            currTerm = get_prev_value(currTerm)
+            set_curr_value(get_prev_value(get_curr_value()))
         end
-        cmd(currTerm .. 'ToggleTerm')
+        cmd(get_curr_value() .. 'ToggleTerm')
     end, { noremap = true, silent = true })
     km.set({ 'n', 't' }, "<M-r>", function()
-        currTerm = max_value + 1
-        max_value = currTerm
-        cmd(currTerm .. 'ToggleTerm')
+        set_curr_value(get_max_value() + 1)
+        cmd(get_curr_value() .. 'ToggleTerm')
     end, { noremap = true, silent = true })
     km.set({ 'n', 't' }, "<M-s>", function()
-        cmd(currTerm .. "TermExec cmd=exit dir=~")
+        cmd(get_curr_value() .. "TermExec cmd=exit dir=~")
     end, { noremap = true, silent = true })
 
     local mongoTerm
     local redisTerm
     local mongo = function()
         if mongoTerm == nil then
-            max_value = max_value + 1
+            set_curr_value(get_max_value() + 1)
             mongoTerm = require("toggleterm.terminal").Terminal:new({
                 cmd = "bash ~/.config/nvim/lua/private/mongo.sh",
-                count = max_value,
+                count = get_curr_value(),
                 hidden = false,
             })
-            mongoTerm.termNo = max_value
+            mongoTerm.termNo = get_curr_value()
         end
         return mongoTerm
     end
     local redis = function()
         if redisTerm == nil then
-            max_value = max_value + 1
+            set_curr_value(get_max_value() + 1)
             redisTerm = require("toggleterm.terminal").Terminal:new({
                 cmd = "bash ~/.config/nvim/lua/private/redis.sh",
-                count = max_value,
+                count = get_curr_value(),
                 hidden = false,
             })
-            redisTerm.termNo = max_value
+            redisTerm.termNo = get_curr_value()
         end
         return redisTerm
     end
 
     api.nvim_create_user_command('Mongo', function()
         local term = mongo()
-        currTerm = term.termNo
+        set_curr_value(term.termNo)
         term:toggle()
     end, {})
 
     api.nvim_create_user_command('Redis', function()
         local term = redis()
-        currTerm = term.termNo
+        set_curr_value(term.termNo)
         term:toggle()
     end, {})
 end
