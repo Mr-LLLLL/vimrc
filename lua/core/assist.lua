@@ -82,8 +82,8 @@ local function load_leap()
 end
 
 local function load_toggle_term_map()
-    local currTerm = 1
-    local max_value = 1
+    local currTerm = 0
+    local max_value = 0
     local function get_next_value(v)
         if v == max_value then
             return 1
@@ -101,6 +101,10 @@ local function load_toggle_term_map()
     end
 
     km.set({ 'n', 't' }, "<M-w>", function()
+        if currTerm == 0 then
+            currTerm = 1
+            max_value = 1
+        end
         cmd(currTerm .. 'ToggleTerm')
     end, { noremap = true, silent = true })
     km.set({ 'n', 't' }, "<M-e>", function()
@@ -127,6 +131,45 @@ local function load_toggle_term_map()
     km.set({ 'n', 't' }, "<M-s>", function()
         cmd(currTerm .. "TermExec cmd=exit dir=~")
     end, { noremap = true, silent = true })
+
+    local mongoTerm
+    local redisTerm
+    local mongo = function()
+        if mongoTerm == nil then
+            max_value = max_value + 1
+            mongoTerm = require("toggleterm.terminal").Terminal:new({
+                cmd = "bash ~/.config/nvim/lua/private/mongo.sh",
+                count = max_value,
+                hidden = false,
+            })
+            mongoTerm.termNo = max_value
+        end
+        return mongoTerm
+    end
+    local redis = function()
+        if redisTerm == nil then
+            max_value = max_value + 1
+            redisTerm = require("toggleterm.terminal").Terminal:new({
+                cmd = "bash ~/.config/nvim/lua/private/redis.sh",
+                count = max_value,
+                hidden = false,
+            })
+            redisTerm.termNo = max_value
+        end
+        return redisTerm
+    end
+
+    api.nvim_create_user_command('Mongo', function()
+        local term = mongo()
+        currTerm = term.termNo
+        term:toggle()
+    end, {})
+
+    api.nvim_create_user_command('Redis', function()
+        local term = redis()
+        currTerm = term.termNo
+        term:toggle()
+    end, {})
 end
 
 
