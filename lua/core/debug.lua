@@ -194,8 +194,52 @@ local function load_dap()
         require("nvim-dap-virtual-text").setup(get_dapvt_conf())
     end
 
+    local next_bk = function(forward)
+        local bks = require("dap.breakpoints").get()
+        local cur_buf_nr = vim.api.nvim_get_current_buf()
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local next_line = 0
+        local bk_cnt = 0
+        local cur_bk = 0
+        for bufnr, s in pairs(bks) do
+            if cur_buf_nr == bufnr then
+                bk_cnt = #s
+                for i, v in pairs(s) do
+                    if forward then
+                        if v.line > cursor[1] then
+                            if next_line == 0 or v.line < next_line then
+                                next_line = v.line
+                                cur_bk = i
+                            end
+                        end
+                    else
+                        if v.line < cursor[1] then
+                            if next_line == 0 or v.line > next_line then
+                                next_line = v.line
+                                cur_bk = i
+                            end
+                        end
+                    end
+                end
+            end
+        end
+        if next_line ~= 0 then
+            vim.api.nvim_win_set_cursor(0, {next_line, 1})
+            vim.notify("Breakpoint " .. cur_bk .. " of " .. bk_cnt)
+        end
+    end
+
+    local load_cmd = function()
+        vim.api.nvim_create_user_command('DapClear', require('dap').clear_breakpoints, {})
+        vim.api.nvim_create_user_command('DapBreakPoint', require('dap').toggle_breakpoint, {})
+
+        vim.keymap.set('n', '[b', function() next_bk(false) end, { noremap = true, silent = true})
+        vim.keymap.set('n', ']b', function() next_bk(true) end, { noremap = true, silent = true})
+    end
+
     load_dapui()
     load_daptvt()
+    load_cmd()
 end
 
 m.setup = function()
