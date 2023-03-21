@@ -155,6 +155,9 @@ local function load_toggle_term_map()
                 cmd = "bash ~/.config/nvim/lua/private/mongo.sh",
                 count = get_curr_value(),
                 hidden = false,
+                on_exit = function()
+                    mongoTerm = nil
+                end,
             })
             mongoTerm.termNo = get_curr_value()
         end
@@ -167,6 +170,9 @@ local function load_toggle_term_map()
                 cmd = "bash ~/.config/nvim/lua/private/redis.sh",
                 count = get_curr_value(),
                 hidden = false,
+                on_exit = function()
+                    redisTerm = nil
+                end,
             })
             redisTerm.termNo = get_curr_value()
         end

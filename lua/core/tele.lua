@@ -18,7 +18,7 @@ local function load_telescope()
                         ["<C-l>"] = false,
                         ["<C-u>"] = false,
                         ["<C-d>"] = false,
-                        ["<C-o>"] = { "<esc>", type = "command" },
+                        ["<C-o>"] = { "<cmd>:stopinsert<cr>", type = "command" },
                         ["<esc>"] = actions.close,
                         ["<C-j>"] = actions.move_selection_next,
                         ["<C-k>"] = actions.move_selection_previous,

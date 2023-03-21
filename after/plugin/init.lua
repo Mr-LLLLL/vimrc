@@ -87,8 +87,8 @@ local function load_custom_map()
             vim.notify("tags is empty")
             return
         end
-        vim.cmd(":pop")
-        vim.cmd(":normal! zz")
+        vim.cmd("pop")
+        vim.cmd("normal! zz")
     end, { noremap = true, silent = true })
     km.set('n', "<leader>m", require("utils.pick_visual").colorn, { noremap = true, silent = true })
     km.set('x', "<leader>m", ":<c-u>lua require('utils.pick_visual').colorv()<cr>", { noremap = true, silent = true })
