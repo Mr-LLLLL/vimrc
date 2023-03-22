@@ -107,6 +107,7 @@ m.startup = function()
             }
 
             -- Uilts
+            use { 'dpayne/CodeGPT.nvim' }
             use { 'nvim-tree/nvim-tree.lua' }
             use { 'NvChad/nvim-colorizer.lua' }
             use { 'gbprod/yanky.nvim' }
