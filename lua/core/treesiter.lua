@@ -26,7 +26,7 @@ local function load_treesiter()
             enable = true,
             prev_selection = '<leader>.', -- (Optional) keymap to select the previous selection
             keymaps = {
-                    ['.'] = 'textsubjects-smart',
+                ['.'] = 'textsubjects-smart',
                 -- ['af'] = 'textsubjects-container-outer',
                 -- ['if'] = 'textsubjects-container-inner',
             },
@@ -38,12 +38,12 @@ local function load_treesiter()
                 lookahead = true,
                 keymaps = {
                     -- You can use the capture groups defined in textobjects.scm
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["ac"] = "@class.outer",
+                    ["af"] = "@function.outer",
+                    ["if"] = "@function.inner",
+                    ["ac"] = "@class.outer",
                     -- You can optionally set descriptions to the mappings (used in the desc parameter of
                     -- nvim_buf_set_keymap) which plugins like which-key display
-                        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+                    ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
                 },
                 -- You can choose the select mode (default is charwise 'v')
                 --
@@ -53,9 +53,9 @@ local function load_treesiter()
                 -- and should return the mode ('v', 'V', or '<c-v>') or a table
                 -- mapping query_strings to modes.
                 selection_modes = {
-                        ['@parameter.outer'] = 'v', -- charwise
-                        ['@function.outer'] = 'V',  -- linewise
-                        ['@class.outer'] = '<c-v>', -- blockwise
+                    ['@parameter.outer'] = 'v',     -- charwise
+                    ['@function.outer'] = 'V',      -- linewise
+                    ['@class.outer'] = '<c-v>',     -- blockwise
                 },
                 -- If you set this to `true` (default is `false`) then any textobject is
                 -- extended to include preceding or succeeding whitespace. Succeeding
@@ -72,20 +72,20 @@ local function load_treesiter()
                 enable = true,
                 set_jumps = true, -- whether to set jumps in the jumplist
                 goto_next_start = {
-                        ["]]"] = "@function.outer",
-                        ["]m"] = { query = "@class.outer", desc = "Next class start" },
+                    ["]]"] = "@function.outer",
+                    ["]m"] = { query = "@class.outer", desc = "Next class start" },
                 },
                 goto_next_end = {
-                        ["]["] = "@function.outer",
-                        ["]M"] = "@class.outer",
+                    ["]["] = "@function.outer",
+                    ["]M"] = "@class.outer",
                 },
                 goto_previous_start = {
-                        ["[["] = "@function.outer",
-                        ["[m"] = "@class.outer",
+                    ["[["] = "@function.outer",
+                    ["[m"] = "@class.outer",
                 },
                 goto_previous_end = {
-                        ["[]"] = "@function.outer",
-                        ["[M"] = "@class.outer",
+                    ["[]"] = "@function.outer",
+                    ["[M"] = "@class.outer",
                 },
             },
             -- swap = {

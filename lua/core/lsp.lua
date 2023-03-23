@@ -25,132 +25,9 @@ local function set_lsp_cmd()
 end
 
 local function set_lsp()
-    local tele_builtin = require("telescope.builtin")
-    local tele_action = require("telescope.actions")
-    local list_or_jump = function(action, f, param)
-        local lspParam = vim.lsp.util.make_position_params(vim.fn.win_getid())
-        lspParam.context = { includeDeclaration = false }
-        vim.lsp.buf_request(vim.fn.bufnr(), action, lspParam, function(err, result, ctx, _)
-            if err then
-                vim.api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
-                return
-            end
-            local flattened_results = {}
-            if result then
-                -- textDocument/definition can return Location or Location[]
-                if not vim.tbl_islist(result) then
-                    flattened_results = { result }
-                end
-
-                vim.list_extend(flattened_results, result)
-            end
-
-            local offset_encoding = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
-
-            if #flattened_results == 0 then
-                return
-                -- definitions will be two result in lua, i think first is pretty goods
-            elseif #flattened_results == 1 or action == "textDocument/definition" then
-                if type(param) == "table" then
-                    if param.jump_type == "vsplit" then
-                        vim.cmd("vsplit")
-                    elseif param.jump_type == "tab" then
-                        vim.cmd("tab split")
-                    end
-                end
-                vim.lsp.util.jump_to_location(flattened_results[1], offset_encoding)
-                tele_action.center()
-            else
-                f(param)
-            end
-        end)
-    end
-
-    -- Use an on_attach function to only map the following keys
-    -- after the language server attaches to the current buffer
-    ---@diagnostic disable-next-line: unused-local
-    local on_attach = function(client, bufnr)
-        -- for lsp_signature plugin
-        require "lsp_signature".on_attach(require("lsp_signature").setup(), bufnr)
-
-        --     -- Enable completion triggered by <c-x><c-o>
-        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-        --
-        --     -- Mappings.
-        --     -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        --     km.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-        --     km.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-        km.set('n', '<c-]>', function()
-            list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
-        end, bufopts)
-
-        km.set('n', '<c-w>]', function()
-            list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
-        end, bufopts)
-
-        km.set('n', '<c-w><c-]>', function()
-            list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
-        end, bufopts)
-
-        km.set('n', '<C-LeftMouse>', function()
-            local pos = vim.fn.getmousepos()
-            vim.fn.cursor(pos.line, pos.column)
-            list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
-        end, bufopts)
-
-        km.set('n', 'gi', function()
-            list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
-        end, bufopts)
-
-        km.set('n', 'g<LeftMouse>', function()
-            local pos = vim.fn.getmousepos()
-            vim.fn.cursor(pos.line, pos.column)
-            list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
-        end, bufopts)
-
-        km.set('n', 'gr', function()
-            list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
-        end, bufopts)
-
-        km.set('n', '<C-RightMouse>', function()
-            local pos = vim.fn.getmousepos()
-            vim.fn.cursor(pos.line, pos.column)
-            list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
-        end, bufopts)
-
-        km.set('n', 'gy', function()
-            list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
-        end, bufopts)
-
-        km.set('n', 'g<RightMouse>', function()
-            local pos = vim.fn.getmousepos()
-            vim.fn.cursor(pos.line, pos.column)
-            list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
-        end, bufopts)
-
-        km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end, bufopts)
-        km.set('n', '<space>sg', function() tele_builtin.lsp_dynamic_workspace_symbols() end, bufopts)
-        km.set('n', '<space>a', function() tele_builtin.diagnostics({ root_dir = true }) end, bufopts)
-        km.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-        --     km.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
-        --
-        km.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-        km.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-        km.set('n', '<space>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
-        -- km.set('n', '<space>f', vim.lsp.buf.signature_help, bufopts)
-    end
-
-    local lsp_flags = {
-        -- This is the default in Nvim 0.7+
-        debounce_text_changes = 150,
-    }
-
-    -- Set up lspconfig.
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    local on_attach = require("core.common").lsp_on_attack
+    local lsp_flags = require("core.common").lsp_flags
+    local capabilities = require("core.common").lsp_capabilities()
 
     local lspconfig = require("lspconfig")
     lspconfig.gopls.setup {
@@ -209,7 +86,7 @@ local function set_lsp()
         },
     }
 
-    require 'lspconfig'.lua_ls.setup {
+    lspconfig.lua_ls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -283,7 +160,7 @@ local function set_lsp()
         }
     }
 
-    require 'lspconfig'.clangd.setup {
+    lspconfig.clangd.setup {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -301,7 +178,7 @@ local function set_lsp()
         )
     }
 
-    require 'lspconfig'.bashls.setup {
+    lspconfig.bashls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -312,7 +189,7 @@ local function set_lsp()
         root_dir = lspconfig.util.find_git_ancestor
     }
 
-    require 'lspconfig'.vimls.setup {
+    lspconfig.vimls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -345,10 +222,10 @@ end
 local function load_lsp()
     local glyphs = require("core.common").glyphs
     local signs = {
-            [vim.diagnostic.severity.ERROR] = { name = "DiagnosticSignError", text = glyphs["sign_error"] },
-            [vim.diagnostic.severity.WARN] = { name = "DiagnosticSignWarn", text = glyphs["sign_warn"] },
-            [vim.diagnostic.severity.HINT] = { name = "DiagnosticSignHint", text = glyphs["sign_hint"] },
-            [vim.diagnostic.severity.INFO] = { name = "DiagnosticSignInfo", text = glyphs["sign_info"] },
+        [vim.diagnostic.severity.ERROR] = { name = "DiagnosticSignError", text = glyphs["sign_error"] },
+        [vim.diagnostic.severity.WARN] = { name = "DiagnosticSignWarn", text = glyphs["sign_warn"] },
+        [vim.diagnostic.severity.HINT] = { name = "DiagnosticSignHint", text = glyphs["sign_hint"] },
+        [vim.diagnostic.severity.INFO] = { name = "DiagnosticSignInfo", text = glyphs["sign_info"] },
     }
 
     for _, sign in pairs(signs) do
@@ -435,15 +312,15 @@ local function load_cmp()
             ghost_text = true,
         },
         mapping = cmp.mapping.preset.insert({
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                ['<C-e>'] = cmp.mapping.abort(),
-                ['<C-Space>'] = cmp.mapping.complete(),
-                ['<CR>'] = cmp.mapping.confirm {
+            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-e>'] = cmp.mapping.abort(),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<CR>'] = cmp.mapping.confirm {
                 behavior = cmp.ConfirmBehavior.Replace,
                 select = false,
             },
-                ["<Tab>"] = cmp.mapping(function(fallback)
+            ["<Tab>"] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
                     -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
@@ -456,7 +333,7 @@ local function load_cmp()
                     fallback()
                 end
             end, { "i", "s" }),
-                ["<S-Tab>"] = cmp.mapping(function(fallback)
+            ["<S-Tab>"] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_prev_item()
                     -- elseif luasnip.jumpable( -1) then
@@ -465,7 +342,7 @@ local function load_cmp()
                     fallback()
                 end
             end, { "i", "s" }),
-                ["<c-j>"] = {
+            ["<c-j>"] = {
                 c = function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
@@ -475,7 +352,7 @@ local function load_cmp()
                 end,
                 i = cmp.mapping.select_next_item({ behavior = require("cmp.types").cmp.SelectBehavior.Select }),
             },
-                ["<c-k>"] = {
+            ["<c-k>"] = {
                 c = function(fallback)
                     if cmp.visible() then
                         cmp.select_prev_item()
@@ -485,7 +362,7 @@ local function load_cmp()
                 end,
                 i = cmp.mapping.select_prev_item({ behavior = require("cmp.types").cmp.SelectBehavior.Select }),
             },
-                ["<c-n>"] = {
+            ["<c-n>"] = {
                 i = function(fallback)
                     if luasnip.locally_jumpable(1) then
                         -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
@@ -496,7 +373,7 @@ local function load_cmp()
                     end
                 end
             },
-                ["<c-p>"] = {
+            ["<c-p>"] = {
                 i = function(fallback)
                     if luasnip.locally_jumpable(-1) then
                         -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
@@ -528,31 +405,31 @@ local function load_cmp()
             fields = { "kind", "abbr", "menu" },
             format = function(entry, vim_item)
                 local kind = require("lspkind").cmp_format({
-                        -- defines how annotations are shown
-                        -- default: symbol
-                        -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-                        mode = 'symbol',
-                        maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                        ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-                        -- The function below will be called before any actual modifications from lspkind
-                        -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-                        -- before = function (entry, vim_item)
-                        --     vim_item.menu = entry.source.name
-                        --     return vim_item
-                        -- end,
-                        menu = ({
-                            buffer = "[B]",
-                            nvim_lsp = "[LSP]",
-                            luasnip = "[Snip]",
-                            nvim_lua = "[Lua]",
-                            latex_symbols = "[Latex]",
-                            calc = "[Cal]",
-                            emoji = "[Emoj]",
-                            nerdfont = "[Font]",
-                            cmdline = "[Cmd]",
-                            path = "[Path]",
-                        })
-                    })(entry, vim_item)
+                    -- defines how annotations are shown
+                    -- default: symbol
+                    -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+                    mode = 'symbol',
+                    maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                    ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                    -- The function below will be called before any actual modifications from lspkind
+                    -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+                    -- before = function (entry, vim_item)
+                    --     vim_item.menu = entry.source.name
+                    --     return vim_item
+                    -- end,
+                    menu = ({
+                        buffer = "[B]",
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[Snip]",
+                        nvim_lua = "[Lua]",
+                        latex_symbols = "[Latex]",
+                        calc = "[Cal]",
+                        emoji = "[Emoj]",
+                        nerdfont = "[Font]",
+                        cmdline = "[Cmd]",
+                        path = "[Path]",
+                    })
+                })(entry, vim_item)
                 local strings = vim.split(kind.kind, "%s", { trimempty = true })
                 kind.kind = " " .. (strings[1] or "") .. " "
                 -- kind.menu = "    (" .. (strings[2] or "") .. ")"

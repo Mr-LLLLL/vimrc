@@ -49,21 +49,21 @@ end
 
 local init_keys      = function()
     keys = {
-            ['R'] = { f = require('dap').run_last, desc = 'restart' },
-            ['c'] = { f = require('dap').continue, desc = 'continue' },
-            ['n'] = { f = require('dap').step_over, desc = 'step_over' },
-            ['s'] = { f = require('dap').step_into, desc = 'step_into' },
-            ['o'] = { f = require('dap').step_out, desc = 'step_out' },
-            ['S'] = { f = dap_stop, desc = 'stop debug session' },
-            ['u'] = { f = require('dap').up, desc = 'up' },
-            ['d'] = { f = require('dap').down, desc = 'down' },
-            ['C'] = { f = require('dap').run_to_cursor, desc = 'run_to_cursor' },
-            ['b'] = { f = require('dap').toggle_breakpoint, desc = 'toggle_breakpoint' },
-            ['B'] = { f = require('dap').clear_breakpoints, desc = 'clear_breakpoints' },
-            ['P'] = { f = require('dap').pause, desc = 'pause' },
-            ['p'] = { f = require('dapui').eval, m = { 'n' }, desc = 'eval' },
-            ['K'] = { f = require('dapui').float_element, desc = 'float_element' },
-            ['g?'] = { f = dap_keys, desc = "dap_keys" },
+        ['R'] = { f = require('dap').run_last, desc = 'restart' },
+        ['c'] = { f = require('dap').continue, desc = 'continue' },
+        ['n'] = { f = require('dap').step_over, desc = 'step_over' },
+        ['s'] = { f = require('dap').step_into, desc = 'step_into' },
+        ['o'] = { f = require('dap').step_out, desc = 'step_out' },
+        ['S'] = { f = dap_stop, desc = 'stop debug session' },
+        ['u'] = { f = require('dap').up, desc = 'up' },
+        ['d'] = { f = require('dap').down, desc = 'down' },
+        ['C'] = { f = require('dap').run_to_cursor, desc = 'run_to_cursor' },
+        ['b'] = { f = require('dap').toggle_breakpoint, desc = 'toggle_breakpoint' },
+        ['B'] = { f = require('dap').clear_breakpoints, desc = 'clear_breakpoints' },
+        ['P'] = { f = require('dap').pause, desc = 'pause' },
+        ['p'] = { f = require('dapui').eval, m = { 'n' }, desc = 'eval' },
+        ['K'] = { f = require('dapui').float_element, desc = 'float_element' },
+        ['g?'] = { f = dap_keys, desc = "dap_keys" },
     }
 end
 
@@ -224,7 +224,7 @@ local function load_dap()
             end
         end
         if next_line ~= 0 then
-            vim.api.nvim_win_set_cursor(0, {next_line, 1})
+            vim.api.nvim_win_set_cursor(0, { next_line, 1 })
             vim.notify("Breakpoint " .. cur_bk .. " of " .. bk_cnt)
         end
     end
@@ -233,8 +233,8 @@ local function load_dap()
         vim.api.nvim_create_user_command('DapClear', require('dap').clear_breakpoints, {})
         vim.api.nvim_create_user_command('DapBreakPoint', require('dap').toggle_breakpoint, {})
 
-        vim.keymap.set('n', '[b', function() next_bk(false) end, { noremap = true, silent = true})
-        vim.keymap.set('n', ']b', function() next_bk(true) end, { noremap = true, silent = true})
+        vim.keymap.set('n', '[b', function() next_bk(false) end, { noremap = true, silent = true })
+        vim.keymap.set('n', ']b', function() next_bk(true) end, { noremap = true, silent = true })
     end
 
     load_dapui()

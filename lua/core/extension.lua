@@ -34,41 +34,41 @@ local function load_pantran()
                         -- Use this table to add additional mappings for the normal mode in
                         -- the translation window. Either strings or function references are
                         -- supported.
-                            ["q"] = pantran_actions.close,
-                            ["<C-a>"] = pantran_actions.append_close_translation,
-                            ["<C-r>"] = pantran_actions.replace_close_translation,
-                            ["<C-s>"] = pantran_actions.select_source,
-                            ["<C-t>"] = pantran_actions.select_target,
-                            ["<C-e>"] = pantran_actions.select_engine,
+                        ["q"] = pantran_actions.close,
+                        ["<C-a>"] = pantran_actions.append_close_translation,
+                        ["<C-r>"] = pantran_actions.replace_close_translation,
+                        ["<C-s>"] = pantran_actions.select_source,
+                        ["<C-t>"] = pantran_actions.select_target,
+                        ["<C-e>"] = pantran_actions.select_engine,
                     },
                     i = {
                         -- Similar table but for insert mode. Using 'false' disables
                         -- existing keybindings.
-                            ["<esc>"] = function(ui)
+                        ["<esc>"] = function(ui)
                             pantran_actions.close(ui)
                             vim.cmd("stopinsert")
                         end,
-                            ["<c-o>"] = function()
+                        ["<c-o>"] = function()
                             vim.cmd("stopinsert")
                         end,
-                            ["<C-r>"] = pantran_actions.replace_close_translation,
-                            ["<C-a>"] = pantran_actions.append_close_translation,
-                            ["<C-s>"] = pantran_actions.select_source,
-                            ["<C-t>"] = pantran_actions.select_target,
-                            ["<C-e>"] = pantran_actions.select_engine,
+                        ["<C-r>"] = pantran_actions.replace_close_translation,
+                        ["<C-a>"] = pantran_actions.append_close_translation,
+                        ["<C-s>"] = pantran_actions.select_source,
+                        ["<C-t>"] = pantran_actions.select_target,
+                        ["<C-e>"] = pantran_actions.select_engine,
                     }
                 },
                 -- Keybindings here are used in the selection window.
                 select = {
                     i = {
-                            ["<C-s>"] = pantran_actions.select_source,
-                            ["<C-t>"] = pantran_actions.select_target,
-                            ["<C-e>"] = pantran_actions.select_engine,
+                        ["<C-s>"] = pantran_actions.select_source,
+                        ["<C-t>"] = pantran_actions.select_target,
+                        ["<C-e>"] = pantran_actions.select_engine,
                     },
                     n = {
-                            ["<C-s>"] = pantran_actions.select_source,
-                            ["<C-t>"] = pantran_actions.select_target,
-                            ["<C-e>"] = pantran_actions.select_engine,
+                        ["<C-s>"] = pantran_actions.select_source,
+                        ["<C-t>"] = pantran_actions.select_target,
+                        ["<C-e>"] = pantran_actions.select_engine,
                     }
                 }
             }
@@ -286,13 +286,13 @@ local function load_chatgpt()
     -- vim.g["codegpt_chat_completions_url"] = "http://127.0.0.1:800/test"
 
     vim.g["codegpt_commands"] = {
-            ["tests"] = {
+        ["tests"] = {
             -- Language specific instructions for java filetype
             language_instructions = {
                 java = "Use the TestNG framework.",
             },
         },
-            ["doc"] = {
+        ["doc"] = {
             -- Language specific instructions for python filetype
             language_instructions = {
                 python = "Use the Google style docstrings."
@@ -301,7 +301,7 @@ local function load_chatgpt()
             -- Overrides the max tokens to be 1024
             max_tokens = 1024,
         },
-            ["code_edit"] = {
+        ["code_edit"] = {
             -- Overrides the system message template
             system_message_template = "You are {{language}} developer.",
 
@@ -313,7 +313,7 @@ local function load_chatgpt()
             callback_type = "code_popup",
         },
         -- Custom command
-            ["modernize"] = {
+        ["modernize"] = {
             user_message_template =
             "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
             language_instructions = {

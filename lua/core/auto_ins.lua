@@ -160,9 +160,14 @@ m.startup = function()
                 }
             }
             use {
-                'ray-x/go.nvim',
-                requires = {
-                    'ray-x/guihua.lua' -- recommanded if need floating window support
+                {
+                    'mfussenegger/nvim-jdtls',
+                },
+                {
+                    'ray-x/go.nvim',
+                    requires = {
+                        'ray-x/guihua.lua' -- recommanded if need floating window support
+                    }
                 }
             }
             use { 'sindrets/diffview.nvim' }

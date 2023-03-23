@@ -670,10 +670,10 @@ end
 
 local function load_multi_select()
     g.VM_maps = {
-            ['Find Under'] = '<leader>v',
-            ['Find Subword Under'] = '<leader>v',
-            ["Select All"] = '<leader>V',
-            ["Visual All"] = '<leader>V',
+        ['Find Under'] = '<leader>v',
+        ['Find Subword Under'] = '<leader>v',
+        ["Select All"] = '<leader>V',
+        ["Visual All"] = '<leader>V',
     }
 end
 

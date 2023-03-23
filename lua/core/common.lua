@@ -1,6 +1,8 @@
-local m              = {}
+local km           = vim.keymap
 
-m.glyphs             = {
+local m            = {}
+
+m.glyphs           = {
     modified = "",
     added = "",
     unmerged = "",
@@ -21,6 +23,134 @@ m.glyphs             = {
     sign_hint = "",
     sign_info = "",
 }
+
+m.lsp_flags        = {
+    -- This is the default in Nvim 0.7+
+    debounce_text_changes = 150,
+}
+
+m.lsp_capabilities = function()
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+    return capabilities
+end
+
+
+local list_or_jump   = function(action, f, param)
+    local tele_action = require("telescope.actions")
+    local lspParam = vim.lsp.util.make_position_params(vim.fn.win_getid())
+    lspParam.context = { includeDeclaration = false }
+    vim.lsp.buf_request(vim.fn.bufnr(), action, lspParam, function(err, result, ctx, _)
+        if err then
+            vim.api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
+            return
+        end
+        local flattened_results = {}
+        if result then
+            -- textDocument/definition can return Location or Location[]
+            if not vim.tbl_islist(result) then
+                flattened_results = { result }
+            end
+
+            vim.list_extend(flattened_results, result)
+        end
+
+        local offset_encoding = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
+
+        if #flattened_results == 0 then
+            return
+            -- definitions will be two result in lua, i think first is pretty goods
+        elseif #flattened_results == 1 or action == "textDocument/definition" then
+            if type(param) == "table" then
+                if param.jump_type == "vsplit" then
+                    vim.cmd("vsplit")
+                elseif param.jump_type == "tab" then
+                    vim.cmd("tab split")
+                end
+            end
+            vim.lsp.util.jump_to_location(flattened_results[1], offset_encoding)
+            tele_action.center()
+        else
+            f(param)
+        end
+    end)
+end
+
+---@diagnostic disable-next-line: unused-local
+m.lsp_on_attack      = function(client, bufnr)
+    local tele_builtin = require("telescope.builtin")
+
+    require "lsp_signature".on_attach(require("lsp_signature").setup(), bufnr)
+
+    --     -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    --
+    --     -- Mappings.
+    --     -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local bufopts = { noremap = true, silent = true, buffer = bufnr }
+    --     km.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+    --     km.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+    km.set('n', '<c-]>', function()
+        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
+    end, bufopts)
+
+    km.set('n', '<c-w>]', function()
+        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
+    end, bufopts)
+
+    km.set('n', '<c-w><c-]>', function()
+        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
+    end, bufopts)
+
+    km.set('n', '<C-LeftMouse>', function()
+        local pos = vim.fn.getmousepos()
+        vim.fn.cursor(pos.line, pos.column)
+        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
+    end, bufopts)
+
+    km.set('n', 'gi', function()
+        list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
+    end, bufopts)
+
+    km.set('n', 'g<LeftMouse>', function()
+        local pos = vim.fn.getmousepos()
+        vim.fn.cursor(pos.line, pos.column)
+        list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
+    end, bufopts)
+
+    km.set('n', 'gr', function()
+        list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
+    end, bufopts)
+
+    km.set('n', '<C-RightMouse>', function()
+        local pos = vim.fn.getmousepos()
+        vim.fn.cursor(pos.line, pos.column)
+        list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
+    end, bufopts)
+
+    km.set('n', 'gy', function()
+        list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
+    end, bufopts)
+
+    km.set('n', 'g<RightMouse>', function()
+        local pos = vim.fn.getmousepos()
+        vim.fn.cursor(pos.line, pos.column)
+        list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
+    end, bufopts)
+
+    km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end, bufopts)
+    km.set('n', '<space>sg', function() tele_builtin.lsp_dynamic_workspace_symbols() end, bufopts)
+    km.set('n', '<space>a', function() tele_builtin.diagnostics({ root_dir = true }) end, bufopts)
+    km.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+    --     km.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
+    --
+    km.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+    km.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+    km.set('n', '<space>wl', function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, bufopts)
+end
 
 m.get_tele_project   = function()
     require("telescope").extensions.project.project {

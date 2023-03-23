@@ -32,9 +32,9 @@ local function load_noice()
             },
             -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
             override = {
-                    ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
-                    ["vim.lsp.util.stylize_markdown"] = false,
-                    ["cmp.entry.get_documentation"] = false,
+                ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+                ["vim.lsp.util.stylize_markdown"] = false,
+                ["cmp.entry.get_documentation"] = false,
             },
         },
         -- you can enable a preset for easier configuration
@@ -70,12 +70,12 @@ local function load_noice()
         messages = {
             -- NOTE: If you enable messages, then the cmdline is enabled automatically.
             -- This is a current Neovim limitation.
-            enabled = true,              -- enables the Noice messages UI
-            view = "notify",             -- default view for messages
-            view_error = "notify",       -- view for errors
-            view_warn = "notify",        -- view for warnings
-            view_history = "messages",   -- view for :messages
-            view_search = false, -- view for search count messages. Set to `false` to disable
+            enabled = true,            -- enables the Noice messages UI
+            view = "notify",           -- default view for messages
+            view_error = "notify",     -- view for errors
+            view_warn = "notify",      -- view for warnings
+            view_history = "messages", -- view for :messages
+            view_search = false,       -- view for search count messages. Set to `false` to disable
         },
         popupmenu = {
             enabled = false, -- enables the Noice popupmenu UI
@@ -610,7 +610,7 @@ local function load_interesting()
 
     km.set("n", "<leader>k", function() vim.fn.InterestingWords('n') end, { noremap = true, silent = true })
     -- NOTE: use InterestingWords must <c-u> set the "'<" and ">'" in getpos function
-    km.set("v", "<leader>k", ":<c-u>lua vim.fn.InterestingWords('v')<cr>", { noremap = true, silent = true })
+    km.set("v", "<leader>k", "<esc><cmd>lua vim.fn.InterestingWords('v')<cr>", { noremap = true, silent = true })
     km.set("n", "<leader>K", function() vim.fn.UncolorAllWords() end, { noremap = true, silent = true })
     km.set("n", "n", function() vim.fn.WordNavigation(1) end, { noremap = true, silent = true })
     km.set("n", "N", function() vim.fn.WordNavigation(0) end, { noremap = true, silent = true })
@@ -618,7 +618,7 @@ end
 
 local function load_cursor_word()
     require('illuminate').configure({
-        modes_allowlist = { 'n', 'v', 'V', ''},
+        modes_allowlist = { 'n', 'v', 'V', '' },
     })
 
     km.set("v", "<a-n>", require("illuminate").goto_next_reference, { noremap = true, silent = true })
@@ -672,7 +672,7 @@ local function load_gitsigns()
             map('n', '<leader>gD', gs.toggle_deleted)
 
             -- Text object
-            map({ 'o', 'x' }, 'ig', ':<C-U>Gitsigns select_hunk<CR>')
+            map({ 'o', 'x' }, 'ig', '<esc><cmd>Gitsigns select_hunk<CR>')
         end
     })
 end

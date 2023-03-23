@@ -91,7 +91,7 @@ local function load_custom_map()
         vim.cmd("normal! zz")
     end, { noremap = true, silent = true })
     km.set('n', "<leader>m", require("utils.pick_visual").colorn, { noremap = true, silent = true })
-    km.set('x', "<leader>m", ":<c-u>lua require('utils.pick_visual').colorv()<cr>", { noremap = true, silent = true })
+    km.set('x', "<leader>m", "<esc><cmd>lua require('utils.pick_visual').colorv()<cr>", { noremap = true, silent = true })
     km.set('n', "<leader>M", "<cmd>noh<CR>", { noremap = true, silent = true })
 
     local custom_extend = vim.api.nvim_create_augroup("CustomExtend", { clear = true })
