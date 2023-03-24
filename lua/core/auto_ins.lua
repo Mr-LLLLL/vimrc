@@ -233,6 +233,9 @@ local function load_mason_tool()
             { 'delve' },
             { 'protolint' },
             { 'sql-formatter' },
+            { 'jdtls' },
+            { 'java-test' },
+            { 'java-debug-adapter' },
         },
 
         -- if set to true this will check each tool for updates. If updates

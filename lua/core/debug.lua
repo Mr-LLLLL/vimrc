@@ -231,7 +231,6 @@ local function load_dap()
 
     local load_cmd = function()
         vim.api.nvim_create_user_command('DapClear', require('dap').clear_breakpoints, {})
-        vim.api.nvim_create_user_command('DapBreakPoint', require('dap').toggle_breakpoint, {})
 
         vim.keymap.set('n', '[b', function() next_bk(false) end, { noremap = true, silent = true })
         vim.keymap.set('n', ']b', function() next_bk(true) end, { noremap = true, silent = true })

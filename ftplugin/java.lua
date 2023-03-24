@@ -9,13 +9,15 @@ local function load_java()
     -- This bundles definition is the same as in the previous section (java-debug installation)
     local bundles = {
         vim.fn.glob(
-        "/home/ubuntu/.local/share/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-        1),
+            "/home/ubuntu/.local/share/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+            1),
     };
 
     -- This is the new part
-    vim.list_extend(bundles,
-    vim.split(vim.fn.glob("/home/ubuntu/.local/share/nvim/mason/packages/java-test/extension/server/*.jar", 1), "\n"))
+    vim.list_extend(
+        bundles,
+        vim.split(vim.fn.glob("/home/ubuntu/.local/share/nvim/mason/packages/java-test/extension/server/*.jar", 1), "\n")
+    )
     require('jdtls').start_or_attach({
         on_attach = on_attach,
         capabilities = require("core.common").lsp_capabilities(),
@@ -79,7 +81,6 @@ local function load_java()
             bundles = bundles,
         },
     })
-
 end
 
 load_java()

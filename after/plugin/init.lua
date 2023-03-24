@@ -3,7 +3,6 @@ local km = vim.keymap
 
 local function del_user_cmd()
     api.nvim_del_user_command('DapContinue')
-    api.nvim_del_user_command('DapToggleBreakpoint')
     api.nvim_del_user_command('DapToggleRepl')
     api.nvim_del_user_command('DapStepOver')
     api.nvim_del_user_command('DapStepInto')
