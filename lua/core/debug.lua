@@ -129,8 +129,8 @@ local get_dapui_conf = function()
             },
             {
                 elements = {
-                    "repl",
                     "stacks",
+                    "repl",
                     -- "console",
                 },
                 size = 0.25, -- 25% of total lines
