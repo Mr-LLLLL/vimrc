@@ -11,7 +11,7 @@ local function pick_visual()
     return '\\V' .. vim.fn.escape(string.sub(vim.fn.getline("."), start_col, end_col), "\\")
 end
 
-function pick_word(mode)
+local function pick_word(mode)
     if mode == 'v' then
         return pick_visual()
     else

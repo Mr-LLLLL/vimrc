@@ -181,46 +181,69 @@ local keymaps_backup = {}
 local keymaps        = {}
 
 m.set_key_map        = function(module, keys)
-    local old_keymap_list = vim.api.nvim_get_keymap('n')
     keymaps_backup[module] = {}
-    for _, v in pairs(old_keymap_list) do
-        if keys[v.lhs] ~= nil then
-            keymaps_backup[module][v.lhs] = v
+    keymaps[module] = {}
+    local setmap = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local old_keymap_list = vim.api.nvim_buf_get_keymap(bufnr, 'n')
+        keymaps_backup[module][bufnr] = {}
+        for _, v in pairs(old_keymap_list) do
+            if keys[v.lhs] ~= nil then
+                keymaps_backup[module][bufnr][v.lhs] = v
+            end
+        end
+        keymaps[module][bufnr] = keys
+        for k, v in pairs(keys) do
+            vim.keymap.set('n', k, v.f, { noremap = true, silent = true, desc = v.desc, buffer = bufnr })
         end
     end
-    keymaps[module] = keys
-    for k, v in pairs(keys) do
-        vim.keymap.set('n', k, v.f, { noremap = true, silent = true, desc = v.desc })
-    end
+    setmap()
+    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+
+    local custom_auto_cmd = vim.api.nvim_create_augroup("DapDebugKeys", { clear = true })
+    vim.api.nvim_create_autocmd(
+        { "BufWinEnter" },
+        {
+            pattern = { "*." .. ft },
+            callback = function()
+                setmap()
+            end,
+            group = custom_auto_cmd,
+        }
+    )
 end
 
 m.revert_key_map     = function(module)
-    for k in pairs(keymaps[module] or {}) do
-        local cmd = 'silent! nunmap ' .. k
-        vim.cmd(cmd)
+    for bufnr, ks in pairs(keymaps[module] or {}) do
+        for k in pairs(ks) do
+            vim.keymap.del('n', k, { buffer = bufnr })
+        end
     end
 
-    for _, v in pairs(keymaps_backup[module] or {}) do
-        local opt = {
-            noremap = v.noremap == 1,
-            silent = v.slient == 1,
-            expr = v.expr == 1,
-            nowait = v.nowait == 1,
-            desc = v.desc,
-        }
-        if v.buffer ~= 0 then
-            opt["buffer"] = v.buffer
-        end
+    for _, buf_backup in pairs(keymaps_backup[module] or {}) do
+        for _, v in pairs(buf_backup) do
+            local opt = {
+                noremap = v.noremap == 1,
+                silent = v.slient == 1,
+                expr = v.expr == 1,
+                nowait = v.nowait == 1,
+                desc = v.desc,
+            }
+            if v.buffer ~= 0 then
+                opt["buffer"] = v.buffer
+            end
 
-        vim.keymap.set(
-            'n',
-            v.lhs,
-            v.rhs or v.callback,
-            opt
-        )
+            vim.keymap.set(
+                'n',
+                v.lhs,
+                v.rhs or v.callback,
+                opt
+            )
+        end
     end
     keymaps_backup[module] = {}
     keymaps[module] = {}
+    vim.api.nvim_create_augroup("DapDebugKeys", { clear = true })
 end
 
 return m

@@ -15,7 +15,6 @@ local function set_lsp_cmd()
     )
     api.nvim_create_user_command("LspReattach", function()
         local matching_configs = require('lspconfig.util').get_config_by_ft(vim.bo.filetype)
-        ---@diagnostic disable-next-line: redefined-local
         for _, config in ipairs(matching_configs) do
             config.launch()
         end
@@ -275,13 +274,11 @@ local function load_cmp()
 
     ---@diagnostic disable-next-line: unused-function, unused-local
     local has_words_before = function()
-        ---@diagnostic disable-next-line: deprecated
         unpack = unpack or table.unpack
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
     end
 
-    ---@diagnostic disable-next-line: redundant-parameter
     cmp.setup({
         snippet = {
             -- REQUIRED - you must specify a snippet engine

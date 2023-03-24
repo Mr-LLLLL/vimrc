@@ -62,7 +62,6 @@ local init_keys      = function()
         ['B'] = { f = require('dap').clear_breakpoints, desc = 'clear_breakpoints' },
         ['P'] = { f = require('dap').pause, desc = 'pause' },
         ['p'] = { f = require('dapui').eval, m = { 'n' }, desc = 'eval' },
-        ['K'] = { f = require('dapui').float_element, desc = 'float_element' },
         ['g?'] = { f = dap_keys, desc = "dap_keys" },
     }
 end
@@ -128,15 +127,15 @@ local get_dapui_conf = function()
                 size = 40, -- 40 columns
                 position = "left",
             },
-            -- {
-            --     elements = {
-            --         "repl",
-            --         -- "stacks",
-            --         -- "console",
-            --     },
-            --     size = 0.25, -- 25% of total lines
-            --     position = "bottom",
-            -- },
+            {
+                elements = {
+                    "repl",
+                    "stacks",
+                    -- "console",
+                },
+                size = 0.25, -- 25% of total lines
+                position = "bottom",
+            },
         },
         controls = {
             -- Requires Neovim nightly (or 0.8 when released)
@@ -234,6 +233,7 @@ local function load_dap()
 
         vim.keymap.set('n', '[b', function() next_bk(false) end, { noremap = true, silent = true })
         vim.keymap.set('n', ']b', function() next_bk(true) end, { noremap = true, silent = true })
+        vim.keymap.set('n', '<leader>d', require('dapui').float_element, { noremap = true, silent = true })
     end
 
     load_dapui()
