@@ -604,8 +604,7 @@ end
 
 local function load_interesting()
     g.interestingWordsDefaultMappings = 0
-    g.interestingWordsGUIColors = { '#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF' }
-    g.interestingWordsTermColors = { '154', '121', '211', '137', '214', '222' }
+    g.interestingWordsGUIColors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#CF9292', '#BFA3DF', '#9999EA' }
     g.interestingWordsRandomiseColors = 1
 
     km.set("n", "<leader>K", function() vim.fn.UncolorAllWords() end, { noremap = true, silent = true })
