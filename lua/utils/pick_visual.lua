@@ -40,7 +40,7 @@ local function pick_word(mode)
     if mode == 'v' then
         return pick_visual()
     else
-        return "\\<" .. vim.fn.expand("<cword>") .. "\\>"
+        return "\\V\\<" .. vim.fn.expand("<cword>") .. "\\>"
     end
 end
 
