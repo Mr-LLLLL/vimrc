@@ -44,16 +44,14 @@ local function pick_word(mode)
     end
 end
 
-m.colorn = function()
-    local word = pick_word()
-    vim.cmd("set hls")
-    vim.fn.setreg('/', word)
-end
-
-m.colorv = function()
-    local word = pick_word('v')
-    vim.cmd("set hls")
-    vim.fn.setreg('/', word)
+m.color = function(mode)
+    local word = pick_word(mode)
+    if word == vim.fn.getreg('/') then
+        vim.fn.setreg('/', '')
+    else
+        vim.cmd("set hls")
+        vim.fn.setreg('/', word)
+    end
 end
 
 return m
