@@ -608,12 +608,27 @@ local function load_interesting()
     g.interestingWordsTermColors = { '154', '121', '211', '137', '214', '222' }
     g.interestingWordsRandomiseColors = 1
 
-    km.set("n", "<leader>k", function() vim.fn.InterestingWords('n') end, { noremap = true, silent = true })
-    -- NOTE: use InterestingWords must <c-u> set the "'<" and ">'" in getpos function
-    km.set("v", "<leader>k", "<esc><cmd>lua vim.fn.InterestingWords('v')<cr>", { noremap = true, silent = true })
     km.set("n", "<leader>K", function() vim.fn.UncolorAllWords() end, { noremap = true, silent = true })
-    km.set("n", "n", function() vim.fn.WordNavigation(1) end, { noremap = true, silent = true })
-    km.set("n", "N", function() vim.fn.WordNavigation(0) end, { noremap = true, silent = true })
+    km.set("n", "<leader>k", function()
+        vim.fn.InterestingWords('n')
+        local word = vim.fn.GetPickedWord()
+        require("core.common").search_count(word)
+    end, { noremap = true, silent = true })
+    km.set("x", "<leader>k", function()
+        vim.fn.InterestingWords('v')
+        local word = vim.fn.GetPickedWord()
+        require("core.common").search_count(word)
+    end, { noremap = true, silent = true })
+    km.set("n", "n", function()
+        local word = vim.fn.GetPickedWord()
+        vim.fn.NavigateToWord(word, 1)
+        require("core.common").search_count(word)
+    end, { noremap = true, silent = true })
+    km.set("n", "N", function()
+        local word = vim.fn.GetPickedWord()
+        vim.fn.NavigateToWord(word, 0)
+        require("core.common").search_count(word)
+    end, { noremap = true, silent = true })
 end
 
 local function load_cursor_word()

@@ -29,6 +29,11 @@ m.lsp_flags        = {
     debounce_text_changes = 150,
 }
 
+m.search_count_cache = nil
+m.search_count = function(word)
+    print(word)
+end
+
 m.lsp_capabilities = function()
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true

@@ -51,6 +51,21 @@ local function load_autocmd()
             group = custom_auto_cmd,
         }
     )
+
+    vim.api.nvim_create_autocmd(
+        { "CmdlineLeave" },
+        {
+            pattern = { "*" },
+            callback = function(event)
+                if vim.v.event.abort then
+                    return
+                end
+                if event.match == "/" or event.match == "?" then
+                    require("core.common").search_count(vim.fn.getcmdline())
+                end
+            end,
+        }
+    )
 end
 
 local function load_custom_map()
@@ -83,14 +98,22 @@ local function load_custom_map()
 
     km.set('n', "<c-t>", function()
         if vim.fn.gettagstack().curidx == 1 then
-            vim.notify("tags is empty")
+            vim.notify("tags is empty", vim.log.levels.INFO)
             return
         end
         vim.cmd("pop")
         vim.cmd("normal! zz")
     end, { noremap = true, silent = true })
-    km.set('n', "<leader>m", require("utils.pick_visual").colorn, { noremap = true, silent = true })
-    km.set('x', "<leader>m", "<esc><cmd>lua require('utils.pick_visual').colorv()<cr>", { noremap = true, silent = true })
+    km.set('n', "<leader>m", function()
+        require("utils.pick_visual").colorn()
+        local word = vim.fn.GetPickedWord()
+        require("core.common").search_count(word)
+    end, { noremap = true, silent = true })
+    km.set('x', "<leader>m", function()
+        require('utils.pick_visual').colorv()
+        local word = vim.fn.GetPickedWord()
+        require("core.common").search_count(word)
+    end, { noremap = true, silent = true })
     km.set('n', "<leader>M", "<cmd>noh<CR>", { noremap = true, silent = true })
 
     local custom_extend = vim.api.nvim_create_augroup("CustomExtend", { clear = true })

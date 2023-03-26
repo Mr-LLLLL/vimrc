@@ -12,17 +12,17 @@ end
 
 local keys
 
-local dap_stop       = function()
+local dap_stop = function()
     local has_dap, dap = pcall(require, 'dap')
     if has_dap then
         dap.disconnect()
         vim.cmd('sleep 100m') -- allow cleanup
     else
-        vim.notify('dap not found')
+        vim.notify('dap not found', vim.log.levels.WARN)
     end
 end
 
-local dap_keys       = function()
+local dap_keys = function()
     local keymap_help = {}
     local width = 0
     local line = ''
@@ -47,17 +47,27 @@ local dap_keys       = function()
     })
 end
 
+local function centerize(f, async)
+    return function()
+        f()
+        if async then
+            vim.cmd('sleep 100m')
+        end
+        vim.cmd("normal! zz")
+    end
+end
+
 local init_keys      = function()
     keys = {
         ['R'] = { f = require('dap').run_last, desc = 'restart' },
-        ['c'] = { f = require('dap').continue, desc = 'continue' },
-        ['n'] = { f = require('dap').step_over, desc = 'step_over' },
-        ['s'] = { f = require('dap').step_into, desc = 'step_into' },
-        ['o'] = { f = require('dap').step_out, desc = 'step_out' },
+        ['C'] = { f = require('dap').continue, desc = 'continue' },
+        ['n'] = { f = centerize(require('dap').step_over), desc = 'step_over' },
+        ['s'] = { f = centerize(require('dap').step_into, true), desc = 'step_into' },
+        ['o'] = { f = centerize(require('dap').step_out), desc = 'step_out' },
         ['S'] = { f = dap_stop, desc = 'stop debug session' },
-        ['u'] = { f = require('dap').up, desc = 'up' },
-        ['d'] = { f = require('dap').down, desc = 'down' },
-        ['C'] = { f = require('dap').run_to_cursor, desc = 'run_to_cursor' },
+        ['u'] = { f = centerize(require('dap').up), desc = 'up' },
+        ['d'] = { f = centerize(require('dap').down), desc = 'down' },
+        ['c'] = { f = centerize(require('dap').run_to_cursor), desc = 'run_to_cursor' },
         ['b'] = { f = require('dap').toggle_breakpoint, desc = 'toggle_breakpoint' },
         ['B'] = { f = require('dap').clear_breakpoints, desc = 'clear_breakpoints' },
         ['P'] = { f = require('dap').pause, desc = 'pause' },
@@ -224,7 +234,7 @@ local function load_dap()
         end
         if next_line ~= 0 then
             vim.api.nvim_win_set_cursor(0, { next_line, 1 })
-            vim.notify("Breakpoint " .. cur_bk .. " of " .. bk_cnt)
+            vim.notify("Breakpoint " .. cur_bk .. " of " .. bk_cnt, vim.log.levels.INFO)
         end
     end
 
