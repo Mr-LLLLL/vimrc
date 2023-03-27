@@ -1,8 +1,10 @@
-local km           = vim.keymap
+local km             = vim.keymap
+local api            = vim.api
+local fn             = vim.fn
 
-local m            = {}
+local m              = {}
 
-m.glyphs           = {
+m.glyphs             = {
     modified = "",
     added = "",
     unmerged = "",
@@ -24,14 +26,40 @@ m.glyphs           = {
     sign_info = "",
 }
 
-m.lsp_flags        = {
+m.lsp_flags          = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
 }
 
-m.search_count_cache = nil
-m.search_count = function(word)
-    print(word)
+m.search_count_timer = vim.loop.new_timer()
+m.search_count_timer:start(0, 3000, function()
+    m.search_count_cache = ""
+    m.search_count_timer:stop()
+end)
+m.search_count     = function(word)
+    if word == "" then
+        return
+    end
+
+    local cur_cnt = 0
+    local total_cnt = 0
+    local buf_content = fn.join(api.nvim_buf_get_lines(0, 0, -1, {}), "\n")
+    local cur_pos = #fn.join(api.nvim_buf_get_lines(0, 0, fn.line('.') - 1, {}), "\n")
+        + ((fn.line('.') == 1) and 0 or 1) + fn.col('.') - 1
+    local lst_pos = 0
+    while true do
+        local mat_pos = fn.matchstrpos(buf_content, word, lst_pos, 1)
+        if mat_pos[1] == "" then
+            break
+        end
+        total_cnt = total_cnt + 1
+        if cur_pos >= mat_pos[2] and cur_pos < mat_pos[3] then
+            cur_cnt = total_cnt
+        end
+        lst_pos = mat_pos[3]
+    end
+    m.search_count_cache = ' [' .. cur_cnt .. '/' .. total_cnt .. ']'
+    m.search_count_timer:again()
 end
 
 m.lsp_capabilities = function()
@@ -44,11 +72,11 @@ end
 
 local list_or_jump   = function(action, f, param)
     local tele_action = require("telescope.actions")
-    local lspParam = vim.lsp.util.make_position_params(vim.fn.win_getid())
+    local lspParam = vim.lsp.util.make_position_params(fn.win_getid())
     lspParam.context = { includeDeclaration = false }
-    vim.lsp.buf_request(vim.fn.bufnr(), action, lspParam, function(err, result, ctx, _)
+    vim.lsp.buf_request(fn.bufnr(), action, lspParam, function(err, result, ctx, _)
         if err then
-            vim.api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
+            api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
             return
         end
         local flattened_results = {}
@@ -89,7 +117,7 @@ m.lsp_on_attack      = function(client, bufnr)
     require "lsp_signature".on_attach(require("lsp_signature").setup(), bufnr)
 
     --     -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     --
     --     -- Mappings.
     --     -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -109,8 +137,8 @@ m.lsp_on_attack      = function(client, bufnr)
     end, bufopts)
 
     km.set('n', '<C-LeftMouse>', function()
-        local pos = vim.fn.getmousepos()
-        vim.fn.cursor(pos.line, pos.column)
+        local pos = fn.getmousepos()
+        fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
     end, bufopts)
 
@@ -119,8 +147,8 @@ m.lsp_on_attack      = function(client, bufnr)
     end, bufopts)
 
     km.set('n', 'g<LeftMouse>', function()
-        local pos = vim.fn.getmousepos()
-        vim.fn.cursor(pos.line, pos.column)
+        local pos = fn.getmousepos()
+        fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
     end, bufopts)
 
@@ -129,8 +157,8 @@ m.lsp_on_attack      = function(client, bufnr)
     end, bufopts)
 
     km.set('n', '<C-RightMouse>', function()
-        local pos = vim.fn.getmousepos()
-        vim.fn.cursor(pos.line, pos.column)
+        local pos = fn.getmousepos()
+        fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
     end, bufopts)
 
@@ -139,8 +167,8 @@ m.lsp_on_attack      = function(client, bufnr)
     end, bufopts)
 
     km.set('n', 'g<RightMouse>', function()
-        local pos = vim.fn.getmousepos()
-        vim.fn.cursor(pos.line, pos.column)
+        local pos = fn.getmousepos()
+        fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
     end, bufopts)
 
@@ -172,13 +200,13 @@ m.get_tele_project   = function()
 end
 
 m.skip_next_char     = function(char)
-    local pos = vim.api.nvim_win_get_cursor(0)
-    local line = vim.api.nvim_get_current_line()
+    local pos = api.nvim_win_get_cursor(0)
+    local line = api.nvim_get_current_line()
     pos[2] = pos[2] + 1
     local next_char = string.sub(line, pos[2], pos[2])
     if vim.v.char == char and next_char == char then
         vim.v.char = ''
-        vim.api.nvim_win_set_cursor(0, pos)
+        api.nvim_win_set_cursor(0, pos)
     end
 end
 
@@ -189,8 +217,8 @@ m.set_key_map        = function(module, keys)
     keymaps_backup[module] = {}
     keymaps[module] = {}
     local setmap = function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local old_keymap_list = vim.api.nvim_buf_get_keymap(bufnr, 'n')
+        local bufnr = api.nvim_get_current_buf()
+        local old_keymap_list = api.nvim_buf_get_keymap(bufnr, 'n')
         keymaps_backup[module][bufnr] = {}
         for _, v in pairs(old_keymap_list) do
             if keys[v.lhs] ~= nil then
@@ -203,10 +231,10 @@ m.set_key_map        = function(module, keys)
         end
     end
     setmap()
-    local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+    local ft = api.nvim_buf_get_option(0, 'filetype')
 
-    local custom_auto_cmd = vim.api.nvim_create_augroup("DapDebugKeys", { clear = true })
-    vim.api.nvim_create_autocmd(
+    local custom_auto_cmd = api.nvim_create_augroup("DapDebugKeys", { clear = true })
+    api.nvim_create_autocmd(
         { "BufWinEnter" },
         {
             pattern = { "*." .. ft },
@@ -248,7 +276,7 @@ m.revert_key_map     = function(module)
     end
     keymaps_backup[module] = {}
     keymaps[module] = {}
-    vim.api.nvim_create_augroup("DapDebugKeys", { clear = true })
+    api.nvim_create_augroup("DapDebugKeys", { clear = true })
 end
 
 return m

@@ -338,8 +338,8 @@ local function load_lualine()
                     color = { fg = "#ff9e64" },
                 },
                 {
-                    require("noice").api.status.search.get,
-                    cond = require("noice").api.status.search.has,
+                    function() return require("core.common").search_count_cache end,
+                    cond = function() return require("core.common").search_count_cache ~= "" end,
                     color = { fg = "#ff9e64" },
                 },
                 'encoding',

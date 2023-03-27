@@ -61,7 +61,9 @@ local function load_autocmd()
                     return
                 end
                 if event.match == "/" or event.match == "?" then
-                    require("core.common").search_count(vim.fn.getcmdline())
+                    vim.defer_fn(function()
+                        require("core.common").search_count(vim.fn.getreg('/'))
+                    end, 100)
                 end
             end,
         }
