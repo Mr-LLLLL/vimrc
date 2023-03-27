@@ -597,9 +597,12 @@ local function load_neovide()
 end
 
 local function load_colorizer()
-    require 'colorizer'.setup({
-        filetypes = {},
-    })
+	require('ccc').setup({
+	  highlighter = {
+	    auto_enable = false,
+	    lsp = true,
+	  },
+	})
 end
 
 local function load_interesting()

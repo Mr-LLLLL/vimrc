@@ -67,6 +67,7 @@ local function load_base_option()
     o.background    = "dark"
     o.wildmode      = "longest,full"
     o.laststatus    = 3
+    o.scrolloff     = 5
 
     o.tabstop       = 4
     o.expandtab     = true

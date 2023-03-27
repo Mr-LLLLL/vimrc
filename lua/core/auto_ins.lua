@@ -109,7 +109,7 @@ m.startup = function()
             -- Uilts
             use { 'dpayne/CodeGPT.nvim' }
             use { 'nvim-tree/nvim-tree.lua' }
-            use { 'NvChad/nvim-colorizer.lua' }
+            use { 'uga-rosa/ccc.nvim' }
             use { 'gbprod/yanky.nvim' }
             use {
                 'sainnhe/gruvbox-material',
