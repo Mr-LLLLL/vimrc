@@ -31,37 +31,6 @@ m.lsp_flags          = {
     debounce_text_changes = 150,
 }
 
-m.search_count_timer = vim.loop.new_timer()
-m.search_count_timer:start(0, 3000, function()
-    m.search_count_cache = ""
-    m.search_count_timer:stop()
-end)
-m.search_count     = function(word)
-    if word == "" then
-        return
-    end
-
-    local cur_cnt = 0
-    local total_cnt = 0
-    local buf_content = fn.join(api.nvim_buf_get_lines(0, 0, -1, {}), "\n")
-    local cur_pos = #fn.join(api.nvim_buf_get_lines(0, 0, fn.line('.') - 1, {}), "\n")
-        + ((fn.line('.') == 1) and 0 or 1) + fn.col('.') - 1
-    local lst_pos = 0
-    while true do
-        local mat_pos = fn.matchstrpos(buf_content, word, lst_pos, 1)
-        if mat_pos[1] == "" then
-            break
-        end
-        total_cnt = total_cnt + 1
-        if cur_pos >= mat_pos[2] and cur_pos < mat_pos[3] then
-            cur_cnt = total_cnt
-        end
-        lst_pos = mat_pos[3]
-    end
-    m.search_count_cache = ' [' .. cur_cnt .. '/' .. total_cnt .. ']'
-    m.search_count_timer:again()
-end
-
 m.lsp_capabilities = function()
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true

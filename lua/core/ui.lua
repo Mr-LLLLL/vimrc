@@ -338,8 +338,8 @@ local function load_lualine()
                     color = { fg = "#ff9e64" },
                 },
                 {
-                    function() return require("core.common").search_count_cache end,
-                    cond = function() return require("core.common").search_count_cache ~= "" end,
+                    function() return require("utils.color").search_count_cache end,
+                    cond = function() return require("utils.color").search_count_cache ~= "" end,
                     color = { fg = "#ff9e64" },
                 },
                 'encoding',
@@ -614,22 +614,22 @@ local function load_interesting()
     km.set("n", "<leader>k", function()
         vim.fn.InterestingWords('n')
         local word = vim.fn.GetPickedWord()
-        require("core.common").search_count(word)
+        require("utils.color").search_count(word)
     end, { noremap = true, silent = true })
     km.set("x", "<leader>k", function()
         vim.fn.InterestingWords('v')
         local word = vim.fn.GetPickedWord()
-        require("core.common").search_count(word)
+        require("utils.color").search_count(word)
     end, { noremap = true, silent = true })
     km.set("n", "n", function()
         local word = vim.fn.GetPickedWord()
         vim.fn.NavigateToWord(word, 1)
-        require("core.common").search_count(word)
+        require("utils.color").search_count(word)
     end, { noremap = true, silent = true })
     km.set("n", "N", function()
         local word = vim.fn.GetPickedWord()
         vim.fn.NavigateToWord(word, 0)
-        require("core.common").search_count(word)
+        require("utils.color").search_count(word)
     end, { noremap = true, silent = true })
 end
 
