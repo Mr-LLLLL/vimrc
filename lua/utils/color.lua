@@ -56,15 +56,27 @@ m.color = function(mode)
     end
 end
 
-m.search_count_timer = vim.loop.new_timer()
-m.search_count_timer:start(0, 3000, function()
-    m.search_count_cache = ""
-    m.search_count_timer:stop()
-end)
-m.search_count     = function(word)
+m.init_search_count = function()
+    m.search_count_extmark_id = 0
+    m.search_count_namespace = api.nvim_create_namespace('custom/search_count')
+    m.search_count_timer = vim.loop.new_timer()
+    m.search_count_timer:start(0, 3000, function()
+        m.search_count_cache = ""
+        vim.defer_fn(function()
+                api.nvim_buf_del_extmark(0, m.search_count_namespace, m.search_count_extmark_id)
+            end,
+            100
+        )
+        m.search_count_timer:stop()
+    end)
+end
+m.init_search_count()
+
+m.search_count = function(word)
     if word == "" then
         return
     end
+    api.nvim_buf_del_extmark(0, m.search_count_namespace, m.search_count_extmark_id)
 
     local cur_cnt = 0
     local total_cnt = 0
@@ -83,7 +95,16 @@ m.search_count     = function(word)
         end
         lst_pos = mat_pos[3]
     end
-    m.search_count_cache = ' [' .. cur_cnt .. '/' .. total_cnt .. ']'
+
+    local text = ' [' .. cur_cnt .. '/' .. total_cnt .. ']'
+    m.search_count_extmark_id = api.nvim_buf_set_extmark(0, m.search_count_namespace, fn.line('.') - 1, 0, {
+        virt_text_pos = 'eol',
+        virt_text = {
+            { text, "Comment" },
+        },
+        hl_mode = 'combine',
+    })
+    m.search_count_cache = text
     m.search_count_timer:again()
 end
 
