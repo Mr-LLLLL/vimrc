@@ -65,7 +65,7 @@ m.init_search_count = function()
         vim.defer_fn(function()
                 api.nvim_buf_del_extmark(0, m.search_count_namespace, m.search_count_extmark_id)
             end,
-            100
+            2000
         )
         m.search_count_timer:stop()
     end)
