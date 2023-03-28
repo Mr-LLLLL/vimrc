@@ -60,12 +60,12 @@ m.init_search_count = function()
     m.search_count_extmark_id = 0
     m.search_count_namespace = api.nvim_create_namespace('custom/search_count')
     m.search_count_timer = vim.loop.new_timer()
-    m.search_count_timer:start(0, 3000, function()
+    m.search_count_timer:start(0, 5000, function()
         m.search_count_cache = ""
         vim.defer_fn(function()
                 api.nvim_buf_del_extmark(0, m.search_count_namespace, m.search_count_extmark_id)
             end,
-            2000
+            100
         )
         m.search_count_timer:stop()
     end)
