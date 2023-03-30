@@ -51,23 +51,6 @@ local function load_autocmd()
             group = custom_auto_cmd,
         }
     )
-
-    vim.api.nvim_create_autocmd(
-        { "CmdlineLeave" },
-        {
-            pattern = { "*" },
-            callback = function(event)
-                if vim.v.event.abort then
-                    return
-                end
-                if event.match == "/" or event.match == "?" then
-                    vim.defer_fn(function()
-                        require("utils.color").search_count(vim.fn.getreg('/'))
-                    end, 100)
-                end
-            end,
-        }
-    )
 end
 
 local function load_custom_map()
@@ -105,19 +88,6 @@ local function load_custom_map()
         end
         vim.cmd("pop")
         vim.cmd("normal! zz")
-    end, { noremap = true, silent = true })
-    km.set('n', "<leader>m", function()
-        require("utils.color").color()
-        local word = vim.fn.GetPickedWord()
-        require("utils.color").search_count(word)
-    end, { noremap = true, silent = true })
-    km.set('x', "<leader>m", function()
-        require('utils.color').color('v')
-        local word = vim.fn.GetPickedWord()
-        require("utils.color").search_count(word)
-    end, { noremap = true, silent = true })
-    km.set('n', "<leader>M", function()
-        vim.fn.setreg('/', '')
     end, { noremap = true, silent = true })
 
     local custom_extend = vim.api.nvim_create_augroup("CustomExtend", { clear = true })

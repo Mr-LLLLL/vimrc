@@ -338,8 +338,8 @@ local function load_lualine()
                     color = { fg = "#ff9e64" },
                 },
                 {
-                    function() return require("utils.color").search_count_cache end,
-                    cond = function() return require("utils.color").search_count_cache ~= "" end,
+                    require("interesting-words").lualine_get,
+                    cond = require("interesting-words").lualine_has,
                     color = { fg = "#ff9e64" },
                 },
                 'encoding',
@@ -597,40 +597,18 @@ local function load_neovide()
 end
 
 local function load_colorizer()
-	require('ccc').setup({
-	  highlighter = {
-	    auto_enable = false,
-	    lsp = true,
-	  },
-	})
+    require('ccc').setup({
+        highlighter = {
+            auto_enable = false,
+            lsp = true,
+        },
+    })
 end
 
 local function load_interesting()
-    g.interestingWordsDefaultMappings = 0
-    g.interestingWordsGUIColors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#CF9292', '#BFA3DF', '#9999EA' }
-    g.interestingWordsRandomiseColors = 1
-
-    km.set("n", "<leader>K", function() vim.fn.UncolorAllWords() end, { noremap = true, silent = true })
-    km.set("n", "<leader>k", function()
-        vim.fn.InterestingWords('n')
-        local word = vim.fn.GetPickedWord()
-        require("utils.color").search_count(word)
-    end, { noremap = true, silent = true })
-    km.set("x", "<leader>k", function()
-        vim.fn.InterestingWords('v')
-        local word = vim.fn.GetPickedWord()
-        require("utils.color").search_count(word)
-    end, { noremap = true, silent = true })
-    km.set("n", "n", function()
-        local word = vim.fn.GetPickedWord()
-        vim.fn.NavigateToWord(word, 1)
-        require("utils.color").search_count(word)
-    end, { noremap = true, silent = true })
-    km.set("n", "N", function()
-        local word = vim.fn.GetPickedWord()
-        vim.fn.NavigateToWord(word, 0)
-        require("utils.color").search_count(word)
-    end, { noremap = true, silent = true })
+    require("interesting-words").setup({
+        colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#CF9292', '#BFA3DF', '#9999EA' }
+    })
 end
 
 local function load_cursor_word()
