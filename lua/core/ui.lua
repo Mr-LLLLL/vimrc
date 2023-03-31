@@ -338,8 +338,8 @@ local function load_lualine()
                     color = { fg = "#ff9e64" },
                 },
                 {
-                    require("interesting-words").lualine_get,
-                    cond = require("interesting-words").lualine_has,
+                    require("interestingwords").lualine_get,
+                    cond = require("interestingwords").lualine_has,
                     color = { fg = "#ff9e64" },
                 },
                 'encoding',
@@ -606,7 +606,7 @@ local function load_colorizer()
 end
 
 local function load_interesting()
-    require("interesting-words").setup({
+    require("interestingwords").setup({
         colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#CF9292', '#BFA3DF', '#9999EA' }
     })
 end
