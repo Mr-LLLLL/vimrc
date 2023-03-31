@@ -87,7 +87,7 @@ local function load_custom_map()
             return
         end
         vim.cmd("pop")
-        vim.cmd("normal! zz")
+        vim.cmd("normal zz")
     end, { noremap = true, silent = true })
 
     local custom_extend = vim.api.nvim_create_augroup("CustomExtend", { clear = true })
