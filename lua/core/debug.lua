@@ -53,7 +53,7 @@ local function centerize(f, async)
         if async then
             vim.cmd('sleep 100m')
         end
-        vim.cmd("normal zz")
+        vim.cmd("normal! zz")
     end
 end
 

@@ -107,7 +107,6 @@ m.startup = function()
             }
 
             -- Uilts
-            use { 'karb94/neoscroll.nvim' }
             use { 'dpayne/CodeGPT.nvim' }
             use { 'nvim-tree/nvim-tree.lua' }
             use { 'uga-rosa/ccc.nvim' }
