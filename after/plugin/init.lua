@@ -1,7 +1,7 @@
 local api = vim.api
 local km = vim.keymap
 
-local function del_user_cmd()
+local function load_user_cmd()
     api.nvim_del_user_command('DapContinue')
     api.nvim_del_user_command('DapToggleRepl')
     api.nvim_del_user_command('DapStepOver')
@@ -108,7 +108,7 @@ local function load_custom_map()
 end
 
 local function load()
-    del_user_cmd()
+    load_user_cmd()
     load_custom_map()
     load_autocmd()
 end

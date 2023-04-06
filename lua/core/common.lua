@@ -1,10 +1,10 @@
-local km             = vim.keymap
-local api            = vim.api
-local fn             = vim.fn
+local km           = vim.keymap
+local api          = vim.api
+local fn           = vim.fn
 
-local m              = {}
+local m            = {}
 
-m.glyphs             = {
+m.glyphs           = {
     modified = "",
     added = "",
     unmerged = "",
@@ -26,7 +26,7 @@ m.glyphs             = {
     sign_info = "",
 }
 
-m.lsp_flags          = {
+m.lsp_flags        = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
 }
@@ -213,6 +213,21 @@ m.set_key_map        = function(module, keys)
             group = custom_auto_cmd,
         }
     )
+
+    api.nvim_create_user_command("RevertKeyMap",
+        function(opts)
+            m.revert_key_map(opts.args)
+        end,
+        {
+            nargs = "*",
+            complete = function()
+                local cmd = {}
+                for k in pairs(keymaps) do
+                    table.insert(cmd, k)
+                end
+                return cmd
+            end,
+        })
 end
 
 m.revert_key_map     = function(module)
@@ -246,6 +261,25 @@ m.revert_key_map     = function(module)
     keymaps_backup[module] = {}
     keymaps[module] = {}
     api.nvim_create_augroup("DapDebugKeys", { clear = true })
+
+    if #keymaps ~= 0 then
+        api.nvim_create_user_command("RevertKeyMap",
+            function(opts)
+                m.revert_key_map(opts.args)
+            end,
+            {
+                nargs = "*",
+                complete = function()
+                    local cmd = {}
+                    for k in pairs(keymaps) do
+                        table.insert(cmd, k)
+                    end
+                    return cmd
+                end,
+            })
+    else
+        api.nvim_del_user_command("RevertKeyMap")
+    end
 end
 
 return m
