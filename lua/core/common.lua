@@ -183,6 +183,10 @@ local keymaps_backup = {}
 local keymaps        = {}
 
 m.set_key_map        = function(module, keys)
+    if not module or module == "" or not keys then
+        return
+    end
+
     keymaps_backup[module] = {}
     keymaps[module] = {}
     local setmap = function()
@@ -231,6 +235,10 @@ m.set_key_map        = function(module, keys)
 end
 
 m.revert_key_map     = function(module)
+    if not module or module == "" then
+        return
+    end
+
     for bufnr, ks in pairs(keymaps[module] or {}) do
         for k in pairs(ks) do
             vim.keymap.del('n', k, { buffer = bufnr })
@@ -258,8 +266,8 @@ m.revert_key_map     = function(module)
             )
         end
     end
-    keymaps_backup[module] = {}
-    keymaps[module] = {}
+    keymaps_backup[module] = nil
+    keymaps[module] = nil
     api.nvim_create_augroup("DapDebugKeys", { clear = true })
 
     if #keymaps ~= 0 then
