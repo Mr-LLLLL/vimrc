@@ -231,6 +231,8 @@ local function load_mason_tool()
             -- you can turn off/on auto_update per tool
             { 'jq',           auto_update = true },
             { 'delve' },
+            { 'shfmt' },
+            { 'shellcheck' },
             { 'protolint' },
             { 'sql-formatter' },
             { 'jdtls' },
