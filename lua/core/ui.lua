@@ -479,20 +479,27 @@ end
 
 local function load_nvim_tree()
     local glyphs = require("core.common").glyphs
+    local on_attach = function(bufnr)
+        local tree_api = require('nvim-tree.api')
+
+        tree_api.config.mappings.default_on_attach(bufnr)
+
+        local function opts(desc)
+            return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        km.del('n', "<C-e>", { buffer = bufnr })
+        km.del('n', "<C-x>", { buffer = bufnr })
+        km.set('n', '<C-s>', tree_api.node.open.horizontal, opts('Open: Horizontal Split'))
+    end
     require("nvim-tree").setup({
+        on_attach = on_attach,
         sync_root_with_cwd = true,
         respect_buf_cwd = true,
         sort_by = "name",
         view = {
             adaptive_size = true,
             preserve_window_proportions = true,
-            mappings = {
-                list = {
-                    { key = "<C-e>", action = "" },
-                    { key = "<C-x>", action = "" },
-                    { key = "<C-s>", action = "split" },
-                },
-            },
         },
         renderer = {
             group_empty = false,
