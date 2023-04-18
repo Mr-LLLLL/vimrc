@@ -371,28 +371,39 @@ local function load_lualine()
                     local winnr = fn.tabpagewinnr(context.tabnr)
                     local bufnr = buflist[winnr]
                     local winid = fn.win_getid(winnr, context.tabnr)
-                    local bufferName = fn.bufname(bufnr)
+                    local bufferPath = fn.bufname(bufnr)
                     local project_icon = fn.tabpagenr() == context.tabnr and " " or " "
                     local file_icon = fn.tabpagenr() == context.tabnr and " " or " "
-                    if bufferName == "" then
+                    if bufferPath == "" then
                         return emptyName .. file_icon
                     end
                     if api.nvim_buf_get_option(bufnr, 'buftype') == "nofile" then
-                        return bufferName .. file_icon
+                        return bufferPath .. file_icon
                     end
 
-                    if bufferName:sub(1, 1) ~= '/' then
-                        return fn.fnamemodify("", ':p:h:t') .. project_icon
+                    if bufferPath:sub(1, 1) ~= '/' then
+                        bufferPath = fn.getcwd() .. "/" .. bufferPath
+
+                        local title = fn.findfile('.git', bufferPath .. ';')
+                        if title == "" then
+                            title = fn.finddir('.git', bufferPath .. ';')
+                        end
+                        title = fn.getcwd() .. "/" .. title
+                        return fn.fnamemodify(title, ':h:t') .. project_icon
                     end
 
-                    local title = fn.finddir('.git', bufferName .. ';')
+                    local title = fn.findfile('.git', bufferPath .. ';')
+                    if title == "" then
+                        title = fn.finddir('.git', bufferPath .. ';')
+                    end
+
                     if title == "" then
                         if fn.getqflist({ ['qfbufnr'] = 0 }).qfbufnr == bufnr then
                             return '[Quickfix List]'
                         elseif winid and fn.getloclist(winid, { ['qfbufnr'] = 0 }).qfbufnr == bufnr then
                             return '[Location List]'
                         end
-                        return fn.fnamemodify(bufferName, ':p:t') .. file_icon
+                        return fn.fnamemodify(bufferPath, ':p:t') .. file_icon
                     end
 
                     return fn.fnamemodify(title, ':h:t') .. project_icon
