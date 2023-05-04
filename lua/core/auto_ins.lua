@@ -107,6 +107,10 @@ m.startup = function()
             }
 
             -- Uilts
+            use {
+                "vinnymeller/swagger-preview.nvim",
+                run = "npm install --localtion=global swagger-ui-watcher",
+            }
             use { 'dpayne/CodeGPT.nvim' }
             use { 'nvim-tree/nvim-tree.lua' }
             use { 'uga-rosa/ccc.nvim' }
@@ -229,7 +233,7 @@ local function load_mason_tool()
         -- start; they should be the names Mason uses for each tool
         ensure_installed = {
             -- you can turn off/on auto_update per tool
-            { 'jq',           auto_update = true },
+            { 'jq',                auto_update = true },
             { 'delve' },
             { 'shfmt' },
             { 'shellcheck' },

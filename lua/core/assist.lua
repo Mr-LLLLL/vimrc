@@ -697,6 +697,15 @@ local function load_todo_comment()
     require("telescope").load_extension("todo-comments")
 end
 
+local function load_swagger()
+    require("swagger-preview").setup({
+    -- The port to run the preview server on
+    port = 8000,
+    -- The host to run the preview server on
+    host = "localhost",
+})
+end
+
 m.setup = function()
     load_whichkey()
     load_indent()
@@ -710,6 +719,7 @@ m.setup = function()
     load_refactor()
     load_multi_select()
     load_todo_comment()
+    load_swagger()
 end
 
 return m
