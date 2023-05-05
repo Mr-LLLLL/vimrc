@@ -202,7 +202,7 @@ local function load_dashboard()
                     key = 'e',
                 },
                 {
-                    desc = ' Update',
+                    desc = '󰊳 Update',
                     group = '@property',
                     action = 'PackerSync',
                     key = 'u',
