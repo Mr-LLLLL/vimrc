@@ -702,7 +702,7 @@ local function load_swagger()
     -- The port to run the preview server on
     port = 8000,
     -- The host to run the preview server on
-    host = "localhost",
+    host = "0.0.0.0",
 })
 end
 
