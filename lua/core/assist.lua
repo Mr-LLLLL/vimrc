@@ -147,7 +147,6 @@ local function load_toggle_term_map()
     end, { noremap = true, silent = true })
 
     local mongoTerm
-    local redisTerm
     local mongo = function()
         if mongoTerm == nil then
             set_curr_value(get_max_value() + 1)
@@ -163,6 +162,7 @@ local function load_toggle_term_map()
         end
         return mongoTerm
     end
+    local redisTerm
     local redis = function()
         if redisTerm == nil then
             set_curr_value(get_max_value() + 1)
@@ -178,6 +178,22 @@ local function load_toggle_term_map()
         end
         return redisTerm
     end
+    local sshTerm
+    local ssh = function()
+        if sshTerm == nil then
+            set_curr_value(get_max_value() + 1)
+            sshTerm = require("toggleterm.terminal").Terminal:new({
+                cmd = "bash ~/.config/nvim/lua/private/ssh.sh",
+                count = get_curr_value(),
+                hidden = false,
+                on_exit = function()
+                    sshTerm = nil
+                end,
+            })
+            sshTerm.termNo = get_curr_value()
+        end
+        return sshTerm
+    end
 
     api.nvim_create_user_command('Mongo', function()
         local term = mongo()
@@ -187,6 +203,12 @@ local function load_toggle_term_map()
 
     api.nvim_create_user_command('Redis', function()
         local term = redis()
+        set_curr_value(term.termNo)
+        term:toggle()
+    end, {})
+
+    api.nvim_create_user_command('SSH', function()
+        local term = ssh()
         set_curr_value(term.termNo)
         term:toggle()
     end, {})
@@ -251,7 +273,7 @@ local function load_toggleterm()
             border = 'rounded',
             -- like `size`, width and height can be a number or function which is passed the current terminal
             width = vim.o.columns,
-            height = vim.o.lines-3,
+            height = vim.o.lines - 3,
             winblend = 20,
         },
         winbar = {
@@ -699,11 +721,11 @@ end
 
 local function load_swagger()
     require("swagger-preview").setup({
-    -- The port to run the preview server on
-    port = 8000,
-    -- The host to run the preview server on
-    host = "0.0.0.0",
-})
+        -- The port to run the preview server on
+        port = 8000,
+        -- The host to run the preview server on
+        host = "0.0.0.0",
+    })
 end
 
 m.setup = function()
