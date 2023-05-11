@@ -306,7 +306,7 @@ local function load_cmp()
             entries = "custom",
         },
         experimental = {
-            ghost_text = true,
+            ghost_text = {}
         },
         mapping = cmp.mapping.preset.insert({
             ['<C-b>'] = cmp.mapping.scroll_docs(-4),
