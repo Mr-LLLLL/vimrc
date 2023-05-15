@@ -10,6 +10,7 @@ local function load_indent()
         space_char_blankline = " ",
         show_current_context = true,
         show_current_context_start = false,
+        filetype_exclude = { 'dashboard' }
     }
 end
 
