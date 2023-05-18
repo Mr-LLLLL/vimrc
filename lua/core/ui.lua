@@ -238,7 +238,7 @@ local function load_dashboard()
 end
 
 local function load_lualine()
-    local colors
+    local colors = {}
     if g.colors_name == 'gruvbox-material' then
         colors = {
             color = '#504945',
@@ -594,9 +594,11 @@ local function load_neovide()
     g.neovide_cursor_vfx_particle_lifetime = 1.2
     g.neovide_cursor_vfx_particle_speed = 10.0
 
-    km.set({ 'n', 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
-    km.set({ 't' }, "<C-R>", '<C-\\><C-N>"' .. fn.nr2char(fn.getchar()) .. 'pi', { silent = true, expr = true })
-    km.set({ 't' }, "<C-S-v>", "<C-r>*", { noremap = false, silent = true })
+    km.set({ 'i', 'n', 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
+    -- BUG: it's not work, and will be block
+    -- km.set({ 't' }, "<C-R>", '<C-\\><C-N>"' .. fn.nr2char(fn.getchar()) .. 'pi',
+    --     { silent = true, expr = true })
+    km.set({ 't' }, "<C-S-v>", '<C-\\><C-N>"*pi', { noremap = false, silent = true })
 
     km.set(
         { 'n' },
@@ -713,7 +715,7 @@ end
 m.setup = function()
     load_guihua()
     load_notify()
-    load_noice()
+    -- load_noice()
     load_dress()
     load_dashboard()
     load_lualine()
