@@ -79,7 +79,7 @@ local function load_base_option()
     o.undofile      = false
     o.swapfile      = false
     o.writebackup   = false
-    o.guifont       = "Ubuntu Mono:h" .. g.gui_font_size
+    o.guifont       = "UbuntuMono Nerd Font Mono:h" .. g.gui_font_size
 
     o.list          = true
 end
