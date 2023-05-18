@@ -715,7 +715,7 @@ end
 m.setup = function()
     load_guihua()
     load_notify()
-    -- load_noice()
+    load_noice()
     load_dress()
     load_dashboard()
     load_lualine()
