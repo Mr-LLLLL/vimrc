@@ -48,7 +48,7 @@ local function load_noice()
             lsp_doc_border = false,        -- add a border to hover docs and signature help
         },
         cmdline = {
-            enabled = true,         -- enables the Noice cmdline UI
+            enabled = false,        -- enables the Noice cmdline UI
             view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom,option cmdline_popup
             opts = {},              -- global options for the cmdline. See section on views
             format = {
@@ -68,8 +68,6 @@ local function load_noice()
             },
         },
         messages = {
-            -- NOTE: If you enable messages, then the cmdline is enabled automatically.
-            -- This is a current Neovim limitation.
             enabled = true,            -- enables the Noice messages UI
             view = "notify",           -- default view for messages
             view_error = "notify",     -- view for errors
@@ -712,9 +710,86 @@ local function load_guihua()
     })
 end
 
+local function load_wilder()
+    local wilder = require('wilder')
+    wilder.setup({
+        modes = { ':' },
+        next_key = "<Tab>",
+        previous_key = "<S-Tab>",
+    })
+    km.set({ 'c' }, "<c-j>", function()
+        if wilder.in_context() then
+            wilder.next()
+        end
+    end, { noremap = true, silent = false })
+    km.set({ 'c' }, "<c-k>", function()
+        if wilder.in_context() then
+            wilder.previous()
+        end
+    end, { noremap = true, silent = false })
+
+    wilder.set_option('pipeline', {
+        wilder.branch(
+            wilder.cmdline_pipeline({
+                fuzzy = 2,
+            })
+        ),
+    })
+
+    local gradient = {
+        '#f4468f', '#fd4a85', '#ff507a', '#ff566f', '#ff5e63',
+        '#ff6658', '#ff704e', '#ff7a45', '#ff843d', '#ff9036',
+        '#f89b31', '#efa72f', '#e6b32e', '#dcbe30', '#d2c934',
+        '#c8d43a', '#bfde43', '#b6e84e', '#aff05b'
+    }
+
+    for i, fg in ipairs(gradient) do
+        gradient[i] = wilder.make_hl('WilderGradient' .. i, 'Pmenu', { { a = 1 }, { a = 1 }, { foreground = fg } })
+    end
+
+    wilder.set_option('renderer', wilder.renderer_mux({
+        [':'] = wilder.popupmenu_renderer(
+            wilder.popupmenu_palette_theme({
+                -- 'single', 'double', 'rounded' or 'solid'
+                -- can also be a list of 8 characters, see :h wilder#popupmenu_palette_theme() for more details
+                pumblend = 20,
+                border = 'rounded',
+                max_height = '25%', -- max height of the palette
+                min_height = 0,     -- set to the same as 'max_height' for a fixed height window
+                margin = '15%',
+                min_width = '30%',
+                prompt_position = 'top', -- 'top' or 'bottom' to set the location of the prompt
+                reverse = 0,             -- set to 1 to reverse the order of the list, use in combination with 'prompt_position'
+                left = {
+                    ' ',
+                    wilder.popupmenu_devicons(),
+                    wilder.popupmenu_buffer_flags({
+                        flags = ' a + ',
+                        icons = { ['+'] = '', a = '', h = '' },
+                    }),
+                },
+                right = {
+                    ' ',
+                    -- wilder.popupmenu_scrollbar(),
+                },
+                highlights = {
+                    border = 'FloatBorder',
+                    gradient = gradient, -- must be set
+                    selected_gradient = gradient,
+                },
+                highlighter = wilder.highlighter_with_gradient({
+                    wilder.basic_highlighter(), -- or wilder.lua_fzy_highlighter(),
+                }),
+                empty_message = wilder.popupmenu_empty_message_with_spinner(),
+            })
+        ),
+    }))
+end
+
 m.setup = function()
     load_guihua()
     load_notify()
+    load_wilder()
     load_noice()
     load_dress()
     load_dashboard()

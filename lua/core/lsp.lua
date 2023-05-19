@@ -455,14 +455,14 @@ local function load_cmp()
     -- )
 
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-    cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-            { name = 'path' }
-        }, {
-            { name = 'cmdline' }
-        })
-    })
+    -- cmp.setup.cmdline(':', {
+    --     mapping = cmp.mapping.preset.cmdline(),
+    --     sources = cmp.config.sources({
+    --         { name = 'path' }
+    --     }, {
+    --         { name = 'cmdline' }
+    --     })
+    -- })
 end
 
 local function load_snippet()
@@ -794,7 +794,7 @@ local function load_lsp_signature()
         zindex = 200,               -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
         padding = '',               -- character to pad on left and right of signature can be ' ', or '|'  etc
         transparency = 20,          -- disabled by default, allow floating win transparent value 1~100
-        shadow_blend = 36,          -- if you using shadow as border use this set the opacity
+        shadow_blend = 20,          -- if you using shadow as border use this set the opacity
         shadow_guibg = 'Black',     -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
         timer_interval = 200,       -- default timer check interval set to lower value if you want to reduce latency
         toggle_key = nil,           -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'

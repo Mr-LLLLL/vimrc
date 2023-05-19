@@ -55,7 +55,7 @@ local function load_base_option()
     o.number        = true
     o.rnu           = false
     o.hidden        = true
-    o.cmdheight     = 1
+    o.cmdheight     = 0
     o.updatetime    = 300
     o.shortmess     = o.shortmess .. "c"
     o.foldenable    = false

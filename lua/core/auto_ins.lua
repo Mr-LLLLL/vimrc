@@ -150,8 +150,9 @@ m.startup = function()
             -- use { 'sbdchd/neoformat' }
             use { 'ggandor/leap.nvim' }
             use { 'potamides/pantran.nvim' }
-            use { 'rest-nvim/rest.nvim', }
+            use { 'rest-nvim/rest.nvim' }
             use { 'mizlan/iswap.nvim' }
+            use { 'gelguy/wilder.nvim' }
             use {
                 "folke/noice.nvim",
                 requires = {
