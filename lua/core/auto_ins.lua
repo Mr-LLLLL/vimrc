@@ -49,7 +49,7 @@ m.startup = function()
 
             use {
                 { 'nvim-treesitter/nvim-treesitter',            run = ':TSUpdate' },
-                { 'nvim-treesitter/playground' },
+                -- { 'nvim-treesitter/playground' },
                 -- { 'nvim-treesitter/nvim-treesitter-context' },
                 { 'nvim-treesitter/nvim-treesitter-textobjects' },
                 { 'RRethy/nvim-treesitter-textsubjects' },
@@ -114,9 +114,9 @@ m.startup = function()
             use { 'dpayne/CodeGPT.nvim' }
             use { 'nvim-tree/nvim-tree.lua' }
             use { 'uga-rosa/ccc.nvim' }
-            use { 'gbprod/yanky.nvim' }
+            -- use { 'gbprod/yanky.nvim' }
             use {
-                'sainnhe/gruvbox-material',
+                -- 'sainnhe/gruvbox-material',
                 'sainnhe/everforest',
             }
             use { 'iamcco/markdown-preview.nvim', run = 'cd app && ./install.sh' }
