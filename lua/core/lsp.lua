@@ -593,9 +593,8 @@ local function load_lspsaga()
             auto_close = true,
             custom_sort = nil,
             keys = {
-                jump = '<cr>',
-                expand_collapse = 'o',
-                quit = 'q',
+                expand_or_jump = '<cr>',
+                quit = "q",
             },
         },
         callhierarchy = {
