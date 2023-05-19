@@ -114,7 +114,7 @@ m.startup = function()
             use { 'dpayne/CodeGPT.nvim' }
             use { 'nvim-tree/nvim-tree.lua' }
             use { 'uga-rosa/ccc.nvim' }
-            -- use { 'gbprod/yanky.nvim' }
+            use { 'gbprod/yanky.nvim' }
             use {
                 -- 'sainnhe/gruvbox-material',
                 'sainnhe/everforest',

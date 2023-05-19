@@ -240,7 +240,7 @@ end
 
 mod.setup = function()
     load_telescope()
-    -- load_yanky()
+    load_yanky()
     load_penvim()
 end
 
