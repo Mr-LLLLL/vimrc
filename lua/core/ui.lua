@@ -599,6 +599,8 @@ local function load_neovide()
     g.neovide_cursor_vfx_particle_curl = 1.0
     g.neovide_cursor_vfx_particle_lifetime = 1.2
     g.neovide_cursor_vfx_particle_speed = 10.0
+    g.neovide_cursor_animate_command_line = true
+    g.neovide_cursor_animate_in_insert_mode = true
 
     km.set({ 'i', 'n', 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
     -- BUG: it's not work, and will be block
