@@ -286,7 +286,15 @@ local function load_lualine()
                         removed = glyphs["deleted"] .. ' '
                     }
                 },
-                'diagnostics',
+                {
+                    'diagnostics',
+                    symbols = {
+                        error = glyphs["sign_error"],
+                        warn = glyphs["sign_warn"],
+                        info = glyphs["sign_info"],
+                        hint = glyphs["sign_hint"],
+                    },
+                },
                 { 'fileformat', separator = { right = '' } }
             },
             lualine_c = {
@@ -625,7 +633,7 @@ end
 
 local function load_interesting()
     require("interestingwords").setup({
-        colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#CF9292', '#BFA3DF', '#9999EA' }
+        colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#ff5e63', '#ff9036', '#CF9292', '#BFA3DF', '#9999EA' }
     })
 end
 
