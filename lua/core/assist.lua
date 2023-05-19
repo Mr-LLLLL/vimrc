@@ -273,8 +273,8 @@ local function load_toggleterm()
             -- border = 'single' | 'double' | 'shadow' | 'curved' |
             border = 'rounded',
             -- like `size`, width and height can be a number or function which is passed the current terminal
-            width = vim.o.columns,
-            height = vim.o.lines - 3,
+            width = vim.o.columns - 2,
+            height = vim.o.lines - 4,
             winblend = 20,
         },
         winbar = {

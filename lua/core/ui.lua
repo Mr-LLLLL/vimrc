@@ -200,13 +200,13 @@ local function load_dashboard()
                     key = 'e',
                 },
                 {
-                    desc = '󰊳 Update',
+                    desc = 'ﮮ Update',
                     group = '@property',
                     action = 'PackerSync',
                     key = 'u',
                 },
                 {
-                    desc = 'ﮮ Frecency Files',
+                    desc = ' Frecency Files',
                     group = 'Constant',
                     action = 'Telescope frecency',
                     key = 'f',
