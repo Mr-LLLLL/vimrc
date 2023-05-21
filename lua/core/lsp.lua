@@ -537,12 +537,13 @@ local function load_lspsaga()
             max_height = 0.5,
             keys = {
                 jump_to = 'p',
-                edit = { '<CR>' },
-                vsplit = 's',
-                split = 'i',
+                expand_or_jump = 'o',
+                vsplit = 'v',
+                split = 's',
                 tabe = 't',
+                tabnew = 'r',
                 quit = { 'q', '<ESC>' },
-                close_in_preview = '<ESC>'
+                close_in_preview = '<ESC>',
             },
         },
         definition = {
@@ -551,7 +552,6 @@ local function load_lspsaga()
             split = '<C-c>i',
             tabe = '<C-c>t',
             quit = 'q',
-            close = '<Esc>',
         },
         code_action = {
             num_shortcut = true,
@@ -569,29 +569,32 @@ local function load_lspsaga()
         },
         diagnostic = {
             on_insert = false,
-            twice_into = false,
+            jump_num_shortcut = true,
             show_code_action = true,
             border_follow = false,
             show_source = true,
             keys = {
-                exec_action = '<CR>',
+                exec_action = 'o',
                 quit = 'q',
+                expand_or_jump = '<CR>',
+                quit_in_show = { 'q', '<ESC>' },
             },
         },
         rename = {
             quit = '<C-c>',
             exec = '<CR>',
+            confirm = '<CR>',
             in_select = false,
         },
         outline = {
             win_position = 'right',
             win_with = '',
             win_width = 30,
-            show_detail = true,
             auto_preview = true,
             auto_refresh = true,
             auto_close = true,
             custom_sort = nil,
+            close_after_jump = false,
             keys = {
                 expand_or_jump = '<cr>',
                 quit = "q",
