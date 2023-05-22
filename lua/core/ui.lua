@@ -739,6 +739,16 @@ local function load_wilder()
         next_key = "<Tab>",
         previous_key = "<S-Tab>",
     })
+    km.set({ 'c' }, "<Down>", function()
+        if wilder.in_context() then
+            wilder.next()
+        end
+    end, { noremap = true, silent = false })
+    km.set({ 'c' }, "<Up>", function()
+        if wilder.in_context() then
+            wilder.previous()
+        end
+    end, { noremap = true, silent = false })
     km.set({ 'c' }, "<c-j>", function()
         if wilder.in_context() then
             wilder.next()
