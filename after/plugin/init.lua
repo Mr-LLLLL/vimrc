@@ -51,6 +51,16 @@ local function load_autocmd()
             group = custom_auto_cmd,
         }
     )
+    api.nvim_create_autocmd(
+        { "CmdwinEnter" },
+        {
+            pattern = { "*" },
+            callback = function()
+                km.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
+            end,
+            group = custom_auto_cmd,
+        }
+    )
 end
 
 local function load_custom_map()
