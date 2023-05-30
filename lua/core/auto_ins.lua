@@ -180,6 +180,7 @@ m.startup = function()
 
             -- UI
             -- use { "folke/trouble.nvim" }
+            use { 'eandrju/cellular-automaton.nvim' }
             use { 'stevearc/dressing.nvim' }
             use { "RRethy/vim-illuminate" }
             use({ "glepnir/lspsaga.nvim", branch = "main" })
