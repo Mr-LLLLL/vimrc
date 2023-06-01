@@ -656,9 +656,12 @@ local function load_cursor_word()
         modes_allowlist = { 'n', 'v', 'V', '' },
     })
 
-    km.set("v", "<a-n>", require("illuminate").goto_next_reference, { noremap = true, silent = true })
-    km.set("v", "<a-p>", require("illuminate").goto_prev_reference, { noremap = true, silent = true })
-    km.set("n", "<a-i>", require("illuminate").textobj_select, { noremap = true, silent = true })
+    km.set("v", "<a-n>", require("illuminate").goto_next_reference,
+        { noremap = true, silent = true, desc = "illuminate move to next reference" })
+    km.set("v", "<a-p>", require("illuminate").goto_prev_reference,
+        { noremap = true, silent = true, desc = "illuminate move to prev reference" })
+    km.set("n", "<a-i>", require("illuminate").textobj_select,
+        { noremap = true, silent = true, desc = "illuminate visual current node" })
 end
 
 local function load_gitsigns()
@@ -685,26 +688,26 @@ local function load_gitsigns()
                 if vim.wo.diff then return ']c' end
                 vim.schedule(function() gs.next_hunk() end)
                 return '<Ignore>'
-            end, { expr = true })
+            end, { expr = true, desc = "Gitsigns forward hunk" })
 
             map('n', '[c', function()
                 if vim.wo.diff then return '[c' end
                 vim.schedule(function() gs.prev_hunk() end)
                 return '<Ignore>'
-            end, { expr = true })
+            end, { expr = true, desc = "Gitsigns backward hunk" })
 
             -- Actions
-            map({ 'n', 'v' }, '<leader>gs', ':Gitsigns stage_hunk<CR>')
-            map({ 'n', 'v' }, '<leader>gr', ':Gitsigns reset_hunk<CR>')
-            map('n', '<leader>gS', gs.stage_buffer)
-            map('n', '<leader>gu', gs.undo_stage_hunk)
-            map('n', '<leader>gR', gs.reset_buffer)
-            map('n', '<leader>gp', gs.preview_hunk)
-            map('n', '<leader>gb', function() gs.blame_line { full = true } end)
-            map('n', '<leader>gB', gs.toggle_current_line_blame)
+            map({ 'n', 'v' }, '<leader>gs', ':Gitsigns stage_hunk<CR>', { desc = "Gitsigns stage hunk" })
+            map({ 'n', 'v' }, '<leader>gr', ':Gitsigns reset_hunk<CR>', { desc = "Gitsigns reset hunk" })
+            map('n', '<leader>gS', gs.stage_buffer, { desc = "Gitsigns stage buffer" })
+            map('n', '<leader>gu', gs.undo_stage_hunk, { desc = "Gitsigns undo stage hunk" })
+            map('n', '<leader>gR', gs.reset_buffer, { desc = "Gitsigns reset buffer" })
+            map('n', '<leader>gp', gs.preview_hunk, { desc = "Gitsigns preview hunk" })
+            map('n', '<leader>gb', function() gs.blame_line { full = true } end, { desc = "Gitsigns blame line" })
+            map('n', '<leader>gB', gs.toggle_current_line_blame, { desc = "Gitsigns toggle current line blame" })
             -- map('n', '<leader>gd', gs.diffthis)
-            map('n', '<leader>gd', function() gs.diffthis('~') end)
-            map('n', '<leader>gD', gs.toggle_deleted)
+            map('n', '<leader>gd', function() gs.diffthis('~') end, { desc = "Gitsigns diff" })
+            map('n', '<leader>gD', gs.toggle_deleted, { desc = "Gitsigns toggle deleted" })
 
             -- Text object
             map({ 'o', 'x' }, 'ig', '<esc><cmd>Gitsigns select_hunk<CR>')

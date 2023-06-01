@@ -31,6 +31,10 @@ m.lsp_flags        = {
     debounce_text_changes = 150,
 }
 
+m.keymap_desc      = function(opts, desc)
+    return vim.tbl_extend("keep", opts, { desc = desc })
+end
+
 m.lsp_capabilities = function()
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -95,63 +99,66 @@ m.lsp_on_attack      = function(client, bufnr)
     --     km.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     km.set('n', '<c-]>', function()
         list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp definition"))
 
     km.set('n', '<c-w>]', function()
         list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp definition with vsplit"))
 
     km.set('n', '<c-w><c-]>', function()
         list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp definition with tab"))
 
     km.set('n', '<C-LeftMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp definition"))
 
     km.set('n', 'gi', function()
         list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp implementation"))
 
     km.set('n', 'g<LeftMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp implementation"))
 
     km.set('n', 'gr', function()
         list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp references"))
 
     km.set('n', '<C-RightMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp references"))
 
     km.set('n', 'gy', function()
         list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp typeDefinition"))
 
     km.set('n', 'g<RightMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
         list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
-    end, bufopts)
+    end, m.keymap_desc(bufopts, "lsp typeDefinition"))
 
-    km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end, bufopts)
-    km.set('n', '<space>sg', function() tele_builtin.lsp_dynamic_workspace_symbols() end, bufopts)
-    km.set('n', '<space>a', function() tele_builtin.diagnostics({ root_dir = true }) end, bufopts)
-    km.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+    km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end,
+        m.keymap_desc(bufopts, "lsp buf symbols"))
+    km.set('n', '<space>sg', function() tele_builtin.lsp_dynamic_workspace_symbols() end,
+        m.keymap_desc(bufopts, "lsp workspace symbols"))
+    km.set('n', '<space>a', function() tele_builtin.diagnostics({ root_dir = true }) end,
+        m.keymap_desc(bufopts, "lsp diagnostics"))
+    km.set('n', '<leader>rn', vim.lsp.buf.rename, m.keymap_desc(bufopts, "lsp rename"))
     --     km.set('n', '<leader>a', vim.lsp.buf.code_action, bufopts)
     --
-    km.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-    km.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+    km.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, m.keymap_desc(bufopts, "add lsp workspace"))
+    km.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, m.keymap_desc(bufopts, "remove lsp workspace"))
     km.set('n', '<space>wl', function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, bufopts)
+        vim.print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, m.keymap_desc(bufopts, "show lsp workspaces"))
 end
 
 m.get_tele_project   = function()

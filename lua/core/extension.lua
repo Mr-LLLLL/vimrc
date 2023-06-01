@@ -76,10 +76,11 @@ local function load_pantran()
     }
 
     vim.api.nvim_set_hl(0, "PantranBorder", { link = 'CustomBorder' })
-    km.set('n', "<space>to", "<cmd>Pantran<CR>i", { noremap = true, silent = true })
+    km.set('n', "<space>to", "<cmd>Pantran<CR>i", { noremap = true, silent = true, desc = "pantran panel" })
     km.set("n", "<space>tt", function() return require("pantran").motion_translate() .. "iw" end,
-        { noremap = true, silent = true, expr = true })
-    km.set("x", "<space>tt", require("pantran").motion_translate, { noremap = true, silent = true, expr = true })
+        { noremap = true, silent = true, expr = true, desc = "pantran translate" })
+    km.set("x", "<space>tt", require("pantran").motion_translate,
+        { noremap = true, silent = true, expr = true, desc = "pantran translate" })
 end
 
 local function load_rest()

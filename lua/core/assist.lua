@@ -122,7 +122,7 @@ local function load_toggle_term_map()
 
     km.set({ 'n', 't' }, "<M-w>", function()
         cmd(get_curr_value() .. 'ToggleTerm')
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "ToggleTerm toggle terminal" })
     km.set({ 'n', 't' }, "<M-e>", function()
         if get_curr_value() == get_next_value(get_curr_value()) then
             return
@@ -130,7 +130,7 @@ local function load_toggle_term_map()
             set_curr_value(get_next_value(get_curr_value()))
         end
         cmd(get_curr_value() .. 'ToggleTerm')
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "ToggleTerm next terminal" })
     km.set({ 'n', 't' }, "<M-q>", function()
         if get_curr_value() == get_prev_value(get_curr_value()) then
             return
@@ -138,14 +138,14 @@ local function load_toggle_term_map()
             set_curr_value(get_prev_value(get_curr_value()))
         end
         cmd(get_curr_value() .. 'ToggleTerm')
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "ToggleTerm prev terminal" })
     km.set({ 'n', 't' }, "<M-r>", function()
         set_curr_value(get_max_value() + 1)
         cmd(get_curr_value() .. 'ToggleTerm')
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "ToggleTerm new terminal" })
     km.set({ 'n', 't' }, "<M-s>", function()
         cmd(get_curr_value() .. "TermExec cmd=exit dir=~")
-    end, { noremap = true, silent = true })
+    end, { noremap = true, silent = true, desc = "ToggleTerm reset current terminal" })
 
     local mongoTerm
     local mongo = function()

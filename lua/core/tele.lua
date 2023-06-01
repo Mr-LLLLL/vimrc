@@ -179,7 +179,8 @@ local function load_telescope()
     km.set('n', "<space>sb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
     km.set('n', "<space>sl", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
 
-    km.set('n', '<space>i', require("core.common").get_tele_project, { noremap = true, silent = true })
+    km.set('n', '<space>i', require("core.common").get_tele_project,
+        { noremap = true, silent = true, desc = "telescope projects" })
 end
 
 

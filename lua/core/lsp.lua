@@ -495,16 +495,16 @@ local function load_saga_keymap()
     -- km.set("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
 
     -- Diagnostic jump can use `<c-o>` to jump back
-    km.set("n", "[D", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
-    km.set("n", "]D", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
+    km.set("n", "[D", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true, desc = "Lspsaga diagnostic backward" })
+    km.set("n", "]D", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true, desc = "Lspsaga diagnostic forward" })
 
     -- Only jump to error
     km.set("n", "[d", function()
         require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-    end, { silent = true })
+    end, { silent = true, desc = "Lspsaga error diagnostic backward" })
     km.set("n", "]d", function()
         require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
-    end, { silent = true })
+    end, { silent = true, desc = "lspsaga error diagnostic forward" })
 
     -- Outline
     km.set("n", "<space>p", "<cmd>Lspsaga outline<CR>", { silent = true })
