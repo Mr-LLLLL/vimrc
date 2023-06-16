@@ -132,10 +132,27 @@ local function set_lsp()
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "vscode-json-language-server", "--stdio" },
-        filetype = { "json", "jsonc" },
+        filetypes = { "json", "jsonc" },
         init_options = { provideFormatter = true },
         root_dir = lspconfig.util.find_git_ancestor,
         single_file_support = true,
+    }
+
+    lspconfig.yamlls.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        flags = lsp_flags,
+        cmd = { "yaml-language-server", "--stdio" },
+        filetypes = { "yaml", "yaml.docker-compose" },
+        root_dir = lspconfig.util.find_git_ancestor,
+        single_file_support = true,
+        setting = {
+            redhat = {
+                telemetry = {
+                    enabled = false
+                }
+            }
+        }
     }
 
     lspconfig.pyright.setup {
@@ -613,7 +630,7 @@ local function load_lspsaga()
             },
         },
         symbol_in_winbar = {
-            enable = true,
+            enable = false,
             separator = '',
             hide_keyword = true,
             show_file = false,
@@ -624,7 +641,7 @@ local function load_lspsaga()
         ui = {
             theme = 'round',
             border = 'rounded',
-            winblend = 20,
+            winblend = 10,
             kind = {},
         },
     })
@@ -795,8 +812,8 @@ local function load_lsp_signature()
         extra_trigger_chars = {},   -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
         zindex = 200,               -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
         padding = '',               -- character to pad on left and right of signature can be ' ', or '|'  etc
-        transparency = 20,          -- disabled by default, allow floating win transparent value 1~100
-        shadow_blend = 20,          -- if you using shadow as border use this set the opacity
+        transparency = 10,          -- disabled by default, allow floating win transparent value 1~100
+        shadow_blend = 10,          -- if you using shadow as border use this set the opacity
         shadow_guibg = 'Black',     -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
         timer_interval = 200,       -- default timer check interval set to lower value if you want to reduce latency
         toggle_key = nil,           -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'

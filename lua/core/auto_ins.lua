@@ -50,7 +50,7 @@ m.startup = function()
             use {
                 { 'nvim-treesitter/nvim-treesitter',            run = ':TSUpdate' },
                 -- { 'nvim-treesitter/playground' },
-                -- { 'nvim-treesitter/nvim-treesitter-context' },
+                { 'nvim-treesitter/nvim-treesitter-context' },
                 { 'nvim-treesitter/nvim-treesitter-textobjects' },
                 { 'RRethy/nvim-treesitter-textsubjects' },
                 { 'p00f/nvim-ts-rainbow' },
@@ -183,8 +183,8 @@ m.startup = function()
             use { 'eandrju/cellular-automaton.nvim' }
             use { 'stevearc/dressing.nvim' }
             use { "RRethy/vim-illuminate" }
-            use({ "glepnir/lspsaga.nvim", branch = "main" })
-
+            use { "glepnir/lspsaga.nvim", branch = "main" }
+            use { "Bekaboo/dropbar.nvim" }
             use {
                 'kristijanhusak/vim-dadbod-ui',
                 requires = {

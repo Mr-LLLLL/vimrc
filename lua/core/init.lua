@@ -50,8 +50,8 @@ local function load_base_value()
 end
 
 local function load_base_option()
-    o.winblend      = 20
-    o.pumblend      = 20
+    o.winblend      = 10
+    o.pumblend      = 10
     o.number        = true
     o.rnu           = false
     o.hidden        = true

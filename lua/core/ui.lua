@@ -787,7 +787,7 @@ local function load_wilder()
             wilder.popupmenu_palette_theme({
                 -- 'single', 'double', 'rounded' or 'solid'
                 -- can also be a list of 8 characters, see :h wilder#popupmenu_palette_theme() for more details
-                pumblend = 20,
+                pumblend = 10,
                 border = 'rounded',
                 max_height = '25%', -- max height of the palette
                 min_height = 0,     -- set to the same as 'max_height' for a fixed height window
@@ -821,6 +821,152 @@ local function load_wilder()
     }))
 end
 
+local function load_dropbar()
+    local symbol = {
+        { 'File',          ' ',  'Tag' },
+        { 'Module',        ' ',  'Exception' },
+        { 'Namespace',     ' ',  'Include' },
+        { 'Package',       ' ',  'Label' },
+        { 'Class',         ' ',  'Include' },
+        { 'Method',        ' ',  'Function' },
+        { 'Property',      ' ',  '@property' },
+        { 'Field',         ' ',  '@field' },
+        { 'Constructor',   ' ',  '@constructor' },
+        { 'Enum',          ' ',  '@number' },
+        { 'Interface',     ' ',  'Type' },
+        { 'Function',      '󰡱 ', 'Function' },
+        { 'Variable',      ' ',  '@variable' },
+        { 'Constant',      ' ',  'Constant' },
+        { 'String',        '󰅳 ', 'String' },
+        { 'Number',        '󰎠 ', 'Number' },
+        { 'Boolean',       ' ',  'Boolean' },
+        { 'Array',         '󰅨 ', 'Type' },
+        { 'Object',        ' ',  'Type' },
+        { 'Key',           ' ',  'Constant' },
+        { 'Null',          '󰟢 ', 'Constant' },
+        { 'EnumMember',    ' ',  'Number' },
+        { 'Struct',        ' ',  'Type' },
+        { 'Event',         ' ',  'Constant' },
+        { 'Operator',      ' ',  'Operator' },
+        { 'TypeParameter', ' ',  'Type' },
+        -- ccls
+        { 'TypeAlias',     ' ',  'Type' },
+        { 'Parameter',     ' ',  '@parameter' },
+        { 'StaticMethod',  ' ',  'Function' },
+        { 'Macro',         ' ',  'Macro' },
+        -- for completion sb microsoft!!!
+        { 'Text',          '󰭷 ', 'String' },
+        { 'Snippet',       ' ',  '@variable' },
+        { 'Folder',        ' ',  'Title' },
+        { 'Unit',          '󰊱 ', 'Number' },
+        { 'Value',         ' ',  '@variable' },
+    }
+
+    local icons = {}
+    for _, v in pairs(symbol) do
+        vim.api.nvim_set_hl(0, "DropBarIconKind" .. v[1], { link = v[3] })
+        vim.api.nvim_set_hl(0, "DropBarKind" .. v[1], { link = v[3] })
+        icons[v[1]] = v[2]
+    end
+
+    require('dropbar').setup {
+        menu = {
+            preview = true,
+            quick_navigation = true,
+            win_configs = {
+                border = 'rounded',
+            },
+            keymaps = {
+                ['q'] = function()
+                    local menu = require('dropbar.api').get_current_dropbar_menu()
+                    if not menu then
+                        return
+                    end
+                    menu:close()
+                end,
+                ['o'] = function()
+                    local menu = require('dropbar.api').get_current_dropbar_menu()
+                    if not menu then
+                        return
+                    end
+                    local cursor = vim.api.nvim_win_get_cursor(menu.win)
+                    local component = menu.entries[cursor[1]]:first_clickable(cursor[2])
+                    if component then
+                        menu:click_on(component, nil, 1, 'l')
+                    end
+                end,
+            }
+        },
+        sources = {
+        },
+        bar = {
+            sources = function(_, _)
+                local sources = require('dropbar.sources')
+                return {
+                    -- sources.path,
+                    {
+                        get_symbols = function(buf, win, cursor)
+                            if vim.bo[buf].ft == 'markdown' then
+                                return sources.markdown.get_symbols(buf, win, cursor)
+                            end
+                            for _, source in ipairs({
+                                sources.lsp,
+                                sources.treesitter,
+                            }) do
+                                local symbols = source.get_symbols(buf, win, cursor)
+                                if not vim.tbl_isempty(symbols) then
+                                    return symbols
+                                end
+                            end
+                            return {}
+                        end,
+                    },
+                }
+            end,
+            padding = {
+                left = 1,
+                right = 1,
+            },
+            pick = {
+                pivots = 'abcdefghijklmnopqrstuvwxyz',
+            },
+            truncate = true,
+        },
+        icons = {
+            kinds = {
+                symbols = icons
+            }
+        },
+        symbol = {
+            jump = {
+                ---@param win integer source window id
+                ---@param range {start: {line: integer}, end: {line: integer}} 0-indexed
+                reorient = function(win, range)
+                    local view = vim.fn.winsaveview()
+                    local win_height = vim.api.nvim_win_get_height(win)
+                    local topline = range.start.line - math.floor(win_height / 2)
+                    if
+                        topline > view.topline
+                        and topline + win_height < vim.fn.line('$')
+                    then
+                        view.topline = topline
+                        vim.fn.winrestview(view)
+                    end
+                end,
+            },
+        }
+    }
+
+    vim.api.nvim_set_hl(0, "DropBarMenuCurrentContext", { bg = '#425047', blend = 45 })
+
+    km.set(
+        { 'n' },
+        "<leader>q",
+        function() require('dropbar.api').pick() end,
+        { noremap = true, silent = true, desc = "Dropbar Pick" }
+    )
+end
+
 m.setup = function()
     load_guihua()
     load_notify()
@@ -835,6 +981,7 @@ m.setup = function()
     load_interesting()
     load_cursor_word()
     load_gitsigns()
+    load_dropbar()
 end
 
 return m

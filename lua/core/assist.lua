@@ -31,7 +31,7 @@ local function load_whichkey()
             position = "bottom",      -- bottom, top
             margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
             padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-            winblend = 20
+            winblend = 10
         },
         disable = {
             buftypes = {},
@@ -275,7 +275,7 @@ local function load_toggleterm()
             -- like `size`, width and height can be a number or function which is passed the current terminal
             width = vim.o.columns - 2,
             height = vim.o.lines - 3,
-            winblend = 20,
+            winblend = 10,
         },
         winbar = {
             enabled = false,
