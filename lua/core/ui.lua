@@ -822,51 +822,11 @@ local function load_wilder()
 end
 
 local function load_dropbar()
-    local symbol = {
-        { 'File',          ' ',  'Tag' },
-        { 'Module',        ' ',  'Exception' },
-        { 'Namespace',     ' ',  'Include' },
-        { 'Package',       ' ',  'Label' },
-        { 'Class',         ' ',  'Include' },
-        { 'Method',        ' ',  'Function' },
-        { 'Property',      ' ',  '@property' },
-        { 'Field',         ' ',  '@field' },
-        { 'Constructor',   ' ',  '@constructor' },
-        { 'Enum',          ' ',  '@number' },
-        { 'Interface',     ' ',  'Type' },
-        { 'Function',      '󰡱 ', 'Function' },
-        { 'Variable',      ' ',  '@variable' },
-        { 'Constant',      ' ',  'Constant' },
-        { 'String',        '󰅳 ', 'String' },
-        { 'Number',        '󰎠 ', 'Number' },
-        { 'Boolean',       ' ',  'Boolean' },
-        { 'Array',         '󰅨 ', 'Type' },
-        { 'Object',        ' ',  'Type' },
-        { 'Key',           ' ',  'Constant' },
-        { 'Null',          '󰟢 ', 'Constant' },
-        { 'EnumMember',    ' ',  'Number' },
-        { 'Struct',        ' ',  'Type' },
-        { 'Event',         ' ',  'Constant' },
-        { 'Operator',      ' ',  'Operator' },
-        { 'TypeParameter', ' ',  'Type' },
-        -- ccls
-        { 'TypeAlias',     ' ',  'Type' },
-        { 'Parameter',     ' ',  '@parameter' },
-        { 'StaticMethod',  ' ',  'Function' },
-        { 'Macro',         ' ',  'Macro' },
-        -- for completion sb microsoft!!!
-        { 'Text',          '󰭷 ', 'String' },
-        { 'Snippet',       ' ',  '@variable' },
-        { 'Folder',        ' ',  'Title' },
-        { 'Unit',          '󰊱 ', 'Number' },
-        { 'Value',         ' ',  '@variable' },
-    }
-
     local icons = {}
-    for _, v in pairs(symbol) do
-        vim.api.nvim_set_hl(0, "DropBarIconKind" .. v[1], { link = v[3] })
-        vim.api.nvim_set_hl(0, "DropBarKind" .. v[1], { link = v[3] })
-        icons[v[1]] = v[2]
+    for k, v in pairs(require("core.common").treesiter_symbol) do
+        vim.api.nvim_set_hl(0, "DropBarIconKind" .. k, { link = v[2] })
+        vim.api.nvim_set_hl(0, "DropBarKind" .. k, { link = v[2] })
+        icons[k] = v[1]
     end
 
     require('dropbar').setup {

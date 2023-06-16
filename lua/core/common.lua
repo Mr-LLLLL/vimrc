@@ -26,6 +26,46 @@ m.glyphs           = {
     sign_info = "",
 }
 
+m.treesiter_symbol = {
+    File = { ' ', 'Tag' },
+    Module = { ' ', 'Exception' },
+    Namespace = { ' ', 'Include' },
+    Package = { ' ', 'Label' },
+    Class = { ' ', 'Include' },
+    Method = { ' ', 'Function' },
+    Property = { ' ', '@property' },
+    Field = { ' ', '@field' },
+    Constructor = { ' ', '@constructor' },
+    Enum = { ' ', '@number' },
+    Interface = { ' ', 'Type' },
+    Function = { '󰡱 ', 'Function' },
+    Variable = { ' ', '@variable' },
+    Constant = { ' ', 'Constant' },
+    String = { '󰅳 ', 'String' },
+    Number = { '󰎠 ', 'Number' },
+    Boolean = { ' ', 'Boolean' },
+    Array = { '󰅨 ', 'Type' },
+    Object = { ' ', 'Type' },
+    Key = { ' ', 'Constant' },
+    Null = { '󰟢 ', 'Constant' },
+    EnumMember = { ' ', 'Number' },
+    Struct = { ' ', 'Type' },
+    Event = { ' ', 'Constant' },
+    Operator = { ' ', 'Operator' },
+    TypeParameter = { ' ', 'Type' },
+    -- ccls
+    TypeAlias = { ' ', 'Type' },
+    Parameter = { ' ', '@parameter' },
+    StaticMethod = { ' ', 'Function' },
+    Macro = { ' ', 'Macro' },
+    -- for completio sb microsoft!!!
+    Text = { '󰭷 ', 'String' },
+    Snippet = { ' ', '@variable' },
+    Folder = { ' ', 'Title' },
+    Unit = { '󰊱 ', 'Number' },
+    Value = { ' ', '@variable' },
+}
+
 m.lsp_flags        = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
