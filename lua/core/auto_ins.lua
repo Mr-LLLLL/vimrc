@@ -244,6 +244,7 @@ local function load_mason_tool()
             { 'jdtls' },
             { 'java-test' },
             { 'java-debug-adapter' },
+            { 'yamlfmt' },
         },
 
         -- if set to true this will check each tool for updates. If updates
