@@ -54,7 +54,7 @@ local function set_lsp()
                     fillreturns = true,
                     nonewvars = true,
                     fieldalignment = false,
-                    shadow = true,
+                    shadow = false,
                 },
                 hints = {
                     assignVariableTypes = true,
@@ -589,6 +589,7 @@ local function load_lspsaga()
             jump_num_shortcut = true,
             show_code_action = true,
             border_follow = false,
+            text_hl_follow = false,
             show_source = true,
             keys = {
                 exec_action = 'o',
@@ -736,7 +737,7 @@ local function load_go()
             -- padding from the right if right_align is true
             right_align_padding = 6,
             -- The color of the hints
-            highlight = "Comment",
+            highlight = "CustomVirtualText",
         },
         gopls_cmd = nil,           -- if you need to specify gopls path and cmd, e.g {"/home/user/lsp/gopls", "-logfile","/var/log/gopls.log" }
         gopls_remote_auto = false, -- add -remote=auto to gopls

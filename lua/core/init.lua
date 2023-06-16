@@ -40,6 +40,7 @@ local function load_colorscheme()
 
     api.nvim_set_hl(0, "FloatBorder", { link = 'CustomBorder' })
     api.nvim_set_hl(0, "TelescopeBorder", { link = 'CustomBorder' })
+    api.nvim_set_hl(0, "CustomVirtualText", { fg = '#5a5b5a', italic = true })
 end
 
 local function load_base_value()
@@ -47,6 +48,7 @@ local function load_base_value()
     g.gui_font_size = 14
 
     g.everforest_show_eob = 0
+    g.everforest_diagnostic_virtual_text = 'colored'
 end
 
 local function load_base_option()
