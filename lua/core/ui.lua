@@ -855,15 +855,16 @@ local function load_dropbar()
                         menu:click_on(component, nil, 1, 'l')
                     end
                 end,
-                ['<cr>'] = function()
+                ['<CR>'] = function()
+                    print("hello")
                     local menu = require('dropbar.api').get_current_dropbar_menu()
                     if not menu then
                         return
                     end
                     local cursor = vim.api.nvim_win_get_cursor(menu.win)
-                    local component = menu.entries[cursor[1]]:first_clickable(0)
+                    local component, range = menu.entries[cursor[1]]:first_clickable(0)
                     if component then
-                        component = menu.entries[cursor[1]]:first_clickable(component:bytewidth()+1)
+                        component = menu.entries[cursor[1]]:first_clickable(range['end'])
                         if component then
                             menu:click_on(component, nil, 1, 'l')
                         end
