@@ -864,8 +864,10 @@ local function load_dropbar()
                     local cursor = vim.api.nvim_win_get_cursor(menu.win)
                     local component, range = menu.entries[cursor[1]]:first_clickable(0)
                     if component then
-                        component = menu.entries[cursor[1]]:first_clickable(range['end'])
-                        if component then
+                        local next_component = menu.entries[cursor[1]]:first_clickable(range['end'])
+                        if next_component then
+                            menu:click_on(next_component, nil, 1, 'l')
+                        else
                             menu:click_on(component, nil, 1, 'l')
                         end
                     end
