@@ -133,8 +133,8 @@ m.startup = function()
             use { 'MR-LLLLL/interestingwords.nvim' }
             use { 'kylechui/nvim-surround', tag = "*" }
             -- it's not smarter than auto-pairs
-            -- use { "windwp/nvim-autopairs" }
-            use { 'jiangmiao/auto-pairs' }
+            use { "windwp/nvim-autopairs" }
+            -- use { 'jiangmiao/auto-pairs' }
             use { 'junegunn/vim-easy-align' }
             use { 'mg979/vim-visual-multi' }
             use { 'akinsho/toggleterm.nvim', tag = "*" }
