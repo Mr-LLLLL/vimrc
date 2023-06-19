@@ -8,7 +8,7 @@ local function set_lsp_cmd()
     api.nvim_create_autocmd(
         { 'BufWritePre' },
         {
-            pattern = { "*.json", "*.yaml" },
+            pattern = { "*.json", "*.yaml", "*.toml", "*.rs" },
             callback = function() vim.lsp.buf.format({ async = false }) end,
             group = custom_auto_format,
         }
