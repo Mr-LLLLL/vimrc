@@ -53,6 +53,7 @@ m.startup = function()
                 { 'nvim-treesitter/nvim-treesitter-context' },
                 { 'nvim-treesitter/nvim-treesitter-textobjects' },
                 { 'RRethy/nvim-treesitter-textsubjects' },
+                { 'RRethy/nvim-treesitter-endwise' },
                 { 'p00f/nvim-ts-rainbow' },
             }
 
@@ -173,7 +174,10 @@ m.startup = function()
                     requires = {
                         'ray-x/guihua.lua' -- recommanded if need floating window support
                     }
-                }
+                },
+                {
+                    'simrat39/rust-tools.nvim'
+                },
             }
             use { 'sindrets/diffview.nvim' }
             use { 'ThePrimeagen/refactoring.nvim' }

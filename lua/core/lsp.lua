@@ -155,6 +155,16 @@ local function set_lsp()
         }
     }
 
+    lspconfig.taplo.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        flags = lsp_flags,
+        cmd = { "taplo", "lsp", "stdio" },
+        filetypes = { "toml" },
+        root_dir = lspconfig.util.find_git_ancestor,
+        single_file_support = true,
+    }
+
     lspconfig.pyright.setup {
         on_attach = on_attach,
         capabilities = capabilities,
@@ -823,6 +833,17 @@ local function load_lsp_signature()
     })
 end
 
+local function load_rust()
+    local rt = require("rust-tools")
+
+    rt.setup({
+        server = {
+            on_attach = require("core.common").lsp_on_attack,
+            capabilities = require("core.common").lsp_capabilities(),
+        },
+    })
+end
+
 m.setup = function()
     load_lsp_signature()
     load_lsp()
@@ -830,6 +851,7 @@ m.setup = function()
     load_snippet()
     load_lspsaga()
     load_go()
+    load_rust()
 end
 
 return m

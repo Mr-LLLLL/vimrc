@@ -215,17 +215,6 @@ m.get_tele_project   = function()
     }
 end
 
-m.skip_next_char     = function(char)
-    local pos = api.nvim_win_get_cursor(0)
-    local line = api.nvim_get_current_line()
-    pos[2] = pos[2] + 1
-    local next_char = string.sub(line, pos[2], pos[2])
-    if vim.v.char == char and next_char == char then
-        vim.v.char = ''
-        api.nvim_win_set_cursor(0, pos)
-    end
-end
-
 local keymaps_backup = {}
 local keymaps        = {}
 

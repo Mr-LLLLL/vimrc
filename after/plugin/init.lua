@@ -14,16 +14,6 @@ end
 local function load_autocmd()
     local custom_auto_cmd = api.nvim_create_augroup("CustomAutoCmd", { clear = true })
     api.nvim_create_autocmd(
-        { "InsertCharPre" },
-        {
-            pattern = { "*" },
-            callback = function()
-                require("core.common").skip_next_char(",")
-            end,
-            group = custom_auto_cmd,
-        }
-    )
-    api.nvim_create_autocmd(
         { "Filetype" },
         {
             pattern = { "qf", "spectre_panel", "git", "fugitive", "fugitiveblame", "help", "guihua" },

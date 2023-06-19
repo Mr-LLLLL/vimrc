@@ -107,6 +107,9 @@ local function load_treesiter()
             --     },
             -- },
         },
+        endwise = {
+            enable = true,
+        },
     })
 end
 

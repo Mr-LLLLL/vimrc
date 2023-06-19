@@ -442,6 +442,19 @@ local function autopair_confirm_done()
     )
 end
 
+local function autopair_move_past()
+    for _, punct in pairs { ",", ";" } do
+        require "nvim-autopairs".add_rules {
+            require "nvim-autopairs.rule" ("", punct)
+                :with_move(function(opts) return opts.char == punct end)
+                :with_pair(function() return false end)
+                :with_del(function() return false end)
+                :with_cr(function() return false end)
+                :use_key(punct)
+        }
+    end
+end
+
 local function load_autopairs()
     -- g.AutoPairsMapCh = 0
     -- g.AutoPairsShortcutJump = ''
@@ -482,6 +495,7 @@ local function load_autopairs()
     autopair_multi_jump()
     autopair_insert_space()
     autopair_confirm_done()
+    autopair_move_past()
 end
 
 local function load_easy_align()
