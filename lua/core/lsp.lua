@@ -835,11 +835,15 @@ end
 
 local function load_rust()
     local rt = require("rust-tools")
+    local lspconfig = require("lspconfig")
 
     rt.setup({
         server = {
             on_attach = require("core.common").lsp_on_attack,
             capabilities = require("core.common").lsp_capabilities(),
+            cmd = { "rust-analyzer" },
+            filetypes = { "rust" },
+            root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json")
         },
     })
 end
