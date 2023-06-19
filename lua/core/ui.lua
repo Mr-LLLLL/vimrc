@@ -48,7 +48,7 @@ local function load_noice()
             lsp_doc_border = false,        -- add a border to hover docs and signature help
         },
         cmdline = {
-            enabled = true,        -- enables the Noice cmdline UI
+            enabled = true,         -- enables the Noice cmdline UI
             view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom,option cmdline_popup
             opts = {},              -- global options for the cmdline. See section on views
             format = {
@@ -837,6 +837,15 @@ local function load_dropbar()
                 border = 'rounded',
             },
             keymaps = {
+                ['<esc>'] = function()
+                    while true do
+                        local menu = require('dropbar.api').get_current_dropbar_menu()
+                        if not menu then
+                            return
+                        end
+                        menu:close()
+                    end
+                end,
                 ['q'] = function()
                     local menu = require('dropbar.api').get_current_dropbar_menu()
                     if not menu then
@@ -850,9 +859,14 @@ local function load_dropbar()
                         return
                     end
                     local cursor = vim.api.nvim_win_get_cursor(menu.win)
-                    local component = menu.entries[cursor[1]]:first_clickable(0)
+                    local component, range = menu.entries[cursor[1]]:first_clickable(0)
                     if component then
-                        menu:click_on(component, nil, 1, 'l')
+                        local next_component = menu.entries[cursor[1]]:first_clickable(range['end'])
+                        if next_component then
+                            menu:click_on(component, nil, 1, 'l')
+                        else
+                            menu:close()
+                        end
                     end
                 end,
                 ['<CR>'] = function()
