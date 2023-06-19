@@ -14,6 +14,7 @@ m.setup = function()
             null_ls.builtins.code_actions.shellcheck,
             -- null_ls.builtins.diagnostics.shellcheck, // bashls will call shellcheck to diagnostics
             null_ls.builtins.formatting.yamlfmt,
+            null_ls.builtins.formatting.black,
         }
     })
 end

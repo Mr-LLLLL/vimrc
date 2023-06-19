@@ -8,11 +8,34 @@ local function set_lsp_cmd()
     api.nvim_create_autocmd(
         { 'BufWritePre' },
         {
-            pattern = { "*.json", "*.yaml", "*.toml", "*.rs" },
-            callback = function() vim.lsp.buf.format({ async = false }) end,
+            pattern = { "*" },
+            callback = function()
+                if m.format_disable then
+                    return
+                end
+
+                if api.nvim_buf_get_option(0, 'filetype') == "go" then
+                    require('go.format').goimport()
+                else
+                    vim.lsp.buf.format({ async = false })
+                end
+            end,
             group = custom_auto_format,
         }
     )
+    api.nvim_create_user_command("Format", function()
+        if api.nvim_buf_get_option(0, 'filetype') == "go" then
+            require('go.format').goimport()
+        else
+            vim.lsp.buf.format({ async = false })
+        end
+    end, {})
+    api.nvim_create_user_command("FormatEnable", function()
+        m.format_disable = false
+    end, {})
+    api.nvim_create_user_command("FormatDisable", function()
+        m.format_disable = true
+    end, {})
     api.nvim_create_user_command("LspReattach", function()
         local matching_configs = require('lspconfig.util').get_config_by_ft(vim.bo.filetype)
         for _, config in ipairs(matching_configs) do
@@ -20,7 +43,6 @@ local function set_lsp_cmd()
         end
         vim.lsp.buf.add_workspace_folder(vim.fn.getcwd())
     end, {})
-    api.nvim_create_user_command("Format", function() vim.lsp.buf.format({ async = false }) end, {})
 end
 
 local function set_lsp()
@@ -661,33 +683,6 @@ local function load_lspsaga()
     load_saga_keymap()
 end
 
-local function set_go_cmd()
-    local format_sync_grp = api.nvim_create_augroup("GoFormat", { clear = true })
-    api.nvim_create_autocmd(
-        "BufWritePre",
-        {
-            pattern = "*.go",
-            callback = function() require('go.format').goimport() end,
-            group = format_sync_grp,
-        }
-    )
-    api.nvim_create_autocmd(
-        { "Filetype" },
-        {
-            pattern = "go",
-            callback = function()
-                api.nvim_buf_create_user_command(
-                    0,
-                    "Format",
-                    function() require('go.format').goimport() end,
-                    {}
-                )
-            end,
-            group = format_sync_grp,
-        }
-    )
-end
-
 local function load_go()
     require('go').setup({
         disable_defaults = false,                       -- true|false when true set false to all boolean settings and replace all table
@@ -777,8 +772,6 @@ local function load_go()
         luasnip = true,           -- enable included luasnip snippets. you can also disable while add lua/snips folder to luasnip load
         --  Do not enable this if you already added the path, that will duplicate the entries
     })
-
-    set_go_cmd()
 end
 
 local function load_lsp_signature()

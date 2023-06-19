@@ -249,6 +249,7 @@ local function load_mason_tool()
             { 'java-test' },
             { 'java-debug-adapter' },
             { 'yamlfmt' },
+            { 'black' },
         },
 
         -- if set to true this will check each tool for updates. If updates
