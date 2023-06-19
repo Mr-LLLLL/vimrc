@@ -48,7 +48,7 @@ local function load_noice()
             lsp_doc_border = false,        -- add a border to hover docs and signature help
         },
         cmdline = {
-            enabled = false,        -- enables the Noice cmdline UI
+            enabled = true,        -- enables the Noice cmdline UI
             view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom,option cmdline_popup
             opts = {},              -- global options for the cmdline. See section on views
             format = {
@@ -947,7 +947,7 @@ end
 m.setup = function()
     load_guihua()
     load_notify()
-    load_wilder()
+    -- load_wilder()
     load_noice()
     load_dress()
     load_dashboard()
