@@ -165,17 +165,6 @@ local function load_notify()
         top_down = true
     })
 
-    local notify_quit = api.nvim_create_augroup("NotifyQuit", { clear = true })
-    api.nvim_create_autocmd(
-        { "Filetype" },
-        {
-            pattern = "notify",
-            callback = function()
-                km.set('n', 'q', '<cmd>quit<cr>', { noremap = true, silent = true, buffer = true })
-            end,
-            group = notify_quit,
-        }
-    )
     require("telescope").load_extension("notify")
 
     api.nvim_create_user_command(
