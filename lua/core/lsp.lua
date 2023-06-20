@@ -5,6 +5,21 @@ local m = {}
 
 local function set_lsp_cmd()
     local custom_auto_format = api.nvim_create_augroup("CustomAutoFormat", { clear = true })
+    local format_filetypes = {
+        go = true,
+        python = true,
+        rust = true,
+        json = true,
+        yaml = true,
+        toml = true,
+        lua = true,
+        proto = true,
+        c = true,
+        cpp = true,
+        sh = true,
+        vim = true,
+        java = true,
+    }
     api.nvim_create_autocmd(
         { 'BufWritePre' },
         {
@@ -14,7 +29,12 @@ local function set_lsp_cmd()
                     return
                 end
 
-                if api.nvim_buf_get_option(0, 'filetype') == "go" then
+                local ft = api.nvim_buf_get_option(0, 'filetype')
+                if not format_filetypes[ft] then
+                    return
+                end
+
+                if ft == "go" then
                     require('go.format').goimport()
                 else
                     vim.lsp.buf.format({ async = false })
