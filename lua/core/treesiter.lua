@@ -3,6 +3,9 @@ local km = vim.keymap
 local mod = {}
 
 local function load_treesiter()
+    local parsers = require("nvim-treesitter.parsers")
+    local rainbow_enabled_list = { "json" }
+
     require('nvim-treesitter.configs').setup({
         ensure_installed = "all",
         ignore_install = {},
@@ -13,9 +16,18 @@ local function load_treesiter()
         },
         rainbow = {
             enable = true,
-            disable = { "jsx", "go", "lua" }, -- list of languages you want to disable the plugin for
-            extended_mode = true,             -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-            max_file_lines = nil,             -- Do not enable for files with more than n lines, int
+            disable = vim.tbl_filter(
+                function(p)
+                    local disable = true
+                    for _, lang in pairs(rainbow_enabled_list) do
+                        if p == lang then disable = false end
+                    end
+                    return disable
+                end,
+                parsers.available_parsers()
+            ),
+            extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+            max_file_lines = nil, -- Do not enable for files with more than n lines, int
             -- colors = {}, -- table of hex strings
             -- termcolors = {} -- table of colour name strings
         },
