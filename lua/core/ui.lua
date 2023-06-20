@@ -724,6 +724,7 @@ local function load_guihua()
     })
 end
 
+---@diagnostic disable-next-line: unused-local, unused-function
 local function load_wilder()
     local wilder = require('wilder')
     wilder.setup({

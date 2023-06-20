@@ -382,7 +382,7 @@ local function autopair_multi_jump()
             :with_del(cond.none())
             :set_end_pair_length(0)
             :replace_endpair(function(opts)
-                local row, _col = utils.get_cursor(0)
+                local row, _ = utils.get_cursor(0)
                 local action = vim.regex("^" .. close):match_line(0, row + 1) and "a" or ("0f%sa"):format(opts.char)
                 return ("<esc>xj%s"):format(action)
             end)
@@ -840,15 +840,6 @@ local function load_todo_comment()
     require("telescope").load_extension("todo-comments")
 end
 
-local function load_swagger()
-    require("swagger-preview").setup({
-        -- The port to run the preview server on
-        port = 8000,
-        -- The host to run the preview server on
-        host = "0.0.0.0",
-    })
-end
-
 m.setup = function()
     load_whichkey()
     load_indent()
@@ -862,7 +853,6 @@ m.setup = function()
     load_refactor()
     load_multi_select()
     load_todo_comment()
-    load_swagger()
 end
 
 return m

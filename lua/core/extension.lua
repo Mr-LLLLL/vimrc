@@ -325,6 +325,15 @@ local function load_chatgpt()
     }
 end
 
+local function load_swagger()
+    require("swagger-preview").setup({
+        -- The port to run the preview server on
+        port = 8000,
+        -- The host to run the preview server on
+        host = "0.0.0.0",
+    })
+end
+
 m.setup = function()
     load_pantran()
     load_rest()
@@ -333,6 +342,7 @@ m.setup = function()
     load_db()
     load_sepctre()
     load_chatgpt()
+    load_swagger()
 end
 
 return m
