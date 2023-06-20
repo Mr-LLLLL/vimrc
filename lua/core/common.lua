@@ -223,6 +223,10 @@ m.set_key_map        = function(module, keys)
         return
     end
 
+    if keymaps[module] then
+        return
+    end
+
     keymaps_backup[module] = {}
     keymaps[module] = {}
     local setmap = function()
@@ -240,9 +244,9 @@ m.set_key_map        = function(module, keys)
         end
     end
     setmap()
-    local ft = api.nvim_buf_get_option(0, 'filetype')
 
-    local custom_auto_cmd = api.nvim_create_augroup("DapDebugKeys", { clear = true })
+    local ft = api.nvim_buf_get_option(0, 'filetype')
+    local custom_auto_cmd = api.nvim_create_augroup("CustomCacheKeys" .. module, { clear = true })
     api.nvim_create_autocmd(
         { "BufWinEnter" },
         {
@@ -302,9 +306,11 @@ m.revert_key_map     = function(module)
             )
         end
     end
+
     keymaps_backup[module] = nil
     keymaps[module] = nil
-    api.nvim_create_augroup("DapDebugKeys", { clear = true })
+    api.nvim_create_augroup("CustomCacheKeys" .. module, { clear = true })
+    api.nvim_del_user_command("RevertKeyMap")
 
     if #keymaps ~= 0 then
         api.nvim_create_user_command("RevertKeyMap",
@@ -321,8 +327,6 @@ m.revert_key_map     = function(module)
                     return cmd
                 end,
             })
-    else
-        api.nvim_del_user_command("RevertKeyMap")
     end
 end
 

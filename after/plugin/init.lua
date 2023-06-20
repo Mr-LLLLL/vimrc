@@ -17,26 +17,26 @@ local function load_autocmd()
         { "Filetype" },
         {
             pattern = { "qf", "spectre_panel", "git", "fugitive", "fugitiveblame", "help", "guihua", "notify" },
-            callback = function()
+            callback = function(opt)
                 km.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
-            end,
-            group = custom_auto_cmd,
-        }
-    )
-    api.nvim_create_autocmd(
-        { "Filetype" },
-        {
-            pattern = { "qf" },
-            callback = function()
-                km.set(
-                    'n',
-                    '<cr>',
-                    function()
-                        local pos = api.nvim_win_get_cursor(0)
-                        vim.cmd("cr " .. pos[1])
-                    end,
-                    { noremap = true, silent = true, buffer = true }
-                )
+                local ft = api.nvim_buf_get_option(opt.buf, 'filetype')
+                if ft == "qf" then
+                    km.set(
+                        'n',
+                        '<cr>',
+                        function()
+                            local pos = api.nvim_win_get_cursor(0)
+                            vim.cmd("cr " .. pos[1])
+                        end,
+                        { noremap = true, silent = true, buffer = true }
+                    )
+                elseif ft == "lua" or ft == "python" then
+                    local extend = require("utils.extend")
+                    vim.keymap.set({ 'n', 'v' }, '[{', function() extend.extend(true) end,
+                        { noremap = true, silent = true, buffer = true, desc = "Extend to outer node start" })
+                    vim.keymap.set({ 'n', 'v' }, ']}', function() extend.extend(false) end,
+                        { noremap = true, silent = true, buffer = true, desc = "Extend to outer node end" })
+                end
             end,
             group = custom_auto_cmd,
         }
@@ -89,22 +89,6 @@ local function load_custom_map()
         vim.cmd("pop")
         vim.cmd("normal! zz")
     end, { noremap = true, silent = true, desc = "stack pop and centerize cursor" })
-
-    local custom_extend = vim.api.nvim_create_augroup("CustomExtend", { clear = true })
-    api.nvim_create_autocmd(
-        { "Filetype" },
-        {
-            pattern = "lua",
-            callback = function()
-                local extend = require("utils.extend")
-                vim.keymap.set({ 'n', 'v' }, '[{', function() extend.extend(true) end,
-                    { noremap = true, silent = true, buffer = true, desc = "Extend to outer node start" })
-                vim.keymap.set({ 'n', 'v' }, ']}', function() extend.extend(false) end,
-                    { noremap = true, silent = true, buffer = true, desc = "Extend to outer node end" })
-            end,
-            group = custom_extend,
-        }
-    )
 end
 
 local function load()
