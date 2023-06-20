@@ -167,17 +167,24 @@ local function load_notify()
 
     require("telescope").load_extension("notify")
 
+    local notifyClear = function()
+        local wins = api.nvim_tabpage_list_wins(0)
+        for _, v in pairs(wins) do
+            local buf = api.nvim_win_get_buf(v)
+            local ft = api.nvim_buf_get_option(buf, 'filetype')
+            if ft == "notify" then api.nvim_win_close(v, false) end
+        end
+    end
+
     api.nvim_create_user_command(
         "NotifyClear",
-        function()
-            local wins = api.nvim_tabpage_list_wins(0)
-            for _, v in pairs(wins) do
-                local buf = api.nvim_win_get_buf(v)
-                local ft = api.nvim_buf_get_option(buf, 'filetype')
-                if ft == "notify" then api.nvim_win_close(v, false) end
-            end
-        end,
+        notifyClear,
         {})
+
+    km.set('n', "<c-n>", function()
+        vim.cmd("mode")
+        notifyClear()
+    end, { noremap = true, silent = true, desc = "refresh screen" })
 end
 
 local function load_dashboard()

@@ -89,6 +89,11 @@ local function load_custom_map()
         vim.cmd("pop")
         vim.cmd("normal! zz")
     end, { noremap = true, silent = true, desc = "stack pop and centerize cursor" })
+
+    km.set('n', "<c-p>", function()
+        vim.cmd("mode")
+        require("core.ui").NotifyClear()
+    end, { noremap = true, silent = true, desc = "refresh screen" })
 end
 
 local function load()
