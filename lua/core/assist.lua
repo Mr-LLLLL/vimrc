@@ -487,6 +487,7 @@ local function load_autopairs()
             end_key = '$',
             keys = 'qwertyuiopzxcvbnmasdfghjkl',
             check_comma = true,
+            manual_position = false,
             highlight = 'Search',
             highlight_grey = 'Comment'
         },
