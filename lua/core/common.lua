@@ -77,7 +77,7 @@ end
 
 m.lsp_capabilities = function()
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = false
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.completion.completionItem.preselectSupport = true
 
     return capabilities

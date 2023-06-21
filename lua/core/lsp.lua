@@ -119,7 +119,7 @@ local function set_lsp()
                 staticcheck = true,
                 allowModfileModifications = true,
                 diagnosticsDelay = '500ms',
-                usePlaceholders = true,
+                usePlaceholders = false,
                 completeUnimported = true,
                 experimentalPostfixCompletions = true,
                 expandWorkspaceToModule = true,
@@ -862,6 +862,11 @@ local function load_rust()
                 ['rust-analyzer'] = {
                     cargo = {
                         autoReload = true
+                    },
+                    completion = {
+                        callable = {
+                            snippets = "add_parentheses"
+                        }
                     }
                 }
             },
