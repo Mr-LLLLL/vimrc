@@ -119,7 +119,7 @@ local function set_lsp()
                 staticcheck = true,
                 allowModfileModifications = true,
                 diagnosticsDelay = '500ms',
-                usePlaceholders = false,
+                usePlaceholders = true,
                 completeUnimported = true,
                 experimentalPostfixCompletions = true,
                 expandWorkspaceToModule = true,
@@ -370,7 +370,7 @@ local function load_cmp()
                 winhighlight = 'FloatBorder:FloatBorder',
             },
         },
-        -- preselect = cmp.PreselectMode.None,
+        preselect = cmp.PreselectMode.Item,
         view = {
             entries = "custom",
         },
@@ -854,9 +854,17 @@ local function load_rust()
         server = {
             on_attach = require("core.common").lsp_on_attack,
             capabilities = require("core.common").lsp_capabilities(),
+            flags = require("core.common").lsp_flags,
             cmd = { "rust-analyzer" },
             filetypes = { "rust" },
-            root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json")
+            root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json"),
+            settings = {
+                ['rust-analyzer'] = {
+                    cargo = {
+                        autoReload = true
+                    }
+                }
+            },
         },
     })
 end
