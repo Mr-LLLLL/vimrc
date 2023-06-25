@@ -862,7 +862,6 @@ local function load_dropbar()
                     end
                 end,
                 ['<CR>'] = function()
-                    print("hello")
                     local menu = require('dropbar.api').get_current_dropbar_menu()
                     if not menu then
                         return
