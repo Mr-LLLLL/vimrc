@@ -666,7 +666,7 @@ local function load_lspsaga()
             custom_sort = nil,
             close_after_jump = false,
             keys = {
-                expand_or_jump = '<cr>',
+                expand_or_jump = 'o',
                 quit = "q",
             },
         },
@@ -736,7 +736,7 @@ local function load_go()
         -- set to true: use gopls to format
         -- false if you want to use other formatter tool(e.g. efm, nulls)
         lsp_inlay_hints = {
-            enable = true,
+            enable = false,
             -- Only show inlay hints for the current line
             only_current_line = false,
             -- Event which triggers a refersh of the inlay hints.
