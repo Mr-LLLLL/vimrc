@@ -45,7 +45,7 @@ end
 
 local function load_base_value()
     g.mapleader = ","
-    g.gui_font_size = 14
+    g.gui_font_size = 10
 
     g.everforest_show_eob = 0
     g.everforest_diagnostic_virtual_text = 'colored'
@@ -81,7 +81,7 @@ local function load_base_option()
     o.undofile      = false
     o.swapfile      = false
     o.writebackup   = false
-    o.guifont       = "UbuntuMono Nerd Font Mono:h" .. g.gui_font_size
+    o.guifont       = "VictorMono Nerd Font Mono:h" .. g.gui_font_size
 
     o.list          = true
 end
