@@ -126,6 +126,7 @@ local function load_telescope()
                 debug = false,
             },
             frecency = {
+                db_safe_mode = false,
                 show_filter_column = false,
                 show_scores = false,
                 show_unindexed = false,
