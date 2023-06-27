@@ -200,14 +200,14 @@ local function load_yanky()
             telescope = {
                 mappings = {
                     i = {
-                        ["<C-k>"] = actions.move_selection_previous,
-                        ["<C-p>"] = actions.preview_scrolling_up,
+                        ["<c-k>"] = actions.move_selection_previous,
+                        ["<c-p>"] = actions.preview_scrolling_up,
                         ["<cr>"] = mapping.put("p"),
                     },
                     n = {
                         ["<cr>"] = mapping.put("p"),
-                        ["<C-k>"] = actions.move_selection_previous,
-                        ["<C-p>"] = actions.preview_scrolling_up,
+                        ["<c-k>"] = actions.move_selection_previous,
+                        ["<c-p>"] = actions.preview_scrolling_up,
                     }
                 }
             },
