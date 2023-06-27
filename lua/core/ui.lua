@@ -3,6 +3,7 @@ local km = vim.keymap
 local fn = vim.fn
 local o = vim.o
 local g = vim.g
+local a = require("plenary.async")
 
 local m = {}
 
@@ -162,7 +163,28 @@ local function load_notify()
         render = "default",
         stages = "fade_in_slide_out",
         timeout = 5000,
-        top_down = true
+        top_down = true,
+        on_open = function(win)
+            local buf = api.nvim_win_get_buf(win)
+            local content_line_cnt = api.nvim_buf_line_count(buf)
+            local win_height = api.nvim_win_get_height(win)
+            local scroll_cnt = 10
+            local scroll_interal_millisec = 30
+
+            local func = nil
+            func = function(cnt)
+                api.nvim_win_set_cursor(win, { content_line_cnt - cnt, 0 })
+                if cnt > 0 then
+                    vim.defer_fn(function()
+                        func(cnt - 1)
+                    end, scroll_interal_millisec)
+                end
+            end
+
+            if content_line_cnt > win_height then
+                func(scroll_cnt)
+            end
+        end
     })
 
     require("telescope").load_extension("notify")
