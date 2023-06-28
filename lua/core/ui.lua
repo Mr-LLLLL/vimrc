@@ -180,7 +180,7 @@ local function load_notify()
 
                 if cnt > 0 then
                     vim.defer_fn(function()
-                        func(cnt - 1)
+                        func(cnt - math.ceil(cnt / 10))
                     end, scroll_interal_millisec)
                 end
             end
