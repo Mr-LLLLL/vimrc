@@ -168,12 +168,16 @@ local function load_notify()
             local buf = api.nvim_win_get_buf(win)
             local content_line_cnt = api.nvim_buf_line_count(buf)
             local win_height = api.nvim_win_get_height(win)
-            local scroll_cnt = 10
             local scroll_interal_millisec = 30
 
             local func = nil
             func = function(cnt)
-                api.nvim_win_set_cursor(win, { content_line_cnt - cnt, 0 })
+                if api.nvim_win_is_valid(win) then
+                    api.nvim_win_set_cursor(win, { content_line_cnt - cnt, 0 })
+                else
+                    return
+                end
+
                 if cnt > 0 then
                     vim.defer_fn(function()
                         func(cnt - 1)
@@ -182,7 +186,7 @@ local function load_notify()
             end
 
             if content_line_cnt > win_height then
-                func(scroll_cnt)
+                func(win_height)
             end
         end
     })
