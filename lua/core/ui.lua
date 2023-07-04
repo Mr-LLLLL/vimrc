@@ -148,6 +148,31 @@ end
 
 local function load_notify()
     local glyphs = require("core.common").glyphs
+    local scroll_to_tobbom = function(win, buf)
+        local content_line_cnt = api.nvim_buf_line_count(buf)
+        local win_height = api.nvim_win_get_height(win)
+        local scroll_interal_millisec = 30
+
+        local func = nil
+        func = function(cnt)
+            if api.nvim_win_is_valid(win) then
+                api.nvim_win_set_cursor(win, { content_line_cnt - cnt, 0 })
+            else
+                return
+            end
+
+            if cnt > 0 then
+                vim.defer_fn(function()
+                    func(cnt - math.ceil(cnt / 10))
+                end, scroll_interal_millisec)
+            end
+        end
+
+        if content_line_cnt > win_height then
+            func(win_height)
+        end
+    end
+
     require("notify").setup({
         background_colour = "Normal",
         fps = 30,
@@ -166,29 +191,16 @@ local function load_notify()
         top_down = true,
         on_open = function(win)
             local buf = api.nvim_win_get_buf(win)
-            local content_line_cnt = api.nvim_buf_line_count(buf)
-            local win_height = api.nvim_win_get_height(win)
-            local scroll_interal_millisec = 30
-
-            local func = nil
-            func = function(cnt)
-                if api.nvim_win_is_valid(win) then
-                    api.nvim_win_set_cursor(win, { content_line_cnt - cnt, 0 })
-                else
-                    return
-                end
-
-                if cnt > 0 then
+            api.nvim_buf_attach(buf, false, {
+                on_lines = function()
                     vim.defer_fn(function()
-                        func(cnt - math.ceil(cnt / 10))
-                    end, scroll_interal_millisec)
+                        scroll_to_tobbom(win, buf)
+                    end, 100)
                 end
-            end
+            })
 
-            if content_line_cnt > win_height then
-                func(win_height)
-            end
-        end
+            scroll_to_tobbom(win, buf)
+        end,
     })
 
     require("telescope").load_extension("notify")
