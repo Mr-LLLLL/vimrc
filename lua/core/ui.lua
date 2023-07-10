@@ -219,7 +219,7 @@ local function load_notify()
         notifyClear,
         {})
 
-    km.set('n', "<c-n>", function()
+    km.set('n', "<c-[>", function()
         vim.cmd("mode")
         notifyClear()
     end, { noremap = true, silent = true, desc = "refresh screen" })
