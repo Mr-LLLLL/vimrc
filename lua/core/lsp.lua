@@ -660,6 +660,7 @@ local function load_lspsaga()
             win_position = 'right',
             win_with = '',
             win_width = 30,
+            layout = 'normal',
             auto_preview = true,
             auto_refresh = true,
             auto_close = true,
