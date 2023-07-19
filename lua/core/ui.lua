@@ -3,7 +3,6 @@ local km = vim.keymap
 local fn = vim.fn
 local o = vim.o
 local g = vim.g
-local a = require("plenary.async")
 
 local m = {}
 
@@ -622,31 +621,33 @@ local function load_neovide()
     if g.neovide == nil then
         return
     end
-    g.neovide_fullscreen = true
-    g.neovide_confirm_quit = true
-    g.neovide_floating_blur_amount_x = 1.0
-    g.neovide_floating_blur_amount_y = 1.0
-    g.neovide_transparency = 1.0
-    g.neovide_scroll_animation_length = 0.3
-    g.neovide_cursor_trail_size = 0.8
-    g.neovide_cursor_antialiasing = true
+
+    o.guifont                                = "VictorMono Nerd Font Mono:h12"
+    g.neovide_fullscreen                     = true
+    g.neovide_confirm_quit                   = true
+    g.neovide_floating_blur_amount_x         = 1.0
+    g.neovide_floating_blur_amount_y         = 1.0
+    g.neovide_transparency                   = 1.0
+    g.neovide_scroll_animation_length        = 0.3
+    g.neovide_cursor_trail_size              = 0.8
+    g.neovide_cursor_antialiasing            = true
     -- g.neovide_cursor_animation_length=1.00
     g.neovide_cursor_unfocused_outline_width = 0.125
-    g.neovide_hide_mouse_when_typing = true
-    g.neovide_underline_automatic_scaling = true
-    g.neovide_refresh_rate = 60
-    g.neovide_refresh_rate_idle = 5
-    g.neovide_remember_window_size = true
-    g.neovide_profiler = false
-    g.neovide_cursor_vfx_mode = "pixiedust"
-    g.neovide_cursor_vfx_particle_density = 50.0
-    g.neovide_cursor_vfx_opacity = 200.0
-    g.neovide_cursor_vfx_particle_phase = 1.5
-    g.neovide_cursor_vfx_particle_curl = 1.0
-    g.neovide_cursor_vfx_particle_lifetime = 1.2
-    g.neovide_cursor_vfx_particle_speed = 10.0
-    g.neovide_cursor_animate_command_line = true
-    g.neovide_cursor_animate_in_insert_mode = true
+    g.neovide_hide_mouse_when_typing         = true
+    g.neovide_underline_automatic_scaling    = true
+    g.neovide_refresh_rate                   = 60
+    g.neovide_refresh_rate_idle              = 5
+    g.neovide_remember_window_size           = true
+    g.neovide_profiler                       = false
+    g.neovide_cursor_vfx_mode                = "pixiedust"
+    g.neovide_cursor_vfx_particle_density    = 50.0
+    g.neovide_cursor_vfx_opacity             = 200.0
+    g.neovide_cursor_vfx_particle_phase      = 1.5
+    g.neovide_cursor_vfx_particle_curl       = 1.0
+    g.neovide_cursor_vfx_particle_lifetime   = 1.2
+    g.neovide_cursor_vfx_particle_speed      = 10.0
+    g.neovide_cursor_animate_command_line    = true
+    g.neovide_cursor_animate_in_insert_mode  = true
 
     km.set({ 'i', 'n', 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
     -- BUG: it's not work, and will be block
@@ -822,7 +823,7 @@ local function load_wilder()
             wilder.popupmenu_palette_theme({
                 -- 'single', 'double', 'rounded' or 'solid'
                 -- can also be a list of 8 characters, see :h wilder#popupmenu_palette_theme() for more details
-                pumblend = 10,
+                pumblend = vim.g.custom_blend,
                 border = 'rounded',
                 max_height = '25%', -- max height of the palette
                 min_height = 0,     -- set to the same as 'max_height' for a fixed height window
@@ -977,7 +978,7 @@ local function load_dropbar()
         }
     }
 
-    vim.api.nvim_set_hl(0, "DropBarMenuCurrentContext", { bg = '#425047', blend = 45 })
+    vim.api.nvim_set_hl(0, "DropBarMenuCurrentContext", { bg = '#425047', blend = vim.g.custom_blend })
 
     km.set(
         { 'n' },
@@ -1023,7 +1024,6 @@ local function load_ufo()
     end
 
     ---@param bufnr number
-    ---@return Promise
     local function customizeSelector(bufnr)
         local function handleFallbackException(err, providerName)
             if type(err) == 'string' and err:match('UfoFallbackException') then
@@ -1048,7 +1048,7 @@ local function load_ufo()
             win_config = {
                 border = { '', '─', '', '', '', '─', '', '' },
                 winhighlight = 'Normal:Folded',
-                winblend = 0
+                winblend = vim.g.custom_blend
             },
             mappings = {
                 scrollU = '<C-u>',
@@ -1057,7 +1057,7 @@ local function load_ufo()
                 jumpBot = ']'
             }
         },
-        provider_selector = function(bufnr, filetype, buftype)
+        provider_selector = function(_, filetype, _)
             -- if you prefer treesitter provider rather than lsp,
             -- return ftMap[filetype] or {'treesitter', 'indent'}
             return ftMap[filetype] or customizeSelector

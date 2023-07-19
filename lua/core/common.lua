@@ -22,7 +22,7 @@ m.glyphs           = {
     warn = "",
     sign_error = "",
     sign_warn = "",
-    sign_hint = "",
+    sign_hint = "",
     sign_info = "",
 }
 

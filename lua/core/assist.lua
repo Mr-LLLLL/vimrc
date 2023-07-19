@@ -31,7 +31,7 @@ local function load_whichkey()
             position = "bottom",      -- bottom, top
             margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
             padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-            winblend = 10
+            winblend = vim.g.custom_blend
         },
         disable = {
             buftypes = {},
@@ -273,9 +273,9 @@ local function load_toggleterm()
             -- border = 'single' | 'double' | 'shadow' | 'curved' |
             border = 'rounded',
             -- like `size`, width and height can be a number or function which is passed the current terminal
-            width = vim.o.columns - 2,
-            height = vim.o.lines - 3,
-            winblend = 10,
+            width = vim.o.columns - 3,
+            height = g.neovide and vim.o.lines - 4 or vim.o.lines - 3,
+            winblend = vim.g.custom_blend,
         },
         winbar = {
             enabled = false,
@@ -290,7 +290,7 @@ end
 
 local function load_comment()
     require('Comment').setup({
-        ---Add a space b/w comment and the line
+        -- -Add a space b/w comment and the line
         padding = true,
         ---Whether the cursor should stay at its position
         sticky = true,
