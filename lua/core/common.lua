@@ -81,7 +81,7 @@ m.lsp_capabilities = function()
     capabilities.textDocument.completion.completionItem.preselectSupport = true
     capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
-        lineFoldingOnly = true
+        lineFoldingOnly = false
     }
 
     return capabilities
