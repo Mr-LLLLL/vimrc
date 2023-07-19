@@ -63,7 +63,7 @@ local function load_base_option()
     -- o.foldcolumn     = '1'
     o.foldenable     = true
     o.foldlevel      = 99
-    o.foldlevelstart = 2
+    o.foldlevelstart = 99
     o.smartcase      = true
     o.ignorecase     = true
     o.mouse          = "a"
