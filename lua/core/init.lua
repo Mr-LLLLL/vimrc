@@ -60,9 +60,10 @@ local function load_base_option()
     o.cmdheight      = 0
     o.updatetime     = 300
     o.shortmess      = o.shortmess .. "c"
+    -- o.foldcolumn     = '1'
     o.foldenable     = true
     o.foldlevel      = 99
-    o.foldlevelstart = 99
+    o.foldlevelstart = 2
     o.smartcase      = true
     o.ignorecase     = true
     o.mouse          = "a"
