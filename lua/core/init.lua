@@ -52,38 +52,40 @@ local function load_base_value()
 end
 
 local function load_base_option()
-    o.winblend      = 10
-    o.pumblend      = 10
-    o.number        = true
-    o.rnu           = false
-    o.hidden        = true
-    o.cmdheight     = 0
-    o.updatetime    = 300
-    o.shortmess     = o.shortmess .. "c"
-    o.foldenable    = false
-    o.smartcase     = true
-    o.ignorecase    = true
-    o.mouse         = "a"
-    o.termguicolors = true
-    o.clipboard     = "unnamed,unnamedplus"
-    o.background    = "dark"
-    o.wildmode      = "longest,full"
-    o.laststatus    = 3
-    o.scrolloff     = 5
+    o.winblend       = 10
+    o.pumblend       = 10
+    o.number         = true
+    o.rnu            = false
+    o.hidden         = true
+    o.cmdheight      = 0
+    o.updatetime     = 300
+    o.shortmess      = o.shortmess .. "c"
+    o.foldenable     = true
+    o.foldlevel      = 99
+    o.foldlevelstart = 99
+    o.smartcase      = true
+    o.ignorecase     = true
+    o.mouse          = "a"
+    o.termguicolors  = true
+    o.clipboard      = "unnamed,unnamedplus"
+    o.background     = "dark"
+    o.wildmode       = "longest,full"
+    o.laststatus     = 3
+    o.scrolloff      = 5
 
-    o.tabstop       = 4
-    o.expandtab     = true
-    o.autoindent    = true
-    o.shiftwidth    = 4
-    o.softtabstop   = 4
+    o.tabstop        = 4
+    o.expandtab      = true
+    o.autoindent     = true
+    o.shiftwidth     = 4
+    o.softtabstop    = 4
 
-    o.backup        = false
-    o.undofile      = false
-    o.swapfile      = false
-    o.writebackup   = false
-    o.guifont       = "VictorMono Nerd Font Mono:h" .. g.gui_font_size
+    o.backup         = false
+    o.undofile       = false
+    o.swapfile       = false
+    o.writebackup    = false
+    o.guifont        = "VictorMono Nerd Font Mono:h" .. g.gui_font_size
 
-    o.list          = true
+    o.list           = true
 end
 
 m.setup = function()

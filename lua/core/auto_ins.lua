@@ -12,6 +12,7 @@ m.startup = function()
             use {
                 { 'nvim-lua/plenary.nvim' },
                 { 'nvim-lua/popup.nvim' },
+                { 'nvim-tree/nvim-tree.lua' },
                 { 'nvim-tree/nvim-web-devicons' },
                 { 'neovim/nvim-lspconfig' },
                 { 'ray-x/lsp_signature.nvim' },
@@ -113,7 +114,6 @@ m.startup = function()
                 run = "npm install --localtion=global swagger-ui-watcher",
             }
             use { 'dpayne/CodeGPT.nvim' }
-            use { 'nvim-tree/nvim-tree.lua' }
             use { 'uga-rosa/ccc.nvim' }
             use { 'gbprod/yanky.nvim' }
             use {
@@ -195,6 +195,7 @@ m.startup = function()
                     'tpope/vim-dadbod',
                 }
             }
+            use { 'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async' }
 
             -- Automatically set up your configuration after cloning packer.nvim
             -- Put this at the end after all plugins
