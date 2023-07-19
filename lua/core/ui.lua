@@ -622,7 +622,8 @@ local function load_neovide()
         return
     end
 
-    o.guifont                                = "VictorMono Nerd Font Mono:h12"
+    -- BUG: nerd font mono will make glyph overlay
+    o.guifont                                = "VictorMono Nerd Font:h12"
     g.neovide_fullscreen                     = true
     g.neovide_confirm_quit                   = true
     g.neovide_floating_blur_amount_x         = 1.0
