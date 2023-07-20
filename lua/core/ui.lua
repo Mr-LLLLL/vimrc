@@ -651,12 +651,18 @@ local function load_neovide()
     g.neovide_cursor_vfx_particle_speed      = 10.0
     g.neovide_cursor_animate_command_line    = true
     g.neovide_cursor_animate_in_insert_mode  = true
+    g.neovide_padding_top                    = 0
+    g.neovide_padding_bottom                 = 0
+    g.neovide_padding_right                  = 0
+    g.neovide_padding_left                   = 0
 
-    km.set({ 'i', 'n', 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
+    km.set({ 'i' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
+    km.set({ 'n' }, "<C-S-v>", '"*p', { noremap = true, silent = true })
+    km.set({ 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = false })
     -- BUG: it's not work, and will be block
     -- km.set({ 't' }, "<C-r>", '<C-\\><C-N>"' .. fn.nr2char(fn.getchar()) .. 'pi',
     --     { silent = true, expr = true })
-    -- km.set({ 't' }, "<C-S-v>", '<C-\\><C-N>"*pi', { noremap = false, silent = true })
+    km.set({ 't' }, "<C-S-v>", '<C-\\><C-N>"*pi', { noremap = false, silent = true })
 
     km.set(
         { 'n' },
