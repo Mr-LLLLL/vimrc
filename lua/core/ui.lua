@@ -184,6 +184,8 @@ local function load_notify()
         },
         level = 2,
         minimum_width = 50,
+        max_height = vim.o.lines - 4,
+        max_width = vim.o.columns,
         render = "default",
         stages = "fade_in_slide_out",
         timeout = 5000,
