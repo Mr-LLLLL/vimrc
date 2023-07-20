@@ -17,7 +17,7 @@ local function load_autocmd()
         { "Filetype" },
         {
             pattern = { "qf", "spectre_panel", "git", "fugitive", "fugitiveblame", "help", "guihua", "notify" },
-            callback = function(opt)
+            callback = function(_)
                 km.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
             end,
             group = custom_auto_cmd,
@@ -52,6 +52,22 @@ local function load_autocmd()
                 vim.keymap.set({ 'n', 'v' }, ']}', function() extend.extend(false) end,
                     { noremap = true, silent = true, buffer = true, desc = "Extend to outer node end" })
             end,
+            group = custom_auto_cmd,
+        }
+    )
+    api.nvim_create_autocmd(
+        { "BufWinLeave" },
+        {
+            pattern = { "*.*" },
+            command = "mkview",
+            group = custom_auto_cmd,
+        }
+    )
+    api.nvim_create_autocmd(
+        { "BufWinEnter" },
+        {
+            pattern = { "*.*" },
+            command = "silent! loadview",
             group = custom_auto_cmd,
         }
     )
