@@ -7,7 +7,7 @@ local function load_telescope()
     local actions = require("telescope.actions")
     require('telescope').setup({
         defaults = {
-            winblend = vim.g.blend,
+            winblend = vim.g.custom_blend,
             mappings = {
                 i = {
                     ["<CR>"] = actions.select_default + actions.center,

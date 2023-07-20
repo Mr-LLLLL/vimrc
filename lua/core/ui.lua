@@ -628,8 +628,8 @@ local function load_neovide()
     o.guifont                                = "JetBrainsMono Nerd Font Mono:h10"
     g.neovide_fullscreen                     = true
     g.neovide_confirm_quit                   = true
-    g.neovide_floating_blur_amount_x         = 1.0
-    g.neovide_floating_blur_amount_y         = 1.0
+    g.neovide_floating_blur_amount_x         = 0.5
+    g.neovide_floating_blur_amount_y         = 0.5
     g.neovide_transparency                   = 1.0
     g.neovide_scroll_animation_length        = 0.3
     g.neovide_cursor_trail_size              = 0.8
@@ -654,13 +654,13 @@ local function load_neovide()
 
     km.set({ 'i', 'n', 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
     -- BUG: it's not work, and will be block
-    -- km.set({ 't' }, "<C-R>", '<C-\\><C-N>"' .. fn.nr2char(fn.getchar()) .. 'pi',
+    -- km.set({ 't' }, "<C-r>", '<C-\\><C-N>"' .. fn.nr2char(fn.getchar()) .. 'pi',
     --     { silent = true, expr = true })
-    km.set({ 't' }, "<C-S-v>", '<C-\\><C-N>"*pi', { noremap = false, silent = true })
+    -- km.set({ 't' }, "<C-S-v>", '<C-\\><C-N>"*pi', { noremap = false, silent = true })
 
     km.set(
         { 'n' },
-        "F11",
+        "<F11>",
         function() if g.neovide_fullscreen then g.neovide_fullscreen = false else g.neovide_fullscreen = true end end,
         { noremap = true, silent = true, expr = true }
     )
