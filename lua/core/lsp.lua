@@ -668,6 +668,7 @@ local function load_lspsaga()
             close_after_jump = false,
             keys = {
                 expand_or_jump = 'o',
+                jump = '<cr>',
                 quit = "q",
             },
         },
