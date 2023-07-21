@@ -45,7 +45,7 @@ end
 
 local function load_base_value()
     g.mapleader = ","
-    g.custom_blend = 25
+    g.custom_blend = 10
 
     g.everforest_show_eob = 0
     g.everforest_diagnostic_virtual_text = 'colored'
