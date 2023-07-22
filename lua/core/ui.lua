@@ -495,7 +495,7 @@ local function load_lualine()
                 separator = { left = '' },
             } },
             lualine_z = { {
-                function() return "祥" .. os.date('%H:%M') end,
+                function() return "󰔛 " .. os.date('%H:%M') end,
                 separator = { right = '' }
             } },
         },
