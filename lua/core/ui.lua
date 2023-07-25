@@ -668,7 +668,7 @@ local function load_neovide()
         { 'n' },
         "<F11>",
         function() if g.neovide_fullscreen then g.neovide_fullscreen = false else g.neovide_fullscreen = true end end,
-        { noremap = true, silent = true, expr = true }
+        { noremap = true, silent = true, expr = true, desc = "full screen for neovide" }
     )
 
     g.neovide_scale_factor = 1.0
@@ -676,8 +676,10 @@ local function load_neovide()
         g.neovide_scale_factor = g.neovide_scale_factor * delta
     end
 
-    km.set({ 'n' }, "<c-=>", function() scale(1.25) end, { noremap = true, silent = true, expr = true })
-    km.set({ 'n' }, "<c-->", function() scale(1 / 1.25) end, { noremap = true, silent = true, expr = true })
+    km.set({ 'n' }, "<c-=>", function() scale(1.25) end,
+        { noremap = true, silent = true, expr = true, desc = "scale in for neovide" })
+    km.set({ 'n' }, "<c-->", function() scale(1 / 1.25) end,
+        { noremap = true, silent = true, expr = true, desc = "scale out for neovide" })
 end
 
 local function load_colorizer()

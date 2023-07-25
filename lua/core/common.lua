@@ -88,7 +88,7 @@ m.lsp_capabilities = function()
 end
 
 
-local list_or_jump   = function(action, f, param)
+local list_or_jump = function(action, f, param)
     local tele_action = require("telescope.actions")
     local lspParam = vim.lsp.util.make_position_params(fn.win_getid())
     lspParam.context = { includeDeclaration = false }
@@ -129,7 +129,7 @@ local list_or_jump   = function(action, f, param)
 end
 
 ---@diagnostic disable-next-line: unused-local
-m.lsp_on_attack      = function(client, bufnr)
+m.lsp_on_attack    = function(client, bufnr)
     local tele_builtin = require("telescope.builtin")
 
     require "lsp_signature".on_attach(require("lsp_signature").setup(), bufnr)
@@ -206,7 +206,7 @@ m.lsp_on_attack      = function(client, bufnr)
     end, m.keymap_desc(bufopts, "show lsp workspaces"))
 end
 
-m.get_tele_project   = function()
+m.get_tele_project = function()
     require("telescope").extensions.project.project {
         display_type = 'two-segment',
         attach_mappings = function(prompt_bufnr, map)
@@ -220,30 +220,33 @@ m.get_tele_project   = function()
     }
 end
 
-local keymaps_backup = {}
-local keymaps        = {}
+m.keymaps_backup   = {}
+m.keymaps          = {}
 
-m.set_key_map        = function(module, keys)
+m.set_key_map      = function(module, keys)
     if not module or module == "" or not keys then
         return
     end
 
-    if keymaps[module] then
+    if m.keymaps[module] then
         return
     end
 
-    keymaps_backup[module] = {}
-    keymaps[module] = {}
+    m.keymaps_backup[module] = {}
+    m.keymaps[module] = {}
     local setmap = function()
         local bufnr = api.nvim_get_current_buf()
+        if m.keymaps[module][bufnr] then
+            return
+        end
+
         local old_keymap_list = api.nvim_buf_get_keymap(bufnr, 'n')
-        keymaps_backup[module][bufnr] = {}
         for _, v in pairs(old_keymap_list) do
-            if keys[v.lhs] ~= nil then
-                keymaps_backup[module][bufnr][v.lhs] = v
+            if keys[v.lhs] then
+                table.insert(m.keymaps_backup[module], v)
             end
         end
-        keymaps[module][bufnr] = keys
+        m.keymaps[module][bufnr] = keys
         for k, v in pairs(keys) do
             vim.keymap.set('n', k, v.f, { noremap = true, silent = true, desc = v.desc, buffer = bufnr })
         end
@@ -271,7 +274,7 @@ m.set_key_map        = function(module, keys)
             nargs = "*",
             complete = function()
                 local cmd = {}
-                for k in pairs(keymaps) do
+                for k in pairs(m.keymaps) do
                     table.insert(cmd, k)
                 end
                 return cmd
@@ -279,45 +282,42 @@ m.set_key_map        = function(module, keys)
         })
 end
 
-m.revert_key_map     = function(module)
+m.revert_key_map   = function(module)
     if not module or module == "" then
         return
     end
 
-    for bufnr, ks in pairs(keymaps[module] or {}) do
+    for bufnr, ks in pairs(m.keymaps[module] or {}) do
         for k in pairs(ks) do
             vim.keymap.del('n', k, { buffer = bufnr })
         end
     end
 
-    for _, buf_backup in pairs(keymaps_backup[module] or {}) do
-        for _, v in pairs(buf_backup) do
-            local opt = {
-                noremap = v.noremap == 1,
-                silent = v.slient == 1,
-                expr = v.expr == 1,
-                nowait = v.nowait == 1,
-                desc = v.desc,
-            }
-            if v.buffer ~= 0 then
-                opt["buffer"] = v.buffer
-            end
+    for _, v in pairs(m.keymaps_backup[module] or {}) do
+        local opt = {
+            noremap = v.noremap == 1,
+            silent = v.slient == 1,
+            expr = v.expr == 1,
+            nowait = v.nowait == 1,
+            desc = v.desc,
+            script = v.script == 1,
+            buffer = v.buffer,
+        }
 
-            vim.keymap.set(
-                'n',
-                v.lhs,
-                v.rhs or v.callback,
-                opt
-            )
-        end
+        vim.keymap.set(
+            'n',
+            v.lhs,
+            v.rhs or v.callback,
+            opt
+        )
     end
 
-    keymaps_backup[module] = nil
-    keymaps[module] = nil
+    m.keymaps_backup[module] = nil
+    m.keymaps[module] = nil
     api.nvim_create_augroup("CustomCacheKeys" .. module, { clear = true })
     api.nvim_del_user_command("RevertKeyMap")
 
-    if #keymaps ~= 0 then
+    if #m.keymaps ~= 0 then
         api.nvim_create_user_command("RevertKeyMap",
             function(opts)
                 m.revert_key_map(opts.args)
@@ -326,7 +326,7 @@ m.revert_key_map     = function(module)
                 nargs = "*",
                 complete = function()
                     local cmd = {}
-                    for k in pairs(keymaps) do
+                    for k in pairs(m.keymaps) do
                         table.insert(cmd, k)
                     end
                     return cmd
