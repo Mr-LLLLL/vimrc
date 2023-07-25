@@ -224,7 +224,7 @@ m.keymaps_backup   = {}
 m.keymaps          = {}
 
 m.set_key_map      = function(module, keys)
-    if not module or module == "" or not keys then
+    if not module or module == "" or not keys or m.keymaps[module] then
         return
     end
 
@@ -283,7 +283,7 @@ m.set_key_map      = function(module, keys)
 end
 
 m.revert_key_map   = function(module)
-    if not module or module == "" then
+    if not module or module == "" or not m.keymaps[module] then
         return
     end
 
