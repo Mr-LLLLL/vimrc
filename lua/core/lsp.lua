@@ -285,6 +285,21 @@ local function set_lsp()
         root_dir = lspconfig.util.find_git_ancestor,
         single_file_support = true,
     }
+
+    lspconfig.gradle_ls.setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+        flags = lsp_flags,
+        cmd = { "gradle-language-server" },
+        filetypes = { "groovy" },
+        init_options = {
+            settings = {
+                gradleWrapperEnabled = true
+            }
+        },
+        root_dir = lspconfig.util.root_pattern("settings.gradle"),
+        single_file_support = true,
+    }
 end
 
 local function load_lsp()
