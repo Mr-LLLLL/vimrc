@@ -56,13 +56,14 @@ local function set_lsp_cmd()
     api.nvim_create_user_command("FormatDisable", function()
         m.format_disable = true
     end, {})
-    api.nvim_create_user_command("LspReattach", function()
-        local matching_configs = require('lspconfig.util').get_config_by_ft(vim.bo.filetype)
-        for _, config in ipairs(matching_configs) do
-            config.launch()
-        end
-        vim.lsp.buf.add_workspace_folder(vim.fn.getcwd())
-    end, {})
+    -- LspRestart have supported
+    -- api.nvim_create_user_command("LspReattach", function()
+    --     local matching_configs = require('lspconfig.util').get_config_by_ft(vim.bo.filetype)
+    --     for _, config in ipairs(matching_configs) do
+    --         config.launch()
+    --     end
+    --     vim.lsp.buf.add_workspace_folder(vim.fn.getcwd())
+    -- end, {})
 end
 
 local function set_lsp()
@@ -723,20 +724,20 @@ end
 
 local function load_go()
     require('go').setup({
-        disable_defaults = false,                       -- true|false when true set false to all boolean settings and replace all table
+        disable_defaults = false, -- true|false when true set false to all boolean settings and replace all table
         -- settings with {}
-        go = 'go',                                      -- go command, can be go[default] or go1.18beta1
-        goimport = 'gopls',                             -- goimport command, can be gopls[default] or goimport
-        fillstruct = 'gopls',                           -- can be nil (use fillstruct, slower) and gopls
-        gofmt = 'gopls',                                --gofmt cmd,
-        max_line_len = 128,                             -- max line length in golines format, Target maximum line length for golines
-        tag_transform = "camelcase",                    -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
-        tag_options = "json=",                          -- sets options sent to gomodifytags, i.e., json=omitempty
-        gotests_template = "",                          -- sets gotests -template parameter (check gotests for details)
-        gotests_template_dir = "",                      -- sets gotests -template_dir parameter (check gotests for details)
-        comment_placeholder = '',                       -- comment_placeholder your cool placeholder e.g. ﳑ       
+        go = 'go', -- go command, can be go[default] or go1.18beta1
+        goimport = 'gopls', -- goimport command, can be gopls[default] or goimport
+        fillstruct = 'gopls', -- can be nil (use fillstruct, slower) and gopls
+        gofmt = 'gopls', --gofmt cmd,
+        max_line_len = 128, -- max line length in golines format, Target maximum line length for golines
+        tag_transform = "camelcase", -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
+        tag_options = "json=", -- sets options sent to gomodifytags, i.e., json=omitempty
+        gotests_template = "", -- sets gotests -template parameter (check gotests for details)
+        gotests_template_dir = "", -- sets gotests -template_dir parameter (check gotests for details)
+        comment_placeholder = '', -- comment_placeholder your cool placeholder e.g. ﳑ       
         icons = { breakpoint = '🧘', currentpos = '🏃' }, -- setup to `false` to disable icons setup
-        verbose = false,                                -- output loginf in messages
+        verbose = false, -- output loginf in messages
         lsp_cfg = false, --[[ true: use non-default gopls setup specified in go/lsp.lua
                               false: do nothing if lsp_cfg is a table, merge table with with non-default gopls setup in go/lsp.lua, e.g.
                               lsp_cfg = {settings={gopls={matcher='CaseInsensitive', ['local'] = 'your_local_module_path', gofumpt = true }}} ]]
@@ -839,28 +840,28 @@ local function load_lsp_signature()
         floating_window_off_y = 0, -- adjust float windows y position. e.g -2 move window up 2 lines; 2 move down 2 lines
         -- can be either number or function, see examples
 
-        close_timeout = 4000,              -- close floating window after ms when laster parameter is entered
-        fix_pos = false,                   -- set to true, the floating window will not auto-close until finish all parameters
-        hint_enable = false,               -- virtual hint enable
-        hint_prefix = "🐼 ",             -- Panda for parameter, NOTE: for the terminal not support emoji, might crash
+        close_timeout = 4000, -- close floating window after ms when laster parameter is entered
+        fix_pos = false, -- set to true, the floating window will not auto-close until finish all parameters
+        hint_enable = false, -- virtual hint enable
+        hint_prefix = "🐼 ", -- Panda for parameter, NOTE: for the terminal not support emoji, might crash
         hint_scheme = "String",
-        hi_parameter = "DiffAdd",          -- how your parameter will be highlight
+        hi_parameter = "DiffAdd", -- how your parameter will be highlight
         handler_opts = {
-            border = "rounded"             -- double, rounded, single, shadow, none, or a table of borders
+            border = "rounded" -- double, rounded, single, shadow, none, or a table of borders
         },
-        cursorhold_update = false,         -- if cursorhold slows down the completion, set to false to disable it
-        always_trigger = false,            -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
-        auto_close_after = nil,            -- autoclose signature float win after x sec, disabled if nil.
-        extra_trigger_chars = {},          -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
-        zindex = 200,                      -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
-        padding = '',                      -- character to pad on left and right of signature can be ' ', or '|'  etc
-        transparency = 10,                 -- disabled by default, allow floating win transparent value 1~100
+        cursorhold_update = false, -- if cursorhold slows down the completion, set to false to disable it
+        always_trigger = false, -- sometime show signature on new line or in middle of parameter can be confusing, set it to false for #58
+        auto_close_after = nil, -- autoclose signature float win after x sec, disabled if nil.
+        extra_trigger_chars = {}, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+        zindex = 200, -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
+        padding = '', -- character to pad on left and right of signature can be ' ', or '|'  etc
+        transparency = 10, -- disabled by default, allow floating win transparent value 1~100
         shadow_blend = vim.g.custom_blend, -- if you using shadow as border use this set the opacity
-        shadow_guibg = 'Black',            -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
-        timer_interval = 200,              -- default timer check interval set to lower value if you want to reduce latency
-        toggle_key = nil,                  -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
-        select_signature_key = nil,        -- cycle to next signature, e.g. '<M-n>' function overloading
-        move_cursor_key = nil,             -- imap, use nvim_set_current_win to move cursor between current win and floating
+        shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
+        timer_interval = 200, -- default timer check interval set to lower value if you want to reduce latency
+        toggle_key = nil, -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
+        select_signature_key = nil, -- cycle to next signature, e.g. '<M-n>' function overloading
+        move_cursor_key = nil, -- imap, use nvim_set_current_win to move cursor between current win and floating
     })
 end
 
