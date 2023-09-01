@@ -189,6 +189,9 @@ local function load_yanky()
     local mapping = require("yanky.telescope.mapping")
     local actions = require("telescope.actions")
     require("yanky").setup({
+        ring = {
+            storage = "sqlite"
+        },
         highlight = {
             on_put = true,
             on_yank = false,
