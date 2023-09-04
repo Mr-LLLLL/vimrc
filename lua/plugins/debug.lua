@@ -1,6 +1,5 @@
 local km = vim.keymap
-
-local m = {}
+local api = vim.api
 
 local function load_sniprun()
     require('sniprun').setup({})
@@ -178,31 +177,17 @@ local get_dapui_conf = function()
     }
 end
 
+local function delete_cmd()
+    api.nvim_del_user_command('DapContinue')
+    api.nvim_del_user_command('DapToggleRepl')
+    api.nvim_del_user_command('DapStepOver')
+    api.nvim_del_user_command('DapStepInto')
+    api.nvim_del_user_command('DapStepOut')
+    api.nvim_del_user_command('DapLoadLaunchJSON')
+    api.nvim_del_user_command('DapRestartFrame')
+end
 
 local function load_dap()
-    -- this two plug will be rewrite by go.nvim
-    local load_dapui = function()
-        require("dapui").setup(get_dapui_conf())
-
-        local dap, dapui = require("dap"), require("dapui")
-        dap.listeners.after.event_initialized["dapui_config"] = function()
-            dapui.open({})
-            require("core.common").set_key_map("dap", keys)
-        end
-        dap.listeners.before.event_terminated["dapui_config"] = function()
-            dapui.close({})
-            require("core.common").revert_key_map("dap")
-        end
-        dap.listeners.before.event_exited["dapui_config"] = function()
-            dapui.close({})
-            require("core.common").revert_key_map("dap")
-        end
-    end
-
-    local load_daptvt = function()
-        require("nvim-dap-virtual-text").setup(get_dapvt_conf())
-    end
-
     local next_bk = function(forward)
         local bks = require("dap.breakpoints").get()
         local cur_buf_nr = vim.api.nvim_get_current_buf()
@@ -249,15 +234,64 @@ local function load_dap()
             { noremap = true, silent = true, desc = "dap float elements" })
     end
 
-    load_dapui()
-    load_daptvt()
     load_cmd()
+    delete_cmd()
 end
 
-m.setup = function()
-    init_keys()
-    load_dap()
-    load_sniprun()
-end
+return {
+    {
+        'mfussenegger/nvim-dap',
+        keys = {
+            { "GoDebug", nil }
+        },
+        dependencies = {
+            'rcarriga/nvim-dap-ui',
+            'theHamsta/nvim-dap-virtual-text',
+        },
+        config = function()
+            init_keys()
+            load_dap()
+        end
+    },
+    {
+        'rcarriga/nvim-dap-ui',
+        lazy = true,
+        config = function()
+            require("dapui").setup(get_dapui_conf())
 
-return m
+            local dap, dapui = require("dap"), require("dapui")
+            dap.listeners.after.event_initialized["dapui_config"] = function()
+                dapui.open({})
+                require("common").set_key_map("dap", keys)
+            end
+            dap.listeners.before.event_terminated["dapui_config"] = function()
+                dapui.close({})
+                require("common").revert_key_map("dap")
+            end
+            dap.listeners.before.event_exited["dapui_config"] = function()
+                dapui.close({})
+                require("common").revert_key_map("dap")
+            end
+        end
+    },
+    {
+        'theHamsta/nvim-dap-virtual-text',
+        lazy = true,
+        dependencies = {
+            'mfussenegger/nvim-dap',
+        },
+        config = function()
+            require("nvim-dap-virtual-text").setup(get_dapvt_conf())
+        end
+    },
+    {
+        'michaelb/sniprun',
+        build = 'bash ./install.sh',
+        keys = {
+            { "<leader>rr", nil, mode = { "n", "v" } },
+        },
+        config = function()
+            load_sniprun()
+        end
+    }
+}

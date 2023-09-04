@@ -1,7 +1,7 @@
 return {
     {
         'WhoIsSethDaniel/mason-tool-installer.nvim',
-        event = "VeryLazy",
+        lazy = false,
         dependencies = {
             "williamboman/mason.nvim",
         },
@@ -11,7 +11,7 @@ return {
                 -- start; they should be the names Mason uses for each tool
                 ensure_installed = {
                     -- you can turn off/on auto_update per tool
-                    { 'jq',                auto_update = true },
+                    { 'jq',                    auto_update = true },
                     { 'delve' },
                     { 'shfmt' },
                     { 'shellcheck' },
@@ -22,6 +22,18 @@ return {
                     { 'java-debug-adapter' },
                     { 'yamlfmt' },
                     { 'black' },
+                    { 'gopls' },
+                    { 'lua-language-server' },
+                    { 'buf-language-server' },
+                    { 'json-lsp' },
+                    { 'yaml-language-server' },
+                    { 'taplo' },
+                    { 'pyright' },
+                    { 'clangd' },
+                    { 'bash-language-server' },
+                    { 'vim-language-server' },
+                    { 'gradle-language-server' },
+                    { 'rust-analyzer' },
                 },
 
                 -- if set to true this will check each tool for updates. If updates
@@ -52,36 +64,34 @@ return {
             }
         end
     },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            "williamboman/mason.nvim",
-        },
-        config = function()
-        end
-    },
+    -- {
+    --     "williamboman/mason-lspconfig.nvim",
+    --     dependencies = {
+    --         "williamboman/mason.nvim",
+    --     },
+    --     config = function()
+    --         require("mason-lspconfig").setup({
+    --             -- A list of servers to automatically install if they're not already installed. Example: { "rust_analyzer@nightly", "sumneko_lua" }
+    --             -- This setting has no relation with the `automatic_installation` setting.
+    --             ensure_installed = {},
+    --             -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed.
+    --             -- This setting has no relation with the `ensure_installed` setting.
+    --             -- Can either be:
+    --             --   - false: Servers are not automatically installed.
+    --             --   - true: All servers set up via lspconfig are automatically installed.
+    --             --   - { exclude: string[] }: All servers set up via lspconfig, except the ones provided in the list, are automatically installed.
+    --             --       Example: automatic_installation = { exclude = { "rust_analyzer", "solargraph" } }
+    --             automatic_installation = true,
+    --         })
+    --     end
+    -- },
     {
         "williamboman/mason.nvim",
-        cmd = "Mason",
         config = function()
             require("mason").setup({
                 ui = {
                     border = "rounded",
                 }
-            })
-            require("mason-lspconfig").setup({
-                -- A list of servers to automatically install if they're not already installed. Example: { "rust_analyzer@nightly", "sumneko_lua" }
-                -- This setting has no relation with the `automatic_installation` setting.
-                ensure_installed = {},
-                -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed.
-                -- This setting has no relation with the `ensure_installed` setting.
-                -- Can either be:
-                --   - false: Servers are not automatically installed.
-                --   - true: All servers set up via lspconfig are automatically installed.
-                --   - { exclude: string[] }: All servers set up via lspconfig, except the ones provided in the list, are automatically installed.
-                --       Example: automatic_installation = { exclude = { "rust_analyzer", "solargraph" } }
-                automatic_installation = { exclude = {} },
             })
         end
     }

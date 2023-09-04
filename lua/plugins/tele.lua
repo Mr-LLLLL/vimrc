@@ -1,12 +1,24 @@
 local km = vim.keymap
+local g = vim.g
 
 return {
     {
         'nvim-telescope/telescope.nvim',
         version = '0.1.x',
-        event = "VeryLazy",
+        keys = {
+            { "<space>", nil }
+        },
+        dependencies = {
+            'nvim-telescope/telescope-frecency.nvim',
+            'nvim-telescope/telescope-file-browser.nvim',
+            'gbprod/yanky.nvim',
+            'nvim-telescope/telescope-project.nvim',
+            'dhruvmanila/telescope-bookmarks.nvim',
+            'nvim-telescope/telescope-fzf-native.nvim',
+            'kkharji/sqlite.lua',
+        },
         config = function()
-            local glyphs = require("core.common").glyphs
+            local glyphs = require("common").glyphs
             local actions = require("telescope.actions")
             require('telescope').setup({
                 defaults = {
@@ -89,8 +101,7 @@ return {
                             "~/study",
                             { path = "~/workspace",              max_depth = 5 },
                             "~/.config",
-                            { path = "~/.local/share/nvim/site", max_depth = 5 },
-                            "~/Documents",
+                            { path = "~/.local/share/nvim/lazy", max_depth = 5 },
                         },
                         hidden_files = false, -- default: false
                         theme = "dropdown",
@@ -168,6 +179,11 @@ return {
                 },
             })
 
+            require("telescope").load_extension("refactoring")
+            require("telescope").load_extension("todo-comments")
+            require("telescope").load_extension("noice")
+            require("telescope").load_extension("notify")
+            require("telescope").load_extension("yank_history")
             require('telescope').load_extension('project')
             require("telescope").load_extension("frecency")
             require('telescope').load_extension('fzf')
@@ -183,14 +199,13 @@ return {
             km.set('n', "<space>sb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sl", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
 
-            km.set('n', '<space>i', require("core.common").get_tele_project,
+            km.set('n', '<space>i', require("common").get_tele_project,
                 { noremap = true, silent = true, desc = "telescope projects" })
         end
     },
     {
         'gbprod/yanky.nvim',
-        event = "VeryLazy",
-        dependencies = { "nvim-telescope/telescope.nvim" },
+        lazy = true,
         config = function()
             local mapping = require("yanky.telescope.mapping")
             local actions = require("telescope.actions")
@@ -223,45 +238,16 @@ return {
                     },
                 },
             })
-
-            require("telescope").load_extension("yank_history")
         end
     },
     {
-        'nvim-telescope/telescope-frecency.nvim',
-        event = "VeryLazy",
-        dependencies = { "nvim-telescope/telescope.nvim" },
-    },
-    { 'nvim-telescope/telescope-fzf-native.nvim',  build = 'make' },
-    { 'nvim-telescope/telescope-file-browser.nvim' },
-    {
-        'Abstract-IDE/penvim',
-        config = function()
-            require("penvim").setup({
-                rooter = {
-                    enable = true, -- enable/disable rooter
-                    patterns = { '.git' }
-                },
-                indentor = {
-                    enable = false,    -- enable/disable indentor
-                    indent_length = 4, -- tab indent width
-                    accuracy = 5,      -- positive integer. higher the number, the more accurate result (but affects the startup time)
-                    disable_types = {
-                        'help', 'dashboard', 'dashpreview', 'NvimTree', 'vista', 'sagahover', 'terminal',
-                    },
-                },
-                project_env = {
-                    enable = false,               -- enable/disable project_env
-                    config_name = '.__nvim__.lua' -- config file name
-                },
-            })
-        end
-    },
-    {
-        'nvim-telescope/telescope-project.nvim',
+        'nvim-telescope/telescope-fzf-native.nvim',
+        lazy = true,
+        build = 'make',
     },
     {
         'dhruvmanila/telescope-bookmarks.nvim',
+        lazy = true,
         version = '*',
         -- Uncomment if the selected browser is Firefox, Waterfox or buku
         dependencies = {
@@ -271,7 +257,8 @@ return {
     {
         'renerocksai/telekasten.nvim',
         dependencies = {
-            'renerocksai/calendar-vim'
+            'renerocksai/calendar-vim',
+            'nvim-telescope/telescope.nvim',
         },
         keys = {
             { "<space>z", mode = 'n' }

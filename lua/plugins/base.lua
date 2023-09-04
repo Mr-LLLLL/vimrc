@@ -28,6 +28,7 @@ return {
     },
     {
         "nvim-tree/nvim-web-devicons",
+        lazy = true,
         config = function()
             require 'nvim-web-devicons'.setup {
                 -- your personnal icons can go here (to override)
@@ -50,7 +51,12 @@ return {
             }
         end
     },
-    { 'nvim-lua/plenary.nvim' },
-    { 'nvim-lua/popup.nvim' },
-    { 'kkharji/sqlite.lua' },
+    {
+        'nvim-lua/plenary.nvim',
+        lazy = true,
+    },
+    {
+        'nvim-lua/popup.nvim',
+        lazy = true,
+    },
 }

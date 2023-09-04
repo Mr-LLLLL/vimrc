@@ -1,7 +1,18 @@
+local km = vim.keymap
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        event = "BufEnter",
         build = ':TSUpdate',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter-context',
+            'nvim-treesitter/nvim-treesitter-textobjects',
+            'RRethy/nvim-treesitter-textsubjects',
+            'RRethy/nvim-treesitter-endwise',
+            'p00f/nvim-ts-rainbow',
+            'm-demare/hlargs.nvim',
+        },
         config = function()
             local parsers = require("nvim-treesitter.parsers")
             local rainbow_enabled_list = { "json" }
@@ -127,6 +138,7 @@ return {
     },
     {
         'nvim-treesitter/nvim-treesitter-context',
+        lazy = true,
         config = function()
             require 'treesitter-context'.setup {
                 enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -150,12 +162,9 @@ return {
             end
         end
     },
-    { 'nvim-treesitter/nvim-treesitter-textobjects' },
-    { 'RRethy/nvim-treesitter-textsubjects' },
-    { 'RRethy/nvim-treesitter-endwise' },
-    { 'p00f/nvim-ts-rainbow' },
     {
         'm-demare/hlargs.nvim',
+        lazy = true,
         config = function()
             require('hlargs').setup({
                 hl_priority = 1000,
@@ -165,61 +174,62 @@ return {
     {
         'mizlan/iswap.nvim',
         keys = {
-            { "<leader>s", nil },
-            { "<leader>S", nil },
+            { "<leader>s", "<cmd>ISwapWith<CR>",     { noremap = true, silent = true } },
+            { "<leader>S", "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true } },
         },
-        config = function()
-            require('iswap').setup {
-                -- The keys that will be used as a selection, in order
-                -- ('asdfghjklqwertyuiopzxcvbnm' by default)
-                keys = 'qwertyuiop',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
+        opts = {
+            -- The keys that will be used as a selection, in order
+            -- ('asdfghjklqwertyuiopzxcvbnm' by default)
+            keys = 'qwertyuiop',
 
-                -- Grey out the rest of the text when making a selection
-                -- (enabled by default)
-                grey = "disable",
+            -- Grey out the rest of the text when making a selection
+            -- (enabled by default)
+            grey = "disable",
 
-                -- Highlight group for the sniping value (asdf etc.)
-                -- default 'Search'
-                hl_snipe = 'ErrorMsg',
+            -- Highlight group for the sniping value (asdf etc.)
+            -- default 'Search'
+            hl_snipe = 'ErrorMsg',
 
-                -- Highlight group for the visual selection of terms
-                -- default 'Visual'
-                hl_selection = 'WarningMsg',
+            -- Highlight group for the visual selection of terms
+            -- default 'Visual'
+            hl_selection = 'WarningMsg',
 
-                -- Highlight group for the greyed background
-                -- default 'Comment'
-                hl_grey = 'LineNr',
+            -- Highlight group for the greyed background
+            -- default 'Comment'
+            hl_grey = 'LineNr',
 
-                -- Post-operation flashing highlight style,
-                -- either 'simultaneous' or 'sequential', or false to disable
-                -- default 'sequential'
-                flash_style = 'sequential',
+            -- Post-operation flashing highlight style,
+            -- either 'simultaneous' or 'sequential', or false to disable
+            -- default 'sequential'
+            flash_style = 'sequential',
 
-                -- Highlight group for flashing highlight afterward
-                -- default 'IncSearch'
-                hl_flash = 'Substitute',
+            -- Highlight group for flashing highlight afterward
+            -- default 'IncSearch'
+            hl_flash = 'Substitute',
 
-                -- Move cursor to the other element in ISwap*With commands
-                -- default false
-                move_cursor = true,
+            -- Move cursor to the other element in ISwap*With commands
+            -- default false
+            move_cursor = true,
 
-                -- Automatically swap with only two arguments
-                -- default nil
-                autoswap = true,
+            -- Automatically swap with only two arguments
+            -- default nil
+            autoswap = true,
 
-                -- Other default options you probably should not change:
-                debug = nil,
-                hl_grey_priority = '1000',
-            }
-
-            km.set('n', "<leader>s", "<cmd>ISwapWith<CR>", { noremap = true, silent = true })
-            km.set('n', "<leader>S", "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true })
-        end
+            -- Other default options you probably should not change:
+            debug = nil,
+            hl_grey_priority = '1000',
+        }
     },
     {
         'Wansmer/treesj',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
         keys = {
-            { "<leader>j", nil },
+            { "<leader>j", "<cmd>TSJToggle<CR>", { noremap = true, silent = true } },
         },
         config = function()
             require('treesj').setup({
@@ -239,8 +249,6 @@ return {
                 -- Notify about possible problems or not
                 notify = true,
             })
-
-            km.set('n', "<leader>j", "<cmd>TSJToggle<CR>", { noremap = true, silent = true })
         end
     }
 }

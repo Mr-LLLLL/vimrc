@@ -1,16 +1,6 @@
 local api = vim.api
 local km = vim.keymap
 
-local function load_user_cmd()
-    api.nvim_del_user_command('DapContinue')
-    api.nvim_del_user_command('DapToggleRepl')
-    api.nvim_del_user_command('DapStepOver')
-    api.nvim_del_user_command('DapStepInto')
-    api.nvim_del_user_command('DapStepOut')
-    api.nvim_del_user_command('DapLoadLaunchJSON')
-    api.nvim_del_user_command('DapRestartFrame')
-end
-
 local function load_autocmd()
     local custom_auto_cmd = api.nvim_create_augroup("CustomAutoCmd", { clear = true })
     api.nvim_create_autocmd(
@@ -122,7 +112,6 @@ local function load_custom_map()
 end
 
 local function load()
-    load_user_cmd()
     load_custom_map()
     load_autocmd()
 end
