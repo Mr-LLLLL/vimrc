@@ -1,9 +1,10 @@
-local fn = vim.fn
-
 return {
     {
         'WhoIsSethDaniel/mason-tool-installer.nvim',
         event = "VeryLazy",
+        dependencies = {
+            "williamboman/mason.nvim",
+        },
         config = function()
             require('mason-tool-installer').setup {
                 -- a list of all tools you want to ensure are installed upon
@@ -62,6 +63,7 @@ return {
     },
     {
         "williamboman/mason.nvim",
+        cmd = "Mason",
         config = function()
             require("mason").setup({
                 ui = {

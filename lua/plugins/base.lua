@@ -52,4 +52,5 @@ return {
     },
     { 'nvim-lua/plenary.nvim' },
     { 'nvim-lua/popup.nvim' },
+    { 'kkharji/sqlite.lua' },
 }
