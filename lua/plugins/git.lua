@@ -1,7 +1,7 @@
 return {
     {
         'lewis6991/gitsigns.nvim',
-        event = "BufEnter",
+        event = "VeryLazy",
         config = function()
             require('gitsigns').setup({
                 signs = {

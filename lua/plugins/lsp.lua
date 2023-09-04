@@ -358,6 +358,7 @@ end
 return {
     {
         'neovim/nvim-lspconfig',
+        event = "VeryLazy",
         config = function()
             local glyphs = require("common").glyphs
             local signs = {
@@ -410,6 +411,7 @@ return {
     },
     {
         'jose-elias-alvarez/null-ls.nvim',
+        event = "VeryLazy",
         config = function()
             local null_ls = require("null-ls")
 

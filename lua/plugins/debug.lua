@@ -1,14 +1,6 @@
 local km = vim.keymap
 local api = vim.api
 
-local function load_sniprun()
-    require('sniprun').setup({})
-
-    km.set('n', "<leader>rr", "<cmd>SnipRun<CR>", { noremap = true, silent = true })
-    km.set('v', "<leader>rr", ":SnipRun<CR>", { noremap = true, silent = true })
-    km.set('n', "<leader>R", "<cmd>SnipClose<CR>", { noremap = true, silent = true })
-end
-
 local keys
 
 local dap_stop = function()
@@ -241,9 +233,7 @@ end
 return {
     {
         'mfussenegger/nvim-dap',
-        keys = {
-            { "GoDebug", nil }
-        },
+        ft = "go",
         dependencies = {
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',
@@ -291,7 +281,11 @@ return {
             { "<leader>rr", nil, mode = { "n", "v" } },
         },
         config = function()
-            load_sniprun()
+            require('sniprun').setup({})
+
+            km.set('n', "<leader>rr", "<cmd>SnipRun<CR>", { noremap = true, silent = true })
+            km.set('v', "<leader>rr", ":SnipRun<CR>", { noremap = true, silent = true })
+            km.set('n', "<leader>R", "<cmd>SnipClose<CR>", { noremap = true, silent = true })
         end
     }
 }

@@ -346,7 +346,22 @@ return {
     {
         'numToStr/Comment.nvim',
         keys = {
-            { "<leader>/", nil, mode = { "n", "v" } }
+            { "<leader>/", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' }, mode = "n" },
+            {
+                "<leader>//",
+                function()
+                    return api.nvim_get_vvar('count') == 0 and '<Plug>(comment_toggle_linewise_current)'
+                        or '<Plug>(comment_toggle_linewise_count)'
+                end,
+                { expr = true, desc = 'Comment toggle current line' },
+                mode = "n"
+            },
+            {
+                "<leader>/",
+                '<Plug>(comment_toggle_linewise_visual)',
+                { desc = 'Comment toggle linewise (visual)' },
+                mode = "x"
+            }
         },
         config = function()
             require('Comment').setup({
@@ -394,17 +409,6 @@ return {
             })
 
             -- forbid default mapping, customer my key mapping
-            km.set('n', "<leader>/", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' })
-            km.set('n', "<leader>//", function()
-                return api.nvim_get_vvar('count') == 0 and '<Plug>(comment_toggle_linewise_current)'
-                    or '<Plug>(comment_toggle_linewise_count)'
-            end, { expr = true, desc = 'Comment toggle current line' })
-            km.set(
-                'x',
-                "<leader>/",
-                '<Plug>(comment_toggle_linewise_visual)',
-                { desc = 'Comment toggle linewise (visual)' }
-            )
         end
     },
     {
@@ -438,11 +442,8 @@ return {
     {
         'junegunn/vim-easy-align',
         keys = {
-            { "ga", nil, mode = { "n", "x" } }
+            { "ga", "<Plug>(EasyAlign)", { noremap = true, silent = true }, mode = { "n", "x" } }
         },
-        config = function()
-            km.set({ 'n', 'x' }, "ga", "<Plug>(EasyAlign)", { noremap = true, silent = true })
-        end
     },
     {
         'mg979/vim-visual-multi',
@@ -923,7 +924,7 @@ return {
     },
     {
         'Abstract-IDE/penvim',
-        event = "BufEnter",
+        event = "VeryLazy",
         config = function()
             require("penvim").setup({
                 rooter = {

@@ -261,7 +261,7 @@ return {
             'nvim-telescope/telescope.nvim',
         },
         keys = {
-            { "<space>z", mode = 'n' }
+            { "<space>z", "<cmd>Telekasten<CR>", { noremap = true, silent = true } }
         },
         config = function()
             g.calendar_no_mappings = 1
@@ -388,8 +388,6 @@ return {
                 -- A customizable fallback handler for urls.
                 follow_url_fallback = nil,
             })
-
-            km.set('n', "<space>z", "<cmd>Telekasten<CR>", { noremap = true, silent = true })
         end
     },
 }

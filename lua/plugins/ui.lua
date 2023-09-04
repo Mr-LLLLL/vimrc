@@ -8,7 +8,7 @@ return {
     {
         'nvim-tree/nvim-tree.lua',
         keys = {
-            { "<space>", nil }
+            { "<space>q", "<cmd>NvimTreeFindFileToggle<cr>", { noremap = true, silent = true } }
         },
         config = function()
             local glyphs = require("common").glyphs
@@ -76,8 +76,6 @@ return {
                     exclude = {},
                 },
             })
-
-            km.set("n", "<space>q", "<cmd>NvimTreeFindFileToggle<cr>", { noremap = true, silent = true })
 
             if vim.g.colors_name == 'gruvbox-material' then
                 api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = '#3c3836' })
@@ -149,7 +147,7 @@ return {
     },
     {
         'nvim-lualine/lualine.nvim',
-        event = "BufEnter",
+        event = "VeryLazy",
         config = function()
             local colors = {}
             if g.colors_name == 'gruvbox-material' then
@@ -653,14 +651,14 @@ return {
     },
     {
         'MR-LLLLL/interestingwords.nvim',
-        event = "BufEnter",
+        event = "VeryLazy",
         opts = {
             colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#ff5e63', '#ff9036', '#CF9292', '#BFA3DF', '#9999EA' },
         },
     },
     {
         'lukas-reineke/indent-blankline.nvim',
-        event = "BufEnter",
+        event = "VeryLazy",
         config = function()
             require("indent_blankline").setup {
                 space_char_blankline = " ",
@@ -692,7 +690,7 @@ return {
     },
     {
         "Bekaboo/dropbar.nvim",
-        event = "BufEnter",
+        event = "VeryLazy",
         config = function()
             local icons = {}
             for k, v in pairs(require("common").treesiter_symbol) do
@@ -826,7 +824,7 @@ return {
     },
     {
         'kevinhwang91/nvim-ufo',
-        event = "BufEnter",
+        event = "VeryLazy",
         dependencies = 'kevinhwang91/promise-async',
         config = function()
             local ftMap = {

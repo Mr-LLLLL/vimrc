@@ -168,12 +168,9 @@ return {
     {
         'voldikss/vim-browser-search',
         keys = {
-            { "<space>o", nil, mode = { "n", "v" } }
+            { "<space>o", "<Plug>SearchVisual", { noremap = true, silent = true }, mode = "n" },
+            { "<space>o", "<Plug>SearchNormal", { noremap = true, silent = true }, mode = "v" },
         },
-        config = function()
-            km.set({ 'v' }, "<space>o", "<Plug>SearchVisual", { noremap = true, silent = true })
-            km.set({ 'n' }, "<space>o", "<Plug>SearchNormal", { noremap = true, silent = true })
-        end
     },
     {
         'rest-nvim/rest.nvim',

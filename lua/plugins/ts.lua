@@ -3,7 +3,7 @@ local km = vim.keymap
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        event = "BufEnter",
+        event = "VeryLazy",
         build = ':TSUpdate',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-context',
