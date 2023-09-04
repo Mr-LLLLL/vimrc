@@ -1,5 +1,3 @@
-local fn = vim.fn
-
 local m = {}
 
 m.startup = function()
@@ -10,23 +8,9 @@ m.startup = function()
 
             -- common library
             use {
-                { 'nvim-lua/plenary.nvim' },
-                { 'nvim-lua/popup.nvim' },
-                { 'nvim-tree/nvim-tree.lua' },
-                { 'nvim-tree/nvim-web-devicons' },
-                { 'neovim/nvim-lspconfig' },
-                { 'ray-x/lsp_signature.nvim' },
-                { 'jose-elias-alvarez/null-ls.nvim' },
             }
 
             use {
-                { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
-                {
-                    "williamboman/mason-lspconfig.nvim",
-                    requires = {
-                        "williamboman/mason.nvim",
-                    }
-                }
             }
 
             use {

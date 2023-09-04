@@ -89,8 +89,6 @@ local function load_base_option()
 end
 
 m.setup = function()
-    require("core.auto_ins").install()
-
     load_base_value()
     load_base_option()
     load_colorscheme()
