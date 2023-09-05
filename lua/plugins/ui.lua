@@ -384,7 +384,9 @@ return {
     {
         'linrongbin16/lsp-progress.nvim',
         event = "LspAttach",
-        dependencies = { "nvim-lualine/lualine.nvim" },
+        dependencies = {
+            "nvim-lualine/lualine.nvim",
+        },
         config = function()
             require("lsp-progress").setup {
                 format = function(client_messages)
@@ -545,16 +547,16 @@ return {
             presets = {
                 -- you can enable a preset by setting it to true, or a table that will override the preset config
                 -- you can also add custom presets that you can enable/disable with enabled=true
-                bottom_search = true,              -- use a classic bottom cmdline for search
-                command_palette = true,            -- position the cmdline and popupmenu together
-                long_message_to_split = false,     -- long messages will be sent to a split
-                inc_rename = false,                -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = false,            -- add a border to hover docs and signature help
+                bottom_search = true,          -- use a classic bottom cmdline for search
+                command_palette = true,        -- position the cmdline and popupmenu together
+                long_message_to_split = false, -- long messages will be sent to a split
+                inc_rename = false,            -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = false,        -- add a border to hover docs and signature help
             },
             cmdline = {
-                enabled = true,             -- enables the Noice cmdline UI
-                view = "cmdline_popup",     -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom,option cmdline_popup
-                opts = {},                  -- global options for the cmdline. See section on views
+                enabled = true,         -- enables the Noice cmdline UI
+                view = "cmdline_popup", -- view for rendering the cmdline. Change to `cmdline` to get a classic cmdline at the bottom,option cmdline_popup
+                opts = {},              -- global options for the cmdline. See section on views
                 format = {
                     -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
                     -- view: (default is cmdline view)
@@ -567,24 +569,24 @@ return {
                     filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
                     lua = { pattern = "^:%s*lua%s+", icon = require("common").glyphs["lua"], lang = "lua" },
                     help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
-                    input = {},     -- Used by input()
+                    input = {}, -- Used by input()
                     -- lua = false, -- to disable a format, set to `false`
                 },
             },
             messages = {
-                enabled = true,                -- enables the Noice messages UI
-                view = "notify",               -- default view for messages
-                view_error = "notify",         -- view for errors
-                view_warn = "notify",          -- view for warnings
-                view_history = "messages",     -- view for :messages
-                view_search = false,           -- view for search count messages. Set to `false` to disable
+                enabled = true,            -- enables the Noice messages UI
+                view = "notify",           -- default view for messages
+                view_error = "notify",     -- view for errors
+                view_warn = "notify",      -- view for warnings
+                view_history = "messages", -- view for :messages
+                view_search = false,       -- view for search count messages. Set to `false` to disable
             },
             popupmenu = {
-                enabled = false,     -- enables the Noice popupmenu UI
+                enabled = false, -- enables the Noice popupmenu UI
                 ---@type 'nui'|'cmp'
-                backend = "nui",     -- backend to use to show regular cmdline completions
+                backend = "nui", -- backend to use to show regular cmdline completions
                 -- Icons for completion item kinds (see defaults at noice.config.icons.kinds)
-                kind_icons = {},     -- set to `false` to disable icons
+                kind_icons = {}, -- set to `false` to disable icons
             },
             redirect = {
                 view = "popup",
@@ -648,7 +650,6 @@ return {
     },
     {
         'MR-LLLLL/interestingwords.nvim',
-        dependencies = { "nvim-lualine/lualine.nvim" },
         keys = {
             { "<leader>k", nil, mode = { "n", "v" } },
             { "<leader>m", nil, mode = { "n", "v" } },
@@ -703,140 +704,202 @@ return {
         end
     },
     {
-        "Bekaboo/dropbar.nvim",
-        enabled = false,
+        "SmiteshP/nvim-navic",
         event = "VeryLazy",
+        dependencies = {
+            "nvim-lualine/lualine.nvim",
+        },
         config = function()
-            local icons = {}
-            for k, v in pairs(require("common").treesiter_symbol) do
-                vim.api.nvim_set_hl(0, "DropBarIconKind" .. k, { link = v[2] })
-                vim.api.nvim_set_hl(0, "DropBarKind" .. k, { link = v[2] })
-                icons[k] = v[1]
-            end
-
-            require('dropbar').setup {
-                menu = {
-                    preview = true,
-                    quick_navigation = true,
-                    win_configs = {
-                        border = 'rounded',
-                    },
-                    keymaps = {
-                        ['<esc>'] = function()
-                            while true do
-                                local menu = require('dropbar.api').get_current_dropbar_menu()
-                                if not menu then
-                                    return
-                                end
-                                menu:close()
-                            end
-                        end,
-                        ['q'] = function()
-                            local menu = require('dropbar.api').get_current_dropbar_menu()
-                            if not menu then
-                                return
-                            end
-                            menu:close()
-                        end,
-                        ['o'] = function()
-                            local menu = require('dropbar.api').get_current_dropbar_menu()
-                            if not menu then
-                                return
-                            end
-                            local cursor = vim.api.nvim_win_get_cursor(menu.win)
-                            local component = menu.entries[cursor[1]]:first_clickable(0)
-                            if component then
-                                menu:click_on(component, nil, 1, 'l')
-                            end
-                        end,
-                        ['<CR>'] = function()
-                            local menu = require('dropbar.api').get_current_dropbar_menu()
-                            if not menu then
-                                return
-                            end
-                            local cursor = vim.api.nvim_win_get_cursor(menu.win)
-                            local component, range = menu.entries[cursor[1]]:first_clickable(0)
-                            if component then
-                                local next_component = menu.entries[cursor[1]]:first_clickable(range['end'])
-                                if next_component then
-                                    menu:click_on(next_component, nil, 1, 'l')
-                                else
-                                    menu:click_on(component, nil, 1, 'l')
-                                end
-                            end
-                        end,
-                    }
-                },
-                sources = {
-                },
-                bar = {
-                    sources = function(_, _)
-                        local sources = require('dropbar.sources')
-                        return {
-                            -- sources.path,
-                            {
-                                get_symbols = function(buf, win, cursor)
-                                    if vim.bo[buf].ft == 'markdown' then
-                                        return sources.markdown.get_symbols(buf, win, cursor)
-                                    end
-                                    for _, source in ipairs({
-                                        sources.lsp,
-                                        sources.treesitter,
-                                    }) do
-                                        local symbols = source.get_symbols(buf, win, cursor)
-                                        if not vim.tbl_isempty(symbols) then
-                                            return symbols
-                                        end
-                                    end
-                                    return {}
-                                end,
-                            },
-                        }
-                    end,
-                    padding = {
-                        left = 1,
-                        right = 1,
-                    },
-                    pick = {
-                        pivots = 'abcdefghijklmnopqrstuvwxyz',
-                    },
-                    truncate = true,
-                },
+            local navic = require("nvim-navic")
+            navic.setup({
                 icons = {
-                    kinds = {
-                        symbols = icons
-                    }
+                    File          = "󰈙 ",
+                    Module        = " ",
+                    Namespace     = "󰌗 ",
+                    Package       = " ",
+                    Class         = "󰌗 ",
+                    Method        = "󰆧 ",
+                    Property      = " ",
+                    Field         = " ",
+                    Constructor   = " ",
+                    Enum          = "󰕘",
+                    Interface     = "󰕘",
+                    Function      = "󰊕 ",
+                    Variable      = "󰆧 ",
+                    Constant      = "󰏿 ",
+                    String        = "󰀬 ",
+                    Number        = "󰎠 ",
+                    Boolean       = "◩ ",
+                    Array         = "󰅪 ",
+                    Object        = "󰅩 ",
+                    Key           = "󰌋 ",
+                    Null          = "󰟢 ",
+                    EnumMember    = " ",
+                    Struct        = "󰌗 ",
+                    Event         = " ",
+                    Operator      = "󰆕 ",
+                    TypeParameter = "󰊄 ",
                 },
-                symbol = {
-                    jump = {
-                        ---@param win integer source window id
-                        ---@param range {start: {line: integer}, end: {line: integer}} 0-indexed
-                        reorient = function(win, range)
-                            local view = vim.fn.winsaveview()
-                            local win_height = vim.api.nvim_win_get_height(win)
-                            local topline = range.start.line - math.floor(win_height / 2)
-                            if
-                                topline > view.topline
-                                and topline + win_height < vim.fn.line('$')
-                            then
-                                view.topline = topline
-                                vim.fn.winrestview(view)
-                            end
-                        end,
-                    },
-                }
-            }
+                lsp = {
+                    auto_attach = true,
+                    preference = nil,
+                },
+                highlight = false,
+                separator = "",
+                depth_limit = 0,
+                depth_limit_indicator = "..",
+                safe_output = true,
+                lazy_update_context = false,
+                click = false
+            })
 
-            vim.api.nvim_set_hl(0, "DropBarMenuCurrentContext", { bg = '#425047', blend = vim.g.custom_blend })
-
-            km.set(
-                { 'n' },
-                "<leader>q",
-                function() require('dropbar.api').pick() end,
-                { noremap = true, silent = true, desc = "Dropbar Pick" }
-            )
+            local old = require("lualine").get_config()
+            table.insert(old.sections.lualine_c, #old.sections.lualine_c + 1, {
+                function()
+                    return navic.get_location()
+                end,
+                cond = function()
+                    return navic.is_available()
+                end
+            })
+            require("lualine").setup(old)
         end
     },
+    -- {
+    --     "Bekaboo/dropbar.nvim",
+    --     enabled = false,
+    --     event = "VeryLazy",
+    --     config = function()
+    --         local icons = {}
+    --         for k, v in pairs(require("common").treesiter_symbol) do
+    --             vim.api.nvim_set_hl(0, "DropBarIconKind" .. k, { link = v[2] })
+    --             vim.api.nvim_set_hl(0, "DropBarKind" .. k, { link = v[2] })
+    --             icons[k] = v[1]
+    --         end
+    --
+    --         require('dropbar').setup {
+    --             menu = {
+    --                 preview = true,
+    --                 quick_navigation = true,
+    --                 win_configs = {
+    --                     border = 'rounded',
+    --                 },
+    --                 keymaps = {
+    --                     ['<esc>'] = function()
+    --                         while true do
+    --                             local menu = require('dropbar.api').get_current_dropbar_menu()
+    --                             if not menu then
+    --                                 return
+    --                             end
+    --                             menu:close()
+    --                         end
+    --                     end,
+    --                     ['q'] = function()
+    --                         local menu = require('dropbar.api').get_current_dropbar_menu()
+    --                         if not menu then
+    --                             return
+    --                         end
+    --                         menu:close()
+    --                     end,
+    --                     ['o'] = function()
+    --                         local menu = require('dropbar.api').get_current_dropbar_menu()
+    --                         if not menu then
+    --                             return
+    --                         end
+    --                         local cursor = vim.api.nvim_win_get_cursor(menu.win)
+    --                         local component = menu.entries[cursor[1]]:first_clickable(0)
+    --                         if component then
+    --                             menu:click_on(component, nil, 1, 'l')
+    --                         end
+    --                     end,
+    --                     ['<CR>'] = function()
+    --                         local menu = require('dropbar.api').get_current_dropbar_menu()
+    --                         if not menu then
+    --                             return
+    --                         end
+    --                         local cursor = vim.api.nvim_win_get_cursor(menu.win)
+    --                         local component, range = menu.entries[cursor[1]]:first_clickable(0)
+    --                         if component then
+    --                             local next_component = menu.entries[cursor[1]]:first_clickable(range['end'])
+    --                             if next_component then
+    --                                 menu:click_on(next_component, nil, 1, 'l')
+    --                             else
+    --                                 menu:click_on(component, nil, 1, 'l')
+    --                             end
+    --                         end
+    --                     end,
+    --                 }
+    --             },
+    --             sources = {
+    --             },
+    --             bar = {
+    --                 sources = function(_, _)
+    --                     local sources = require('dropbar.sources')
+    --                     return {
+    --                         -- sources.path,
+    --                         {
+    --                             get_symbols = function(buf, win, cursor)
+    --                                 if vim.bo[buf].ft == 'markdown' then
+    --                                     return sources.markdown.get_symbols(buf, win, cursor)
+    --                                 end
+    --                                 for _, source in ipairs({
+    --                                     sources.lsp,
+    --                                     sources.treesitter,
+    --                                 }) do
+    --                                     local symbols = source.get_symbols(buf, win, cursor)
+    --                                     if not vim.tbl_isempty(symbols) then
+    --                                         return symbols
+    --                                     end
+    --                                 end
+    --                                 return {}
+    --                             end,
+    --                         },
+    --                     }
+    --                 end,
+    --                 padding = {
+    --                     left = 1,
+    --                     right = 1,
+    --                 },
+    --                 pick = {
+    --                     pivots = 'abcdefghijklmnopqrstuvwxyz',
+    --                 },
+    --                 truncate = true,
+    --             },
+    --             icons = {
+    --                 kinds = {
+    --                     symbols = icons
+    --                 }
+    --             },
+    --             symbol = {
+    --                 jump = {
+    --                     ---@param win integer source window id
+    --                     ---@param range {start: {line: integer}, end: {line: integer}} 0-indexed
+    --                     reorient = function(win, range)
+    --                         local view = vim.fn.winsaveview()
+    --                         local win_height = vim.api.nvim_win_get_height(win)
+    --                         local topline = range.start.line - math.floor(win_height / 2)
+    --                         if
+    --                             topline > view.topline
+    --                             and topline + win_height < vim.fn.line('$')
+    --                         then
+    --                             view.topline = topline
+    --                             vim.fn.winrestview(view)
+    --                         end
+    --                     end,
+    --                 },
+    --             }
+    --         }
+    --
+    --         vim.api.nvim_set_hl(0, "DropBarMenuCurrentContext", { bg = '#425047', blend = vim.g.custom_blend })
+    --
+    --         km.set(
+    --             { 'n' },
+    --             "<leader>q",
+    --             function() require('dropbar.api').pick() end,
+    --             { noremap = true, silent = true, desc = "Dropbar Pick" }
+    --         )
+    --     end
+    -- },
     {
         'kevinhwang91/nvim-ufo',
         event = "VeryLazy",

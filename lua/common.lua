@@ -132,8 +132,6 @@ end
 m.lsp_on_attack    = function(client, bufnr)
     local tele_builtin = require("telescope.builtin")
 
-    require "lsp_signature".on_attach(require("lsp_signature").setup(), bufnr)
-
     --     -- Enable completion triggered by <c-x><c-o>
     api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     --
