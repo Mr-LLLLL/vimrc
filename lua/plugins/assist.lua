@@ -346,7 +346,7 @@ return {
     {
         'numToStr/Comment.nvim',
         keys = {
-            { "<leader>/", nil }
+            { "<leader>/", nil, mode = { "n", "v" } }
         },
         config = function()
             require('Comment').setup({
@@ -573,7 +573,7 @@ return {
     },
     {
         'sindrets/diffview.nvim',
-        cmd = "OpenDiff",
+        cmd = "DiffviewOpen",
         config = function()
             local actions = require("diffview.actions")
 

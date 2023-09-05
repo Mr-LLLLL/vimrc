@@ -379,22 +379,6 @@ return {
                     'toggleterm',
                 }
             })
-
-            -- listen to user event and trigger lualine refresh
-            local lualine_augroup = api.nvim_create_augroup("LualineAugroup", { clear = true })
-            api.nvim_create_autocmd(
-                { "User" },
-                {
-                    pattern = "LspProgressStatusUpdated",
-                    callback = function()
-                        require("lualine").refresh({
-                            scope = 'tabpage',
-                            place = { 'statusline' }
-                        })
-                    end,
-                    group = lualine_augroup,
-                }
-            )
         end,
     },
     {
@@ -414,6 +398,21 @@ return {
             local old = require("lualine").get_config()
             table.insert(old.sections.lualine_x, 1, require("lsp-progress").progress)
             require("lualine").setup(old)
+
+            local lualine_augroup = api.nvim_create_augroup("LualineAugroup", { clear = true })
+            api.nvim_create_autocmd(
+                { "User" },
+                {
+                    pattern = "LspProgressStatusUpdated",
+                    callback = function()
+                        require("lualine").refresh({
+                            scope = 'tabpage',
+                            place = { 'statusline' }
+                        })
+                    end,
+                    group = lualine_augroup,
+                }
+            )
         end
     },
     {

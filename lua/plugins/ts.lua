@@ -11,9 +11,6 @@ return {
         event = "VeryLazy",
         build = ':TSUpdate',
         dependencies = {
-            'nvim-treesitter/nvim-treesitter-context',
-            'nvim-treesitter/nvim-treesitter-textobjects',
-            'RRethy/nvim-treesitter-textsubjects',
             'p00f/nvim-ts-rainbow',
             'm-demare/hlargs.nvim',
         },
@@ -141,8 +138,25 @@ return {
         end
     },
     {
+        'RRethy/nvim-treesitter-textsubjects',
+        event = "CursorMoved",
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        event = "CursorMoved",
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
+    },
+    {
         'nvim-treesitter/nvim-treesitter-context',
-        lazy = true,
+        event = "CursorMoved",
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        },
         config = function()
             require 'treesitter-context'.setup {
                 enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)

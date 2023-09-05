@@ -57,24 +57,25 @@ function m.extend(is_start)
     local lang = parsers.get_buf_lang(bufnr)
     if not lang then return end
 
+    local max = { 0, 0 }
     local sel = normalize_selection(vim.fn.getpos("."), vim.fn.getpos("."))
-    local matches = queries.get_capture_matches_recursively(bufnr, '@range', "textsubjects-smart")
-    for _, v in pairs(matches) do
+    local nodes = queries.get_capture_matches_recursively(bufnr, '@range', "textsubjects-smart")
+    for _, v in pairs(nodes) do
         local match_start_row, match_start_col = unpack(v.node.start_pos)
         local match_end_row, match_end_col = unpack(v.node.end_pos)
         local match = { match_start_row, match_start_col, match_end_row, match_end_col }
-
-        -- performance the speed, if can't match again
-        if match[1] > sel[1] then
-            break
-        end
-        -- match must cover an exclusively bigger range than the current selection
         if does_surround(match, sel) then
-            if is_start then
-                vim.api.nvim_win_set_cursor(0, { match[1] + 1, match[2] })
-            else
-                vim.api.nvim_win_set_cursor(0, { match[3] + 1, match[4] })
+            if match[1] > max[1] or match[1] == max[1] and match[2] > max[2] then
+                max = match
             end
+        end
+    end
+
+    if #max > 2 then
+        if is_start then
+            vim.api.nvim_win_set_cursor(0, { max[1] + 1, max[2] })
+        else
+            vim.api.nvim_win_set_cursor(0, { max[3] + 1, max[4] })
         end
     end
 end
