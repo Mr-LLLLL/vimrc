@@ -3,19 +3,18 @@ local g = vim.g
 
 return {
     {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        lazy = true,
+        build = 'build',
+    },
+    {
         'nvim-telescope/telescope.nvim',
         version = '0.1.x',
         keys = {
-            { "<space>", nil }
+            { "<space>s", nil }
         },
         dependencies = {
-            'nvim-telescope/telescope-frecency.nvim',
-            'nvim-telescope/telescope-file-browser.nvim',
-            'gbprod/yanky.nvim',
-            'nvim-telescope/telescope-project.nvim',
-            'dhruvmanila/telescope-bookmarks.nvim',
             'nvim-telescope/telescope-fzf-native.nvim',
-            'kkharji/sqlite.lua',
         },
         config = function()
             local glyphs = require("common").glyphs
@@ -179,33 +178,67 @@ return {
                 },
             })
 
-            require("telescope").load_extension("refactoring")
             require("telescope").load_extension("todo-comments")
             require("telescope").load_extension("noice")
             require("telescope").load_extension("notify")
-            require("telescope").load_extension("yank_history")
-            require('telescope').load_extension('project')
-            require("telescope").load_extension("frecency")
+
             require('telescope').load_extension('fzf')
-            require('telescope').load_extension('bookmarks')
-            require("telescope").load_extension('file_browser')
 
             km.set('n', "<space>ss", "<cmd>Telescope<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sp", "<cmd>Telescope resume<CR>", { noremap = true, silent = true })
             km.set('n', "<space>se", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sm", "<cmd>Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sr", "<cmd>Telescope oldfiles<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sf", "<cmd>Telescope file_browser<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sl", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
-
-            km.set('n', '<space>i', require("common").get_tele_project,
-                { noremap = true, silent = true, desc = "telescope projects" })
+        end
+    },
+    {
+        'nvim-telescope/telescope-frecency.nvim',
+        keys = {
+            { "<space>sm", "<cmd>Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true } }
+        },
+        dependencies = {
+            'kkharji/sqlite.lua',
+            'nvim-telescope/telescope.nvim',
+        },
+        config = function()
+            require("telescope").load_extension("frecency")
+        end
+    },
+    {
+        'nvim-telescope/telescope-file-browser.nvim',
+        keys = {
+            { "<space>sf", "<cmd>Telescope file_browser<CR>", { noremap = true, silent = true } }
+        },
+        dependencies = {
+            'nvim-telescope/telescope.nvim',
+        },
+        config = function()
+            require("telescope").load_extension('file_browser')
+        end
+    },
+    {
+        'nvim-telescope/telescope-project.nvim',
+        keys = {
+            { '<space>i', require("common").get_tele_project,
+                { noremap = true, silent = true, desc = "telescope projects" } }
+        },
+        dependencies = {
+            'nvim-telescope/telescope.nvim',
+        },
+        config = function()
+            require('telescope').load_extension('project')
         end
     },
     {
         'gbprod/yanky.nvim',
-        lazy = true,
+        keys = {
+            { "<space>ss", nil }
+        },
+        dependencies = {
+            'kkharji/sqlite.lua',
+            'nvim-telescope/telescope.nvim',
+        },
         config = function()
             local mapping = require("yanky.telescope.mapping")
             local actions = require("telescope.actions")
@@ -238,21 +271,22 @@ return {
                     },
                 },
             })
+
+            require("telescope").load_extension("yank_history")
         end
     },
     {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        lazy = true,
-        build = 'make',
-    },
-    {
         'dhruvmanila/telescope-bookmarks.nvim',
-        lazy = true,
+        keys = { "<space>ss", nil },
         version = '*',
         -- Uncomment if the selected browser is Firefox, Waterfox or buku
         dependencies = {
             'tyru/open-browser.vim',
-        }
+            'nvim-telescope/telescope.nvim',
+        },
+        config = function()
+            require('telescope').load_extension('bookmarks')
+        end
     },
     {
         'renerocksai/telekasten.nvim',

@@ -168,15 +168,13 @@ return {
     {
         'voldikss/vim-browser-search',
         keys = {
-            { "<space>o", "<Plug>SearchVisual", { noremap = true, silent = true }, mode = "n" },
-            { "<space>o", "<Plug>SearchNormal", { noremap = true, silent = true }, mode = "v" },
+            { "<space>o", "<Plug>SearchVisual", { noremap = true, silent = true }, mode = "v" },
+            { "<space>o", "<Plug>SearchNormal", { noremap = true, silent = true }, mode = "n" },
         },
     },
     {
         'rest-nvim/rest.nvim',
-        keys = {
-            { "<leader>c", nil }
-        },
+        ft = "http",
         config = function()
             require("rest-nvim").setup({
                 -- Open request results in a horizontal split

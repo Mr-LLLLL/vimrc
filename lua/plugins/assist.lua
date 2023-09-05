@@ -346,22 +346,7 @@ return {
     {
         'numToStr/Comment.nvim',
         keys = {
-            { "<leader>/", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' }, mode = "n" },
-            {
-                "<leader>//",
-                function()
-                    return api.nvim_get_vvar('count') == 0 and '<Plug>(comment_toggle_linewise_current)'
-                        or '<Plug>(comment_toggle_linewise_count)'
-                end,
-                { expr = true, desc = 'Comment toggle current line' },
-                mode = "n"
-            },
-            {
-                "<leader>/",
-                '<Plug>(comment_toggle_linewise_visual)',
-                { desc = 'Comment toggle linewise (visual)' },
-                mode = "x"
-            }
+            { "<leader>/", nil }
         },
         config = function()
             require('Comment').setup({
@@ -409,6 +394,19 @@ return {
             })
 
             -- forbid default mapping, customer my key mapping
+            km.set("n", "<leader>/", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' })
+            km.set("n",
+                "<leader>//",
+                function()
+                    return api.nvim_get_vvar('count') == 0 and '<Plug>(comment_toggle_linewise_current)'
+                        or '<Plug>(comment_toggle_linewise_count)'
+                end,
+                { expr = true, desc = 'Comment toggle current line' })
+            km.set(
+                "x",
+                "<leader>/",
+                '<Plug>(comment_toggle_linewise_visual)',
+                { desc = 'Comment toggle linewise (visual)' })
         end
     },
     {
@@ -524,7 +522,7 @@ return {
                     border = 'rounded',
                     -- like `size`, width and height can be a number or function which is passed the current terminal
                     width = vim.o.columns - 3,
-                    height = g.neovide and vim.o.lines - 4 or vim.o.lines - 3,
+                    height = g.neovide and vim.o.lines - 3 or vim.o.lines - 3,
                     winblend = vim.g.custom_blend,
                 },
                 winbar = {
@@ -920,6 +918,8 @@ return {
                 "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
                 { noremap = true }
             )
+
+            require("telescope").load_extension("refactoring")
         end
     },
     {

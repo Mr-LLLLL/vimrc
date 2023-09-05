@@ -1,6 +1,11 @@
-local km = vim.keymap
-
 return {
+    {
+        'RRethy/nvim-treesitter-endwise',
+        event = "InsertEnter",
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+        }
+    },
     {
         'nvim-treesitter/nvim-treesitter',
         event = "VeryLazy",
@@ -9,7 +14,6 @@ return {
             'nvim-treesitter/nvim-treesitter-context',
             'nvim-treesitter/nvim-treesitter-textobjects',
             'RRethy/nvim-treesitter-textsubjects',
-            'RRethy/nvim-treesitter-endwise',
             'p00f/nvim-ts-rainbow',
             'm-demare/hlargs.nvim',
         },

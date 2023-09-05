@@ -231,7 +231,6 @@ return {
                         },
                     },
                     lualine_x = {
-                        require("lsp-progress").progress,
                         -- {
                         --     require("noice").api.status.message.get_hl,
                         --     cond = require("noice").api.status.message.has,
@@ -254,11 +253,6 @@ return {
                                     return false
                                 end
                             end,
-                            color = { fg = "#ff9e64" },
-                        },
-                        {
-                            require("interestingwords").lualine_get,
-                            cond = require("interestingwords").lualine_has,
                             color = { fg = "#ff9e64" },
                         },
                         'encoding',
@@ -400,20 +394,24 @@ return {
                 }
             )
         end,
-        dependencies = { 'linrongbin16/lsp-progress.nvim' },
     },
     {
         'linrongbin16/lsp-progress.nvim',
         event = "LspAttach",
+        dependencies = { "nvim-lualine/lualine.nvim" },
         config = function()
-            require('lsp-progress').setup({
+            require("lsp-progress").setup {
                 format = function(client_messages)
                     return #client_messages > 0
                         and (" LSP " .. table.concat(client_messages, " "))
                         or ""
                 end,
                 decay = 3000,
-            })
+            }
+
+            local old = require("lualine").get_config()
+            table.insert(old.sections.lualine_x, 1, require("lsp-progress").progress)
+            require("lualine").setup(old)
         end
     },
     {
@@ -651,10 +649,29 @@ return {
     },
     {
         'MR-LLLLL/interestingwords.nvim',
-        event = "VeryLazy",
-        opts = {
-            colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#ff5e63', '#ff9036', '#CF9292', '#BFA3DF', '#9999EA' },
+        dependencies = { "nvim-lualine/lualine.nvim" },
+        keys = {
+            { "<leader>k", nil, mode = { "n", "v" } },
+            { "<leader>m", nil, mode = { "n", "v" } },
+            { "n",         nil, mode = { "n", "v" } },
+            { "N",         nil, mode = { "n", "v" } },
+            { "/",         nil, mode = { "n", "v" } },
         },
+        config = function()
+            require("interestingwords").setup {
+                colors = { '#6CBBDA', '#A4C5EA', '#DFDB72', '#ff5e63', '#ff9036', '#CF9292', '#BFA3DF', '#9999EA' },
+                search_key = "<leader>m",
+                color_key = "<leader>k",
+            }
+
+            local old = require("lualine").get_config()
+            table.insert(old.sections.lualine_x, #old.sections.lualine_x, {
+                require("interestingwords").lualine_get,
+                cond = require("interestingwords").lualine_has,
+                color = { fg = "#ff9e64" },
+            })
+            require("lualine").setup(old)
+        end,
     },
     {
         'lukas-reineke/indent-blankline.nvim',
@@ -690,6 +707,7 @@ return {
     },
     {
         "Bekaboo/dropbar.nvim",
+        enabled = false,
         event = "VeryLazy",
         config = function()
             local icons = {}
