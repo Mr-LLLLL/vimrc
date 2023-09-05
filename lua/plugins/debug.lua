@@ -169,14 +169,34 @@ local get_dapui_conf = function()
     }
 end
 
-local function delete_cmd()
+local function user_cmd()
     api.nvim_del_user_command('DapContinue')
+    api.nvim_del_user_command('GoDbgContinue')
+    api.nvim_del_user_command('DapRerun')
+    api.nvim_del_user_command('DapStop')
+    api.nvim_del_user_command('DapTerminate')
+    api.nvim_del_user_command('DapUiFloat')
+    api.nvim_del_user_command('DapUiToggle')
+    api.nvim_del_user_command('GoDbgKeys')
+    api.nvim_del_user_command('GoBreakToggle')
+    api.nvim_del_user_command('GoDbgConfig')
+    api.nvim_del_user_command('GoCreateLaunch')
+    api.nvim_del_user_command('GoDbgStop')
     api.nvim_del_user_command('DapToggleRepl')
     api.nvim_del_user_command('DapStepOver')
     api.nvim_del_user_command('DapStepInto')
     api.nvim_del_user_command('DapStepOut')
     api.nvim_del_user_command('DapLoadLaunchJSON')
     api.nvim_del_user_command('DapRestartFrame')
+    api.nvim_del_user_command('BreakCondition')
+
+    api.nvim_create_user_command('DapBreakCondition', function(_)
+        local dap = require("dap")
+        if not dap then
+            return
+        end
+        dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
+    end, {})
 end
 
 local function load_dap()
@@ -227,7 +247,7 @@ local function load_dap()
     end
 
     load_cmd()
-    delete_cmd()
+    user_cmd()
 end
 
 return {
@@ -237,6 +257,7 @@ return {
         dependencies = {
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',
+            'ray-x/go.nvim',
         },
         config = function()
             init_keys()
