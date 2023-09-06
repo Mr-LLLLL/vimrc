@@ -162,7 +162,7 @@ return {
                 colors = {
                     color = '#4f5b58',
                     fg    = '#9da9a0',
-                    fg2   = '#7a8478'
+                    fg2   = '#888888'
                 }
             end
 
@@ -329,7 +329,10 @@ return {
                             inactive = { fg = colors.fg, bg = colors.color }, -- Color for inactive tab.
                         },
                     } },
-                    lualine_x = { {
+                    lualine_b = {},
+                    lualine_c = {},
+                    lualine_x = {},
+                    lualine_y = { {
                         'windows',
                         show_filename_only = false,  -- Shows shortened relative path when set to false.
                         show_modified_status = true, -- Shows indicator when the window is modified.
@@ -754,7 +757,7 @@ return {
             })
 
             local old = require("lualine").get_config()
-            table.insert(old.sections.lualine_c, #old.sections.lualine_c + 1, {
+            table.insert(old.tabline.lualine_c, #old.tabline.lualine_c + 1, {
                 function()
                     return navic.get_location()
                 end,
