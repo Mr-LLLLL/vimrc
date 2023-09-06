@@ -242,5 +242,9 @@ return {
     {
         'renerocksai/calendar-vim',
         cmd = "Calendar"
-    }
+    },
+    {
+        'eandrju/cellular-automaton.nvim',
+        cmd = "CellularAutomaton",
+    },
 }

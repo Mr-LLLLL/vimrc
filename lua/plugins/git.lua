@@ -80,7 +80,7 @@ return {
             })
 
             local old = require("lualine").get_config()
-            table.insert(old.tabline.lualine_x, #old.tabline.lualine_x, {
+            table.insert(old.tabline.lualine_x, 1, {
                 function() return vim.b.gitsigns_blame_line end,
                 cond = function() return vim.b.gitsigns_blame_line ~= nil end,
             })
