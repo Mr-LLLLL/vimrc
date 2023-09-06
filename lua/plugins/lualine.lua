@@ -24,7 +24,8 @@ return {
             end
 
             local glyphs = require("common").glyphs
-            local lsp_info = { ["textDocument/references"] = 0, ["textDocument/implementation"] = 0 }
+            local lsp_ref = -1
+            local lsp_imp = -1
 
             local custom_auto_cmd = api.nvim_create_augroup("LualineLsp", { clear = true })
             api.nvim_create_autocmd(
@@ -35,16 +36,30 @@ return {
                     callback = function()
                         local lspParam = vim.lsp.util.make_position_params(fn.win_getid())
                         lspParam.context = { includeDeclaration = false }
-                        for k, v in pairs(lsp_info) do
-                            vim.lsp.buf_request(fn.bufnr(), k, lspParam, function(err, result, _, _)
+                        for i, v in ipairs({ "textDocument/references", "textDocument/implementation" }) do
+                            for _, client in ipairs(vim.lsp.get_clients({ bufnr = fn.bufnr() })) do
+                                if not client.supports_method(v) then
+                                    return
+                                end
+                            end
+
+                            vim.lsp.buf_request(fn.bufnr(), v, lspParam, function(err, result, _, _)
                                 if err then
-                                    lsp_info[k] = -1
+                                    if i == 1 then
+                                        lsp_ref = -1
+                                    else
+                                        lsp_imp = -1
+                                    end
                                     return
                                 end
                                 if result then
                                     -- textDocument/definition can return Location or Location[]
                                     if vim.tbl_islist(result) then
-                                        lsp_info[k] = #result
+                                        if i == 1 then
+                                            lsp_ref = #result
+                                        else
+                                            lsp_imp = #result
+                                        end
                                     end
                                 end
                             end)
@@ -118,19 +133,21 @@ return {
                         },
                         {
                             function()
-                                local res = ""
-                                for _, v in pairs(lsp_info) do
-                                    res = res .. " " .. v
-                                end
-                                return res
+                                return "󰁞 " .. lsp_ref
                             end,
                             cond = function()
-                                for _, v in pairs(lsp_info) do
-                                    if v ~= -1 then
-                                        return true
-                                    end
-                                end
-                                return false
+                                return lsp_ref ~= -1
+                            end,
+                            on_click = function()
+                                vim.print("skjdf")
+                            end
+                        },
+                        {
+                            function()
+                                return " " .. lsp_imp
+                            end,
+                            cond = function()
+                                return lsp_imp ~= -1
                             end
                         },
                     },

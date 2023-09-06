@@ -294,21 +294,6 @@ end
 
 local function set_lsp_cmd()
     local custom_auto_format = api.nvim_create_augroup("CustomAutoFormat", { clear = true })
-    local format_filetypes = {
-        go = true,
-        python = true,
-        rust = true,
-        json = true,
-        yaml = true,
-        toml = true,
-        lua = true,
-        proto = true,
-        c = true,
-        cpp = true,
-        sh = true,
-        vim = true,
-        java = true,
-    }
     api.nvim_create_autocmd(
         { 'BufWritePre' },
         {
@@ -318,11 +303,18 @@ local function set_lsp_cmd()
                     return
                 end
 
-                local ft = api.nvim_buf_get_option(0, 'filetype')
-                if not format_filetypes[ft] then
+                local clients = vim.lsp.get_clients({ bufnr = vim.fn.bufnr() })
+                if #clients == 0 then
                     return
                 end
 
+                for _, client in ipairs(clients) do
+                    if not client.supports_method("textDocument/formatting") then
+                        return
+                    end
+                end
+
+                local ft = api.nvim_buf_get_option(0, 'filetype')
                 if ft == "go" then
                     require('go.format').goimport()
                 else
