@@ -448,6 +448,8 @@ return {
         keys = {
             { "<leader>v", nil, mode = { "n", "x" } },
             { "<leader>V", nil, mode = { "n", "x" } },
+            { "<C-Up>",    nil, mode = { "n" } },
+            { "<C-Down>",  nil, mode = { "n" } },
         },
         init = function()
             g.VM_maps = {
