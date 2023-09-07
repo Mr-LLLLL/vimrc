@@ -90,7 +90,7 @@ return {
                                     local content = vim.split(value, '\n', { trimempty = true })
 
                                     if #content > 1 then
-                                        lsp_info[k] = content[2]
+                                        lsp_info[k] = string.match(content[2], "[^{]+")
                                     end
                                 elseif vim.tbl_islist(result) then
                                     lsp_info[k] = tostring(#result)
