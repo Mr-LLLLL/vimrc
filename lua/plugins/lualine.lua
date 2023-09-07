@@ -88,9 +88,25 @@ return {
                                         return
                                     end
                                     local content = vim.split(value, '\n', { trimempty = true })
-
-                                    if #content > 1 then
-                                        lsp_info[k] = string.match(content[2], "[^{]+")
+                                    if clients[1].name == "rust_analyzer" then
+                                        if #content > 2 then
+                                            lsp_info[k] = content[2]
+                                            if #content > 6 and content[5] == "```rust" then
+                                                lsp_info[k] = lsp_info[k] .. "  "
+                                            else
+                                                return
+                                            end
+                                            for i = 6, #content, 1 do
+                                                if content[i] == "```" then
+                                                    break
+                                                end
+                                                lsp_info[k] = lsp_info[k] .. string.match(content[i], "%a[^,]+") .. " "
+                                            end
+                                        end
+                                    else
+                                        if #content > 1 then
+                                            lsp_info[k] = string.match(content[2], "[^{]+")
+                                        end
                                     end
                                 elseif vim.tbl_islist(result) then
                                     lsp_info[k] = tostring(#result)
