@@ -8,6 +8,16 @@ return {
         build = 'make',
     },
     {
+        'dhruvmanila/telescope-bookmarks.nvim',
+        lazy = true,
+        version = '*',
+        -- Uncomment if the selected browser is Firefox, Waterfox or buku
+        dependencies = {
+            'tyru/open-browser.vim',
+            'kkharji/sqlite.lua',
+        },
+    },
+    {
         'nvim-telescope/telescope.nvim',
         version = '0.1.x',
         keys = {
@@ -15,7 +25,6 @@ return {
         },
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
-            'gbprod/yanky.nvim',
             'dhruvmanila/telescope-bookmarks.nvim',
         },
         config = function()
@@ -184,6 +193,7 @@ return {
             require("telescope").load_extension("noice")
             require("telescope").load_extension("notify")
 
+            require('telescope').load_extension('bookmarks')
             require('telescope').load_extension('fzf')
 
             km.set('n', "<space>ss", "<cmd>Telescope<CR>", { noremap = true, silent = true })
@@ -234,9 +244,12 @@ return {
     },
     {
         'gbprod/yanky.nvim',
-        lazy = true,
+        keys = {
+            { "<space>sy", "<cmd>Telescope yank_history<CR>", { noremap = true, silent = true } },
+        },
         dependencies = {
             'kkharji/sqlite.lua',
+            'nvim-telescope/telescope.nvim',
         },
         config = function()
             local mapping = require("yanky.telescope.mapping")
@@ -272,18 +285,6 @@ return {
             })
 
             require("telescope").load_extension("yank_history")
-        end
-    },
-    {
-        'dhruvmanila/telescope-bookmarks.nvim',
-        lazy = true,
-        version = '*',
-        -- Uncomment if the selected browser is Firefox, Waterfox or buku
-        dependencies = {
-            'tyru/open-browser.vim',
-        },
-        config = function()
-            require('telescope').load_extension('bookmarks')
         end
     },
     {
