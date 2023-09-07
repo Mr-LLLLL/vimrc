@@ -11,10 +11,12 @@ return {
         'nvim-telescope/telescope.nvim',
         version = '0.1.x',
         keys = {
-            { "<space>s", nil }
+            { "<space>ss", nil }
         },
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
+            'gbprod/yanky.nvim',
+            'dhruvmanila/telescope-bookmarks.nvim',
         },
         config = function()
             local glyphs = require("common").glyphs
@@ -232,12 +234,9 @@ return {
     },
     {
         'gbprod/yanky.nvim',
-        keys = {
-            { "<space>ss", nil }
-        },
+        lazy = true,
         dependencies = {
             'kkharji/sqlite.lua',
-            'nvim-telescope/telescope.nvim',
         },
         config = function()
             local mapping = require("yanky.telescope.mapping")
@@ -277,12 +276,11 @@ return {
     },
     {
         'dhruvmanila/telescope-bookmarks.nvim',
-        keys = { "<space>ss", nil },
+        lazy = true,
         version = '*',
         -- Uncomment if the selected browser is Firefox, Waterfox or buku
         dependencies = {
             'tyru/open-browser.vim',
-            'nvim-telescope/telescope.nvim',
         },
         config = function()
             require('telescope').load_extension('bookmarks')
