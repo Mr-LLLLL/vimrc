@@ -88,11 +88,11 @@ m.lsp_capabilities = function()
 end
 
 
-local list_or_jump = function(action, f, param)
+m.list_or_jump     = function(action, f, param)
     local tele_action = require("telescope.actions")
     local lspParam = vim.lsp.util.make_position_params(fn.win_getid())
     lspParam.context = { includeDeclaration = false }
-    vim.lsp.buf_request(fn.bufnr(), action, lspParam, function(err, result, ctx, _)
+    vim.lsp.buf_request(api.nvim_get_current_buf(), action, lspParam, function(err, result, ctx, _)
         if err then
             api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
             return
@@ -141,51 +141,51 @@ m.lsp_on_attack    = function(client, bufnr)
     --     km.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     --     km.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     km.set('n', '<c-]>', function()
-        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
+        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
     end, m.keymap_desc(bufopts, "lsp definition"))
 
     km.set('n', '<c-w>]', function()
-        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
+        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
     end, m.keymap_desc(bufopts, "lsp definition with vsplit"))
 
     km.set('n', '<c-w><c-]>', function()
-        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
+        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
     end, m.keymap_desc(bufopts, "lsp definition with tab"))
 
     km.set('n', '<C-LeftMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
+        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
     end, m.keymap_desc(bufopts, "lsp definition"))
 
     km.set('n', 'gi', function()
-        list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
+        m.list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
     end, m.keymap_desc(bufopts, "lsp implementation"))
 
     km.set('n', 'g<LeftMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
+        m.list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
     end, m.keymap_desc(bufopts, "lsp implementation"))
 
     km.set('n', 'gr', function()
-        list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
+        m.list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
     end, m.keymap_desc(bufopts, "lsp references"))
 
     km.set('n', '<C-RightMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
+        m.list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
     end, m.keymap_desc(bufopts, "lsp references"))
 
     km.set('n', 'gy', function()
-        list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
+        m.list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
     end, m.keymap_desc(bufopts, "lsp typeDefinition"))
 
     km.set('n', 'g<RightMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
+        m.list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
     end, m.keymap_desc(bufopts, "lsp typeDefinition"))
 
     km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end,

@@ -24,8 +24,11 @@ return {
             end
 
             local glyphs = require("common").glyphs
-            local lsp_ref = -1
-            local lsp_imp = -1
+            local lsp_info = {
+                ["textDocument/references"] = "",
+                ["textDocument/implementation"] = "",
+                ["textDocument/hover"] = "",
+            }
 
             local custom_auto_cmd = api.nvim_create_augroup("LualineLsp", { clear = true })
             api.nvim_create_autocmd(
@@ -36,33 +39,65 @@ return {
                     callback = function()
                         local lspParam = vim.lsp.util.make_position_params(fn.win_getid())
                         lspParam.context = { includeDeclaration = false }
-                        for i, v in ipairs({ "textDocument/references", "textDocument/implementation" }) do
-                            for _, client in ipairs(vim.lsp.get_clients({ bufnr = fn.bufnr() })) do
-                                if not client.supports_method(v) then
-                                    return
+                        for k in pairs(lsp_info) do
+                            lsp_info[k] = ""
+                            local clients = vim.lsp.get_active_clients({ bufnr = api.nvim_get_current_buf() })
+                            if not vim.tbl_islist(clients) or #clients == 0 then
+                                goto continue
+                            end
+
+                            for _, client in ipairs(clients) do
+                                if not client.supports_method(k) then
+                                    goto continue
                                 end
                             end
 
-                            vim.lsp.buf_request(fn.bufnr(), v, lspParam, function(err, result, _, _)
+                            vim.lsp.buf_request(api.nvim_get_current_buf(), k, lspParam, function(err, result, _, _)
                                 if err then
-                                    if i == 1 then
-                                        lsp_ref = -1
-                                    else
-                                        lsp_imp = -1
-                                    end
                                     return
                                 end
-                                if result then
-                                    -- textDocument/definition can return Location or Location[]
-                                    if vim.tbl_islist(result) then
-                                        if i == 1 then
-                                            lsp_ref = #result
-                                        else
-                                            lsp_imp = #result
-                                        end
+
+                                if not result then
+                                    return
+                                end
+
+                                if k == "textDocument/hover" then
+                                    if not result.contents then
+                                        return
                                     end
+
+                                    local value
+                                    if type(result.contents) == 'string' then   -- MarkedString
+                                        value = result.contents
+                                    elseif result.contents.language then        -- MarkedString
+                                        value = result.contents.value
+                                    elseif vim.tbl_islist(result.contents) then -- MarkedString[]
+                                        if vim.tbl_isempty(result.contents) then
+                                            return
+                                        end
+                                        local values = {}
+                                        for _, ms in ipairs(result.contents) do
+                                            table.insert(values, type(ms) == 'string' and ms or ms.value)
+                                        end
+                                        value = table.concat(values, '\n')
+                                    elseif result.contents.kind then -- MarkupContent
+                                        value = result.contents.value
+                                    end
+
+                                    if not value or #value == 0 then
+                                        return
+                                    end
+                                    local content = vim.split(value, '\n', { trimempty = true })
+
+                                    if #content > 1 then
+                                        lsp_info[k] = content[2]
+                                    end
+                                elseif vim.tbl_islist(result) then
+                                    lsp_info[k] = tostring(#result)
+                                    return
                                 end
                             end)
+                            ::continue::
                         end
                     end,
                     group = custom_auto_cmd,
@@ -133,21 +168,39 @@ return {
                         },
                         {
                             function()
-                                return "󰁞 " .. lsp_ref
+                                return "󰁞 " .. lsp_info["textDocument/references"]
                             end,
                             cond = function()
-                                return lsp_ref ~= -1
+                                return lsp_info["textDocument/references"] ~= ""
                             end,
                             on_click = function()
-                                vim.print("skjdf")
+                                local tele_builtin = require("telescope.builtin")
+                                require("common").list_or_jump("textDocument/references", tele_builtin.lsp_references,
+                                    { include_declaration = false })
                             end
                         },
                         {
                             function()
-                                return " " .. lsp_imp
+                                return " " .. lsp_info["textDocument/implementation"]
                             end,
                             cond = function()
-                                return lsp_imp ~= -1
+                                return lsp_info["textDocument/implementation"] ~= ""
+                            end,
+                            on_click = function()
+                                local tele_builtin = require("telescope.builtin")
+                                require("common").list_or_jump("textDocument/implementation",
+                                    tele_builtin.lsp_implementations)
+                            end
+                        },
+                        {
+                            function()
+                                return " " .. lsp_info["textDocument/hover"]
+                            end,
+                            cond = function()
+                                return lsp_info["textDocument/hover"] ~= ""
+                            end,
+                            on_click = function()
+                                require('lspsaga.hover'):render_hover_doc()
                             end
                         },
                     },

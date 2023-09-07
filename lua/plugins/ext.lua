@@ -247,4 +247,11 @@ return {
         'eandrju/cellular-automaton.nvim',
         cmd = "CellularAutomaton",
     },
+    {
+        'windwp/nvim-spectre',
+        cmd = "Spectre",
+        opts = {
+            live_update = true, -- auto execute search again when you write any file in vim
+        }
+    },
 }

@@ -154,7 +154,7 @@ return {
         lazy = true,
         config = function()
             local glyphs = require("common").glyphs
-            local scroll_to_tobbom = function(win, buf)
+            local scroll_to_bottom = function(win, buf)
                 local content_line_cnt = api.nvim_buf_line_count(buf)
                 local win_height = api.nvim_win_get_height(win)
                 local scroll_interal_millisec = 30
@@ -202,12 +202,12 @@ return {
                     api.nvim_buf_attach(buf, false, {
                         on_lines = function()
                             vim.defer_fn(function()
-                                scroll_to_tobbom(win, buf)
+                                scroll_to_bottom(win, buf)
                             end, 100)
                         end
                     })
 
-                    scroll_to_tobbom(win, buf)
+                    scroll_to_bottom(win, buf)
                 end,
             })
 
