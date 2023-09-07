@@ -126,22 +126,24 @@ return {
                     --percentage
                     max_height = 0.5,
                     keys = {
-                        jump_to = 'p',
-                        expand_or_jump = 'o',
+                        shuttle = 'p',
+                        toggle_or_open = 'o',
                         vsplit = 'v',
                         split = 's',
                         tabe = 't',
                         tabnew = 'r',
                         quit = { 'q', '<ESC>' },
-                        close_in_preview = '<ESC>',
+                        close = '<ESC>',
                     },
                 },
                 definition = {
-                    edit = '<cr>',
-                    vsplit = '<C-c>v',
-                    split = '<C-c>i',
-                    tabe = '<C-c>t',
-                    quit = 'q',
+                    keys = {
+                        edit = '<cr>',
+                        vsplit = '<C-c>v',
+                        split = '<C-c>i',
+                        tabe = '<C-c>t',
+                        quit = 'q',
+                    }
                 },
                 code_action = {
                     num_shortcut = true,
@@ -194,15 +196,17 @@ return {
                     },
                 },
                 callhierarchy = {
-                    show_detail = false,
+                    layout = 'float',
+                    left_width = 0.2,
                     keys = {
                         edit = 'e',
-                        vsplit = 's',
-                        split = 'i',
+                        vsplit = 'v',
+                        split = 's',
                         tabe = 't',
-                        jump = '<cr>',
+                        close = '<esc>',
                         quit = 'q',
-                        expand_collaspe = 'o',
+                        shuttle = 'p',
+                        toggle_or_req = 'o',
                     },
                 },
                 symbol_in_winbar = {
