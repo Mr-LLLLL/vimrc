@@ -139,21 +139,21 @@ return {
     },
     {
         'RRethy/nvim-treesitter-textsubjects',
-        event = "CursorMoved",
+        event = "CursorHold",
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
         },
     },
     {
         'nvim-treesitter/nvim-treesitter-textobjects',
-        event = "CursorMoved",
+        event = "CursorHold",
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
         },
     },
     {
         'nvim-treesitter/nvim-treesitter-context',
-        event = "CursorMoved",
+        event = "CursorHold",
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
         },
