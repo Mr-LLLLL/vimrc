@@ -20,9 +20,7 @@ return {
     {
         'nvim-telescope/telescope.nvim',
         version = '0.1.x',
-        keys = {
-            { "<space>s", nil }
-        },
+        event = "VeryLazy",
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
             'dhruvmanila/telescope-bookmarks.nvim',
@@ -231,6 +229,7 @@ return {
     },
     {
         'nvim-telescope/telescope-project.nvim',
+        event = { "CursorHold" },
         keys = {
             { '<space>i', require("common").get_tele_project,
                 { noremap = true, silent = true, desc = "telescope projects" } }
