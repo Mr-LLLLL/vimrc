@@ -315,7 +315,7 @@ return {
                     border = 'rounded',
                     -- like `size`, width and height can be a number or function which is passed the current terminal
                     width = vim.o.columns - 3,
-                    height = g.neovide and vim.o.lines - 3 or vim.o.lines - 3,
+                    height = g.neovide and vim.o.lines - 4 or vim.o.lines - 3,
                     winblend = vim.g.custom_blend,
                 },
                 winbar = {
