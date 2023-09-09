@@ -100,7 +100,8 @@ return {
                                                 if content[i] == "```" then
                                                     break
                                                 end
-                                                lsp_info[k] = lsp_info[k] .. string.match(content[i], "%a[^,]+") .. " "
+                                                lsp_info[k] = lsp_info[k] ..
+                                                    string.match(vim.trim(content[i]), ".*[^,]$*") .. " "
                                             end
                                         end
                                     else
