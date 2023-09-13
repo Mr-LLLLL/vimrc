@@ -334,36 +334,63 @@ return {
         event = "VeryLazy",
     },
     {
-        'ggandor/leap.nvim',
-        keys = {
-            { "s",  nil, mode = { "n", "v" } },
-            { "gs", nil, mode = { "n", "v" } },
-            { "S",  nil, mode = { "n", "v" } },
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        opts = {
+            search = {
+                multi_window = false,
+            },
         },
-        config = function()
-            require('leap').setup({
-                -- max_phase_one_targets = nil,
-                -- highlight_unlabeled_phase_one_targets = false,
-                -- max_highlighted_traversal_targets = 10,
-                -- case_sensitive = false,
-                -- equivalence_classes = { ' \t\r\n', },
-                -- substitute_chars = {},
-                -- special_keys = {
-                --     repeat_search = '<enter>',
-                --     next_phase_one_target = '<enter>',
-                --     next_target = { '<enter>', ';' },
-                --     prev_target = { '<tab>', ',' },
-                --     next_group = '<space>',
-                --     prev_group = '<tab>',
-                --     multi_accept = '<enter>',
-                --     multi_revert = '<backspace>',
-                -- }
-            })
-            km.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward-to)", { noremap = true, silent = true })
-            km.set({ "n", "x", "o" }, "S", "<Plug>(leap-backward-to)", { noremap = true, silent = true })
-            km.set({ "n", "x", "o" }, "gs", "<Plug>(leap-cross-window)", { noremap = true, silent = true })
-        end
+        keys = {
+            {
+                "s",
+                mode = { "n", "o", "x" },
+                function() require("flash").treesitter() end,
+                desc =
+                "Flash Treesitter"
+            },
+            {
+                "r",
+                mode = "o",
+                function() require("flash").remote() end,
+                desc =
+                "Remote Flash"
+            },
+            { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+        },
     },
+    -- {
+    --     'ggandor/leap.nvim',
+    --     enabled = false,
+    --     keys = {
+    --         { "s",  nil, mode = { "n", "v" } },
+    --         { "gs", nil, mode = { "n", "v" } },
+    --         { "S",  nil, mode = { "n", "v" } },
+    --     },
+    --     config = function()
+    --         require('leap').setup({
+    --             -- max_phase_one_targets = nil,
+    --             -- highlight_unlabeled_phase_one_targets = false,
+    --             -- max_highlighted_traversal_targets = 10,
+    --             -- case_sensitive = false,
+    --             -- equivalence_classes = { ' \t\r\n', },
+    --             -- substitute_chars = {},
+    --             -- special_keys = {
+    --             --     repeat_search = '<enter>',
+    --             --     next_phase_one_target = '<enter>',
+    --             --     next_target = { '<enter>', ';' },
+    --             --     prev_target = { '<tab>', ',' },
+    --             --     next_group = '<space>',
+    --             --     prev_group = '<tab>',
+    --             --     multi_accept = '<enter>',
+    --             --     multi_revert = '<backspace>',
+    --             -- }
+    --         })
+    --         km.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward-to)", { noremap = true, silent = true })
+    --         km.set({ "n", "x", "o" }, "S", "<Plug>(leap-backward-to)", { noremap = true, silent = true })
+    --         km.set({ "n", "x", "o" }, "gs", "<Plug>(leap-cross-window)", { noremap = true, silent = true })
+    --     end
+    -- },
     {
         'sindrets/diffview.nvim',
         cmd = "DiffviewOpen",
