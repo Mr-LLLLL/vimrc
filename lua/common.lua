@@ -205,14 +205,21 @@ m.lsp_on_attack    = function(client, bufnr)
 end
 
 m.get_tele_project = function()
+    local act = require("telescope._extensions.project.actions")
     require("telescope").extensions.project.project {
         display_type = 'two-segment',
         attach_mappings = function(prompt_bufnr, map)
-            map('i', '<cr>', function()
-                require("telescope._extensions.project.actions").change_working_directory(prompt_bufnr
+            map({'i','n'}, '<cr>', function()
+                act.change_working_directory(prompt_bufnr
                 , false)
                 require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
             end)
+            map({'n'}, 'e', act.search_in_project_files)
+            map({'i'}, '<c-e>', act.search_in_project_files)
+            map({'i'}, '<c-s>', function() end)
+            map({'n'}, 's', function() end)
+            map({'i'}, '<c-v>', function() end)
+            map({'i'}, '<c-r>', act.rename_project)
             return true
         end,
     }
