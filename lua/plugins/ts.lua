@@ -23,7 +23,13 @@ return {
                 ignore_install = {},
                 highlight = {
                     enable = true,
-                    disable = {},
+                    disable = function(lang, buf)
+                        local max_filesize = 10 * 1024 -- 100 KB
+                        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                        if ok and stats and stats.size > max_filesize then
+                            return true
+                        end
+                    end,
                     additional_vim_regex_highlighting = false
                 },
                 rainbow = {
@@ -45,15 +51,6 @@ return {
                 },
                 indent = {
                     enable = true
-                },
-                textsubjects = {
-                    enable = true,
-                    prev_selection = '<leader>.', -- (Optional) keymap to select the previous selection
-                    keymaps = {
-                        ['.'] = 'textsubjects-smart',
-                        -- ['af'] = 'textsubjects-container-outer',
-                        -- ['if'] = 'textsubjects-container-inner',
-                    },
                 },
                 textobjects = {
                     select = {
@@ -136,13 +133,6 @@ return {
                 },
             })
         end
-    },
-    {
-        'RRethy/nvim-treesitter-textsubjects',
-        event = "CursorHold",
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter',
-        },
     },
     {
         'nvim-treesitter/nvim-treesitter-textobjects',

@@ -209,17 +209,22 @@ m.get_tele_project = function()
     require("telescope").extensions.project.project {
         display_type = 'two-segment',
         attach_mappings = function(prompt_bufnr, map)
-            map({'i','n'}, '<cr>', function()
+            map({ 'i', 'n' }, '<cr>', function()
                 act.change_working_directory(prompt_bufnr
                 , false)
                 require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
             end)
-            map({'n'}, 'e', act.search_in_project_files)
-            map({'i'}, '<c-e>', act.search_in_project_files)
-            map({'i'}, '<c-s>', function() end)
-            map({'n'}, 's', function() end)
-            map({'i'}, '<c-v>', function() end)
-            map({'i'}, '<c-r>', act.rename_project)
+            map({ 'n' }, 'e', act.search_in_project_files)
+            map({ 'n' }, 's', function() end)
+            map({ 'n' }, 'f', act.browse_project_files)
+            map({ 'n' }, 'b', function() end)
+
+            map({ 'i' }, '<c-e>', act.search_in_project_files)
+            map({ 'i' }, '<c-s>', function() end)
+            map({ 'i' }, '<c-v>', function() end)
+            map({ 'i' }, '<c-r>', act.rename_project)
+            map({ 'i' }, '<c-f>', act.browse_project_files)
+            map({ 'i' }, '<c-b>', function() end)
             return true
         end,
     }

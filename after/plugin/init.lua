@@ -32,20 +32,6 @@ local function load_autocmd()
         }
     )
     api.nvim_create_autocmd(
-        { "Filetype" },
-        {
-            pattern = { "lua", "python" },
-            callback = function()
-                local extend = require("utils.extend")
-                vim.keymap.set({ 'n', 'v' }, '[{', function() extend.extend(true) end,
-                    { noremap = true, silent = true, buffer = true, desc = "Extend to outer node start" })
-                vim.keymap.set({ 'n', 'v' }, ']}', function() extend.extend(false) end,
-                    { noremap = true, silent = true, buffer = true, desc = "Extend to outer node end" })
-            end,
-            group = custom_auto_cmd,
-        }
-    )
-    api.nvim_create_autocmd(
         { "BufWinLeave" },
         {
             pattern = { "*.*" },

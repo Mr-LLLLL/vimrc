@@ -357,8 +357,22 @@ return {
                     enabled = true,
                     highlight = { backdrop = false },
                     multi_line = false,
-                }
+                },
+                treesitter = {
+                    labels = "abefgimnopqrstuwz",
+                    jump = { pos = "range" },
+                    search = { incremental = false },
+                    label = { before = true, after = true, style = "inline" },
+                    highlight = {
+                        backdrop = false,
+                        matches = false,
+                    },
+                },
             },
+            label = {
+                -- allow uppercase labels
+                uppercase = false,
+            }
         },
         keys = {
             {
@@ -790,5 +804,12 @@ return {
                 },
             })
         end
+    },
+    {
+        'Mr-LLLLL/treesitter-outer',
+        ft = { "lua", "python" },
+        opts = {
+            filetypes = { "lua", "python" }
+        },
     },
 }
