@@ -338,13 +338,13 @@ return {
         event = "VeryLazy",
         opts = {
             search = {
-                multi_window = false,
+                multi_window = true,
             },
             modes = {
                 search = {
                     -- when `true`, flash will be activated during regular search by default.
                     -- You can always toggle when searching with `require("flash").toggle()`
-                    enabled = true,
+                    enabled = false,
                     highlight = { backdrop = false },
                     jump = { history = true, register = true, nohlsearch = true },
                     search = {
@@ -384,7 +384,7 @@ return {
         },
         keys = {
             {
-                "S",
+                "s",
                 mode = { "n" },
                 function()
                     require("flash").jump({
@@ -394,7 +394,7 @@ return {
                 desc = "Flash",
             },
             {
-                "s",
+                "S",
                 mode = { "n", "o", "x" },
                 function() require("flash").treesitter() end,
                 desc =
