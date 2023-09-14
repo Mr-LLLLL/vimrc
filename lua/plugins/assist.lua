@@ -380,6 +380,7 @@ return {
                 -- allow uppercase labels
                 uppercase = false,
                 after = true,
+                current = false,
             },
         },
         keys = {
