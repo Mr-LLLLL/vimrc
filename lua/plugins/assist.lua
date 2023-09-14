@@ -359,7 +359,7 @@ return {
                     multi_line = false,
                 },
                 treesitter = {
-                    labels = "abefgimnopqrstuwz",
+                    labels = "abefimnopqrstuwz",
                     jump = { pos = "range" },
                     search = { incremental = false },
                     label = {
