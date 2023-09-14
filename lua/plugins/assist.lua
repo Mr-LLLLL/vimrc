@@ -338,7 +338,7 @@ return {
         event = "VeryLazy",
         opts = {
             search = {
-                multi_window = true,
+                multi_window = false,
             },
             modes = {
                 search = {
@@ -362,23 +362,35 @@ return {
                     labels = "abefgimnopqrstuwz",
                     jump = { pos = "range" },
                     search = { incremental = false },
-                    label = { before = true, after = true, style = "inline" },
+                    label = {
+                        before = true,
+                        after = true,
+                        style = "inline",
+                    },
                     highlight = {
                         backdrop = false,
                         matches = false,
                     },
                 },
             },
+            highlight = {
+                backdrop = false,
+            },
             label = {
                 -- allow uppercase labels
                 uppercase = false,
-            }
+                after = true,
+            },
         },
         keys = {
             {
                 "S",
                 mode = { "n" },
-                function() require("flash").jump({ multi_window = true }) end,
+                function()
+                    require("flash").jump({
+                        search = { multi_window = true },
+                    })
+                end,
                 desc = "Flash",
             },
             {
