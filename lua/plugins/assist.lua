@@ -385,7 +385,7 @@ return {
         keys = {
             {
                 "s",
-                mode = { "n" },
+                mode = { "n", "o", "x" },
                 function()
                     require("flash").jump({
                         search = { multi_window = true },
@@ -407,7 +407,7 @@ return {
                 desc =
                 "Remote Flash"
             },
-            { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+            -- { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
         },
     },
     -- {
