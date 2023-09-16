@@ -218,11 +218,10 @@ m.get_tele_project = function()
             map({ 'n' }, 's', function() end)
             map({ 'n' }, 'f', act.browse_project_files)
             map({ 'n' }, 'b', function() end)
+            map({ 'n' }, 'r', act.recent_project_files)
 
             map({ 'i' }, '<c-e>', act.search_in_project_files)
             map({ 'i' }, '<c-s>', function() end)
-            map({ 'i' }, '<c-v>', function() end)
-            map({ 'i' }, '<c-r>', act.rename_project)
             map({ 'i' }, '<c-f>', act.browse_project_files)
             map({ 'i' }, '<c-b>', function() end)
             return true
