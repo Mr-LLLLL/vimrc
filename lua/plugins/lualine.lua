@@ -106,7 +106,7 @@ return {
                                         end
                                     else
                                         if #content > 1 then
-                                            lsp_info[k] = string.match(content[2], "[^{]+")
+                                            lsp_info[k] = string.match(content[2], ".*[^{ ]$*")
                                         end
                                     end
                                 elseif vim.tbl_islist(result) then
