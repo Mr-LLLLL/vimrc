@@ -160,7 +160,6 @@ return {
             { "cs", nil, mode = "n" },
             { "X",  nil, mode = "x" },
             { "gS", nil, mode = "x" },
-            { "S",  nil, mode = "x" },
         },
         version = "*",
         config = function()
@@ -172,7 +171,7 @@ return {
                     normal_cur = "yss",
                     normal_line = "yS",
                     normal_cur_line = "ySS",
-                    visual = "S",
+                    visual = "X",
                     visual_line = "gS",
                     delete = "ds",
                     change = "cs",
