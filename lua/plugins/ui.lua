@@ -402,14 +402,68 @@ return {
     },
     {
         'lukas-reineke/indent-blankline.nvim',
-        version = "v2.20.8",
         event = "VeryLazy",
-        opts = {
-            space_char_blankline = " ",
-            show_current_context = true,
-            show_current_context_start = false,
-            filetype_exclude = { 'dashboard' }
-        }
+        config = function()
+            require("ibl").setup({
+                indent = {
+                    char = "│",
+                    tab_char = "│",
+                    highlight = "Whitespace",
+                    smart_indent_cap = true,
+                    priority = 1,
+                },
+                whitespace = {
+                    highlight = "Whitespace",
+                    remove_blankline_trail = true,
+                },
+                scope = {
+                    enabled = true,
+                    show_start = false,
+                    show_end = false,
+                    char = "│",
+                    highlight = "CursorLineNr",
+                    include = {
+                        node_type = {
+                            lua = {
+                                'chunk',
+                                'do_statement',
+                                'while_statement',
+                                'repeat_statement',
+                                'if_statement',
+                                'for_statement',
+                                'function_declaration',
+                                'function_definition',
+                                'table_constructor',
+                                'assignment_statement',
+                            },
+                            python = {
+                                "module",
+                            },
+                        }
+                    }
+                },
+                exclude = {
+                    filetypes = {
+                        "lspinfo",
+                        "packer",
+                        "checkhealth",
+                        "help",
+                        "man",
+                        "gitcommit",
+                        "TelescopePrompt",
+                        "TelescopeResults",
+                        "",
+                        "dashboard",
+                    },
+                    buftypes = {
+                        "terminal",
+                        "nofile",
+                        "quickfix",
+                        "prompt",
+                    },
+                },
+            })
+        end,
     },
     {
         "RRethy/vim-illuminate",
