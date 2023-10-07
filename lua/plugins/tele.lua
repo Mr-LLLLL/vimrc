@@ -19,7 +19,7 @@ return {
     },
     {
         'nvim-telescope/telescope.nvim',
-        version = '0.1.x',
+        branch = '0.1.x',
         event = "VeryLazy",
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
