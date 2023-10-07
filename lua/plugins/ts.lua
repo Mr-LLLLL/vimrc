@@ -168,6 +168,10 @@ return {
             elseif vim.g.colors_name == 'everforest' then
                 vim.api.nvim_set_hl(0, "TreesitterContext", { bg = '#2d353b', blend = 0 })
             end
+
+            vim.keymap.set("n", "[q", function()
+                require("treesitter-context").go_to_context()
+            end, { silent = true })
         end
     },
     {

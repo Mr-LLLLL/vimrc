@@ -456,16 +456,19 @@ return {
                 depth_limit_indicator = "..",
                 safe_output = true,
                 lazy_update_context = false,
-                click = false
+                click = true
             })
 
             local old = require("lualine").get_config()
             table.insert(old.tabline.lualine_c, #old.tabline.lualine_c + 1, {
                 function()
-                    return navic.get_location()
+                    return navic.get_location({ click = true })
                 end,
                 cond = function()
                     return navic.is_available()
+                end,
+                on_click = function()
+                    _G.navic_click_handler(api.nvim_get_current_win())
                 end
             })
             require("lualine").setup(old)
