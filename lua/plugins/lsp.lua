@@ -377,7 +377,7 @@ return {
             -- set to true: use gopls to format
             -- false if you want to use other formatter tool(e.g. efm, nulls)
             lsp_inlay_hints = {
-                enable = false,
+                enable = true,
                 -- Only show inlay hints for the current line
                 only_current_line = false,
                 -- Event which triggers a refersh of the inlay hints.
