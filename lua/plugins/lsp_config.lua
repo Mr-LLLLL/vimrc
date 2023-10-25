@@ -298,6 +298,9 @@ return {
     {
         'neovim/nvim-lspconfig',
         event = "VeryLazy",
+        dependencies = {
+            'glepnir/lspsaga.nvim',
+        },
         config = function()
             local glyphs = require("common").glyphs
             local signs = {
