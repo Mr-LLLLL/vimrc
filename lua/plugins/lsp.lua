@@ -109,7 +109,7 @@ return {
     },
     {
         "glepnir/lspsaga.nvim",
-        event = "LspAttach",
+        event = "VeryLazy",
         branch = "main",
         config = function()
             require("lspsaga").setup({
