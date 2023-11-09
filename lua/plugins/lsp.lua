@@ -368,10 +368,9 @@ return {
             lsp_keymaps = false, -- true: use default keymaps defined in go/lsp.lua
             lsp_codelens = false,
             lsp_diag_hdlr = nil, -- hook lsp diag handler
-            lsp_diag_underline = false,
             -- virtual text setup
             lsp_diag_virtual_text = nil,
-            lsp_diag_signs = false,
+            diagnostic = false,
             lsp_diag_update_in_insert = false,
             lsp_document_formatting = false,
             -- set to true: use gopls to format

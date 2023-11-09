@@ -59,7 +59,6 @@ local function set_lsp()
                 usePlaceholders = false,
                 completeUnimported = true,
                 experimentalPostfixCompletions = true,
-                expandWorkspaceToModule = true,
             },
         },
     }
