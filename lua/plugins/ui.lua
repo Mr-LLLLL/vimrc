@@ -382,7 +382,7 @@ return {
             { "<leader>m", nil, mode = { "n", "v" } },
             { "n",         nil, mode = { "n", "v" } },
             { "N",         nil, mode = { "n", "v" } },
-            { "/",         nil, mode = { "n", "v" } },
+            { "?",         nil, mode = { "n", "v" } },
         },
         config = function()
             require("interestingwords").setup {
