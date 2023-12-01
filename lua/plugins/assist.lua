@@ -335,16 +335,19 @@ return {
     },
     {
         "folke/flash.nvim",
+        dev = true,
         event = "VeryLazy",
         opts = {
             search = {
                 multi_window = true,
+                forward = false,
             },
             modes = {
                 search = {
                     -- when `true`, flash will be activated during regular search by default.
                     -- You can always toggle when searching with `require("flash").toggle()`
-                    enabled = false,
+                    enabled = true,
+                    keys = { "/" },
                     highlight = { backdrop = false },
                     jump = { history = true, register = true, nohlsearch = true },
                     search = {
@@ -384,16 +387,16 @@ return {
             },
         },
         keys = {
-            {
-                "/",
-                mode = { "n", "o", "x" },
-                function()
-                    require("flash").jump({
-                        search = { multi_window = true },
-                    })
-                end,
-                desc = "Flash",
-            },
+            -- {
+            --     "/",
+            --     mode = { "n", "o", "x" },
+            --     function()
+            --         require("flash").jump({
+            --             search = { multi_window = true },
+            --         })
+            --     end,
+            --     desc = "Flash",
+            -- },
             {
                 "s",
                 mode = { "n", "o", "x" },
@@ -408,7 +411,12 @@ return {
                 desc =
                 "Remote Flash"
             },
-            -- { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+            {
+                "<c-s>",
+                mode = { "c" },
+                function() require("flash").toggle() end,
+                desc = "Toggle Flash Search",
+            },
         },
     },
     -- {

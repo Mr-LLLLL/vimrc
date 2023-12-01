@@ -124,6 +124,9 @@ local function load_lazy()
         defaults = {
             lazy = false,
         },
+        dev = {
+            path = "~/workspace/personal/project"
+        },
         ui = {
             border = "rounded",
         }
