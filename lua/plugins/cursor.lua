@@ -156,10 +156,10 @@ return {
         'kylechui/nvim-surround',
         keys = {
             { "y",  nil, mode = "n" },
-            { "ds", nil, mode = "n" },
-            { "cs", nil, mode = "n" },
-            { "S",  nil, mode = "x" },
-            { "gS", nil, mode = "x" },
+            { "dx", nil, mode = "n" },
+            { "cx", nil, mode = "n" },
+            { "X",  nil, mode = "x" },
+            { "gX", nil, mode = "x" },
         },
         version = "*",
         config = function()
@@ -167,14 +167,14 @@ return {
                 keymaps = {
                     insert = false,
                     insert_line = false,
-                    normal = "ys",
-                    normal_cur = "yss",
-                    normal_line = "yS",
-                    normal_cur_line = "ySS",
-                    visual = "S",
-                    visual_line = "gS",
-                    delete = "ds",
-                    change = "cs",
+                    normal = "yx",
+                    normal_cur = "yxx",
+                    normal_line = "yX",
+                    normal_cur_line = "yXX",
+                    visual = "X",
+                    visual_line = "gX",
+                    delete = "dx",
+                    change = "cx",
                 },
             })
         end
