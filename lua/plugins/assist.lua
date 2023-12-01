@@ -340,7 +340,6 @@ return {
         opts = {
             search = {
                 multi_window = true,
-                forward = false,
             },
             modes = {
                 search = {
