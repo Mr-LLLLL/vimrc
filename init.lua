@@ -47,14 +47,18 @@ local function load_neovide()
         return
     end
 
-    -- BUG: nerd font mono will make glyph overlay
     o.guifont                                = "JetBrainsMono Nerd Font Mono:h10"
     g.neovide_fullscreen                     = true
     g.neovide_confirm_quit                   = true
-    g.neovide_floating_blur_amount_x         = 1.0
-    g.neovide_floating_blur_amount_y         = 1.0
+    g.neovide_floating_blur_amount_x         = 2.0
+    g.neovide_floating_blur_amount_y         = 2.0
+    g.neovide_floating_shadow                = false
+    g.neovide_floating_z_height              = 10
+    g.neovide_light_angle_degrees            = 45
+    g.neovide_light_radius                   = 5
     g.neovide_transparency                   = 1.0
     g.neovide_scroll_animation_length        = 0.3
+    g.neovide_scroll_animation_far_lines     = 1
     g.neovide_cursor_trail_size              = 0.8
     g.neovide_cursor_antialiasing            = true
     -- g.neovide_cursor_animation_length=1.00
