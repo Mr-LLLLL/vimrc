@@ -382,7 +382,7 @@ return {
                 -- allow uppercase labels
                 uppercase = false,
                 after = true,
-                current = false,
+                current = true,
             },
         },
         keys = {

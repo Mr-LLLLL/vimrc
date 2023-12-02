@@ -30,7 +30,7 @@ return {
             local actions = require("telescope.actions")
             require('telescope').setup({
                 defaults = {
-                    winblend = vim.g.custom_blend,
+                    winblend = vim.g.custom_blend + (vim.g.neovide and 20 or 0),
                     mappings = {
                         i = {
                             ["<CR>"] = actions.select_default + actions.center,
