@@ -335,18 +335,18 @@ return {
     },
     {
         "folke/flash.nvim",
-        dev = true,
+        -- dev = true,
         event = "VeryLazy",
         opts = {
             search = {
                 multi_window = true,
-                wrap = false,
+                wrap = true,
             },
             modes = {
                 search = {
                     -- when `true`, flash will be activated during regular search by default.
                     -- You can always toggle when searching with `require("flash").toggle()`
-                    enabled = true,
+                    enabled = false,
                     highlight = { backdrop = false },
                     jump = { history = true, register = true, nohlsearch = true },
                     search = {
@@ -382,20 +382,20 @@ return {
                 -- allow uppercase labels
                 uppercase = false,
                 after = true,
-                current = true,
+                current = false,
             },
         },
         keys = {
-            -- {
-            --     "/",
-            --     mode = { "n", "o", "x" },
-            --     function()
-            --         require("flash").jump({
-            --             search = { multi_window = true },
-            --         })
-            --     end,
-            --     desc = "Flash",
-            -- },
+            {
+                "/",
+                mode = { "n", "o", "x" },
+                function()
+                    require("flash").jump({
+                        search = { multi_window = true },
+                    })
+                end,
+                desc = "Flash"
+            },
             {
                 "s",
                 mode = { "n", "o", "x" },
@@ -410,12 +410,12 @@ return {
                 desc =
                 "Remote Flash"
             },
-            {
-                "<c-s>",
-                mode = { "c" },
-                function() require("flash").toggle_current_search() end,
-                desc = "Toggle Current Flash Search",
-            },
+            -- {
+            --     "<c-s>",
+            --     mode = { "c" },
+            --     function() require("flash").toggle_current_search() end,
+            --     desc = "Toggle Current Flash Search",
+            -- },
         },
     },
     -- {
