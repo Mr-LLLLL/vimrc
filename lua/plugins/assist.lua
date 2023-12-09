@@ -289,8 +289,8 @@ return {
                         link = 'Normal'
                     },
                     FloatBorder = {
-                        guifg = "#5c6a72",
-                        guibg = "#2d353b",
+                        guifg = require("common").colors.CustomBorderFg,
+                        guibg = require("common").colors.CustomBorderBg,
                     },
                 },
                 shade_terminals = true,   -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
@@ -831,5 +831,138 @@ return {
         opts = {
             filetypes = { "lua", "python" }
         },
+    },
+    {
+        "danymat/neogen",
+        version = "*",
+        cmd = "Neogen",
+        dependencies = "nvim-treesitter/nvim-treesitter",
+        config = function()
+            require('neogen').setup {
+                snippet_engine = "luasnip"
+            }
+        end,
+    },
+    {
+        'monaqa/dial.nvim',
+        keys = {
+            {
+                "<c-a>",
+                function()
+                    require("dial.map").manipulate("increment", "normal")
+                end,
+                mode = { "n" }
+            },
+            {
+                "<c-x>",
+                function()
+                    require("dial.map").manipulate("decrement", "normal")
+                end,
+                mode = { "n" }
+            },
+            {
+                "g<c-a>",
+                function()
+                    require("dial.map").manipulate("increment", "gnormal")
+                end,
+                mode = { "n" }
+            },
+            {
+                "g<c-x>",
+                function()
+                    require("dial.map").manipulate("decrement", "gnormal")
+                end,
+                mode = { "n" }
+            },
+            {
+                "<c-a>",
+                function()
+                    require("dial.map").manipulate("increment", "visual")
+                end,
+                mode = { "v" }
+            },
+            {
+                "<c-x>",
+                function()
+                    require("dial.map").manipulate("decrement", "visual")
+                end,
+                mode = { "v" }
+            },
+            {
+                "g<c-a>",
+                function()
+                    require("dial.map").manipulate("increment", "gvisual")
+                end,
+                mode = { "v" }
+            },
+            {
+                "g<c-x>",
+                function()
+                    require("dial.map").manipulate("decrement", "gvisual")
+                end,
+                mode = { "v" }
+            },
+        },
+        config = function()
+            local augend = require("dial.augend")
+            require("dial.config").augends:register_group {
+                default = {
+                    augend.constant.new {
+                        elements = { "and", "or" },
+                        word = true,   -- if false, "sand" is incremented into "sor", "doctor" into "doctand", etc.
+                        cyclic = true, -- "or" is incremented into "and".
+                    },
+                    augend.constant.new {
+                        elements = { "&&", "||" },
+                        word = false,
+                        cyclic = true,
+                    },
+                    -- uppercase hex number (0x1A1A, 0xEEFE, etc.)
+                    augend.hexcolor.new {
+                        case = "lower",
+                    },
+                    -- uppercase hex number (0x1A1A, 0xEEFE, etc.)
+                    augend.user.new {
+                        find = require("dial.augend.common").find_pattern("%d+"),
+                        add = function(text, addend, cursor)
+                            local n = tonumber(text)
+                            n = math.floor(n * (2 ^ addend))
+                            text = tostring(n)
+                            cursor = #text
+                            return { text = text, cursor = cursor }
+                        end
+                    },
+                    augend.integer.alias.decimal,
+                    augend.integer.alias.decimal_int,
+                    augend.integer.alias.hex,
+                    augend.integer.alias.octal,
+                    augend.integer.alias.binary,
+                    augend.date.alias["%Y/%m/%d"],
+                    augend.date.alias["%m/%d/%Y"],
+                    augend.date.alias["%d/%m/%Y"],
+                    augend.date.alias["%m/%d/%y"],
+                    augend.date.alias["%d/%m/%y"],
+                    augend.date.alias["%m/%d"],
+                    augend.date.alias["%-m/%-d"],
+                    augend.date.alias["%Y-%m-%d"],
+                    augend.date.alias["%d.%m.%Y"],
+                    augend.date.alias["%d.%m.%y"],
+                    augend.date.alias["%d.%m."],
+                    augend.date.alias["%-d.%-m."],
+                    augend.date.alias["%Y年%-m月%-d日"],
+                    augend.date.alias["%Y年%-m月%-d日(%ja)"],
+                    augend.date.alias["%H:%M:%S"],
+                    augend.date.alias["%H:%M"],
+                    augend.constant.alias.de_weekday,
+                    augend.constant.alias.de_weekday_full,
+                    augend.constant.alias.ja_weekday,
+                    augend.constant.alias.ja_weekday_full,
+                    augend.constant.alias.bool,
+                    augend.constant.alias.alpha,
+                    augend.constant.alias.Alpha,
+                    augend.semver.alias.semver,
+                },
+            }
+        end,
     },
 }

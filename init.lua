@@ -3,43 +3,46 @@ local km = vim.keymap
 local g = vim.g
 
 local function load_base()
-    g.mapleader      = ","
-    g.custom_blend   = 10
+    g.mapleader                          = ","
+    g.custom_blend                       = 10
 
-    o.winblend       = g.custom_blend
-    o.pumblend       = g.custom_blend
-    o.number         = true
-    o.rnu            = false
-    o.hidden         = true
-    o.cmdheight      = 0
-    o.updatetime     = 300
-    o.shortmess      = o.shortmess .. "c"
+    g.everforest_show_eob                = 0
+    g.everforest_diagnostic_virtual_text = 'colored'
+
+    o.winblend                           = g.custom_blend
+    o.pumblend                           = g.custom_blend
+    o.number                             = true
+    o.rnu                                = false
+    o.hidden                             = true
+    o.cmdheight                          = 0
+    o.updatetime                         = 300
+    o.shortmess                          = o.shortmess .. "c"
     -- o.foldcolumn     = '1'
-    o.foldenable     = true
-    o.foldlevel      = 99
-    o.foldlevelstart = 99
-    o.smartcase      = true
-    o.ignorecase     = true
-    o.mouse          = "a"
-    o.termguicolors  = true
-    o.clipboard      = "unnamed,unnamedplus"
-    o.background     = "dark"
-    o.wildmode       = "longest,full"
-    o.laststatus     = 3
+    o.foldenable                         = true
+    o.foldlevel                          = 99
+    o.foldlevelstart                     = 99
+    o.smartcase                          = true
+    o.ignorecase                         = true
+    o.mouse                              = "a"
+    o.termguicolors                      = true
+    o.clipboard                          = "unnamed,unnamedplus"
+    o.background                         = "dark"
+    o.wildmode                           = "longest,full"
+    o.laststatus                         = 3
     -- o.scrolloff      = 5
 
-    o.tabstop        = 4
-    o.expandtab      = true
-    o.autoindent     = true
-    o.shiftwidth     = 4
-    o.softtabstop    = 4
+    o.tabstop                            = 4
+    o.expandtab                          = true
+    o.autoindent                         = true
+    o.shiftwidth                         = 4
+    o.softtabstop                        = 4
 
-    o.backup         = false
-    o.undofile       = false
-    o.swapfile       = false
-    o.writebackup    = false
+    o.backup                             = false
+    o.undofile                           = false
+    o.swapfile                           = false
+    o.writebackup                        = false
 
-    o.list           = true
+    o.list                               = true
 end
 
 local function load_neovide()

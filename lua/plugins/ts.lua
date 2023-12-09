@@ -163,11 +163,7 @@ return {
                 on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
             }
 
-            if vim.g.colors_name == 'gruvbox-material' then
-                vim.api.nvim_set_hl(0, "TreesitterContext", { bg = '#282828', blend = 0 })
-            elseif vim.g.colors_name == 'everforest' then
-                vim.api.nvim_set_hl(0, "TreesitterContext", { bg = '#2d353b', blend = 0 })
-            end
+            vim.api.nvim_set_hl(0, "TreesitterContext", { bg = require("common").colors.CustomBorderBg, blend = 0 })
 
             vim.keymap.set("n", "[q", function()
                 require("treesitter-context").go_to_context()

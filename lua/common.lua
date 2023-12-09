@@ -26,6 +26,25 @@ m.glyphs           = {
     sign_info = "",
 }
 
+m.colors           = {
+    CustomBorderFg = '#5c6a72',
+    CustomBorderBg = '#2d353b',
+    CustomVirtualTextFg = '#5a5b5a',
+    LualineTabInactiveBg = '#4f5b58',
+    LualineTabInactiveFg = '#9da9a0',
+    NvimTreeCursorLineBg = '#374145'
+}
+
+m.weeks            = {
+    ["0"] = "Sun",
+    ['1'] = "Mon",
+    ["2"] = "Tue",
+    ["3"] = "Wed",
+    ["4"] = "Thu",
+    ["5"] = "Fri",
+    ["6"] = "Sat",
+}
+
 m.treesiter_symbol = {
     File = { ' ', 'Tag' },
     Module = { ' ', 'Exception' },

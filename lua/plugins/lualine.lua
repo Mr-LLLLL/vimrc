@@ -8,21 +8,6 @@ return {
         'nvim-lualine/lualine.nvim',
         event = "VeryLazy",
         config = function()
-            local colors = {}
-            if g.colors_name == 'gruvbox-material' then
-                colors = {
-                    color = '#504945',
-                    fg    = '#ddc7a1',
-                    fg2   = 'gray'
-                }
-            elseif g.colors_name == 'everforest' then
-                colors = {
-                    color = '#4f5b58',
-                    fg    = '#9da9a0',
-                    fg2   = '#888888'
-                }
-            end
-
             local glyphs = require("common").glyphs
             local lsp_info = {
                 ["textDocument/references"] = "",
@@ -315,40 +300,18 @@ return {
                         tabs_color = {
                             -- Same values as the general color option can be used here.
                             -- active = { fg = colors.black, bg = colors.grey },
-                            inactive = { fg = colors.fg, bg = colors.color }, -- Color for inactive tab.
+                            inactive = { fg = require("common").colors.LualineTabInactiveFg, bg = require("common").colors.LualineTabInactiveBg }, -- Color for inactive tab.
                         },
                     } },
                     lualine_b = {},
                     lualine_c = {},
                     lualine_x = {},
                     lualine_y = { {
-                        'windows',
-                        show_filename_only = false,  -- Shows shortened relative path when set to false.
-                        show_modified_status = true, -- Shows indicator when the window is modified.
-                        symbols = { modified = ' ' .. glyphs["modified"] },
-                        mode = 0,                    -- 0: Shows window name
-                        -- 1: Shows window index
-                        -- 2: Shows window name + window index
-
-                        max_length = vim.o.columns * 2 / 3, -- Maximum width of windows component,
-                        -- it can also be a function that returns
-                        -- the value of `max_length` dynamically.
-                        filetype_names = {
-                            TelescopePrompt = 'Telescope',
-                            dashboard = 'Dashboard',
-                            packer = 'Packer',
-                            fzf = 'FZF',
-                            alpha = 'Alpha'
-                        },                                                     -- Shows specific window name for that filetype ( { `filetype` = `window_name`, ... } )
-                        disabled_buftypes = { 'quickfix', 'prompt' },          -- Hide a window if its buffer's type is disabled,
-                        windows_color = {
-                            active = { fg = colors.fg, bg = colors.color },    -- Color for active window.
-                            inactive = { fg = colors.fg2, bg = colors.color }, -- Color for inactive window.
-                        },
+                        function() return "󰕶 " .. require("common").weeks[os.date('%w')] .. "  " .. os.date('%y-%m-%d') end,
                         separator = { left = '' },
                     } },
                     lualine_z = { {
-                        function() return "󰔛 " .. os.date('%H:%M') end,
+                        function() return "󰔛 " .. os.date('%H:%M:%S') end,
                         separator = { right = '' }
                     } },
                 },
@@ -473,5 +436,85 @@ return {
             })
             require("lualine").setup(old)
         end
+    },
+    {
+        "b0o/incline.nvim",
+        event = "VeryLazy",
+        opts = {
+            debounce_threshold = {
+                falling = 50,
+                rising = 10
+            },
+            hide = {
+                cursorline = false,
+                focused_win = true,
+                only_win = false
+            },
+            highlight = {
+                groups = {
+                    InclineNormal = {
+                        default = true,
+                        group = "FloatBorder"
+                    },
+                    InclineNormalNC = {
+                        default = true,
+                        group = "FloatBorder"
+                    }
+                }
+            },
+            ignore = {
+                buftypes = "special",
+                filetypes = {},
+                floating_wins = true,
+                unlisted_buffers = true,
+                wintypes = "special"
+            },
+            render = function(props)
+                local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ':t')
+                local ft_icon, ft_color = require("nvim-web-devicons").get_icon_color(filename)
+                local modified = vim.api.nvim_buf_get_option(props.buf, "modified") and
+                    " " .. require("common").glyphs.modified or ""
+
+                local buffer = {
+                    { "[",      guifg = require("common").colors.CustomBorderFg },
+                    { ft_icon,  guifg = require("common").colors.CustomBorderFg },
+                    { " " },
+                    { filename, guifg = require("common").colors.CustomBorderFg },
+                    { modified, guifg = require("common").colors.CustomBorderFg },
+                    { "]",      guifg = require("common").colors.CustomBorderFg },
+                }
+                return buffer
+            end,
+            window = {
+                margin = {
+                    horizontal = 0,
+                    vertical = 0
+                },
+                options = {
+                    signcolumn = "no",
+                    wrap = false
+                },
+                padding = 0,
+                padding_char = " ",
+                placement = {
+                    horizontal = "right",
+                    vertical = "top"
+                },
+                width = "fit",
+                winhighlight = {
+                    active = {
+                        EndOfBuffer = "None",
+                        Normal = "InclineNormal",
+                        Search = "None"
+                    },
+                    inactive = {
+                        EndOfBuffer = "FloatBorder",
+                        Normal = "NormalFloat",
+                        Search = "FloatBorder"
+                    }
+                },
+                zindex = 50
+            },
+        }
     },
 }

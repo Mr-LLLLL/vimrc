@@ -10,20 +10,13 @@ return {
         config = function()
             cmd("colorscheme everforest")
 
-            if g.colors_name == 'gruvbox-material' then
-                api.nvim_set_hl(0, "NormalFloat", { bg = '#282828' })
-                api.nvim_set_hl(0, "CustomBorder", { bg = '#282828', fg = '#d4be98' })
-            elseif g.colors_name == 'everforest' then
-                g.everforest_show_eob = 0
-                g.everforest_diagnostic_virtual_text = 'colored'
-
-                api.nvim_set_hl(0, "NormalFloat", { bg = '#2d353b' })
-                api.nvim_set_hl(0, "CustomBorder", { bg = '#2d353b', fg = '#5c6a72' })
-            end
+            api.nvim_set_hl(0, "NormalFloat", { bg = require("common").colors.CustomBorderBg })
+            api.nvim_set_hl(0, "CustomBorder",
+                { bg = require("common").colors.CustomBorderBg, fg = require("common").colors.CustomBorderFg })
 
             api.nvim_set_hl(0, "FloatBorder", { link = 'CustomBorder' })
             api.nvim_set_hl(0, "TelescopeBorder", { link = 'CustomBorder' })
-            api.nvim_set_hl(0, "CustomVirtualText", { fg = '#5a5b5a', italic = true })
+            api.nvim_set_hl(0, "CustomVirtualText", { fg = require("common").colors.CustomVirtualTextFg, italic = true })
         end
     },
     {

@@ -74,11 +74,7 @@ return {
                 },
             })
 
-            if vim.g.colors_name == 'gruvbox-material' then
-                api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = '#3c3836' })
-            elseif vim.g.colors_name == 'everforest' then
-                api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = '#374145' })
-            end
+            api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = require("common").colors.NvimTreeCursorLineBg })
             api.nvim_set_hl(0, "NvimTreeNormal", { link = 'Normal' })
             api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { link = 'EndOfBuffer' })
         end
