@@ -335,7 +335,7 @@ return {
     },
     {
         "folke/flash.nvim",
-        -- dev = true,
+        dev = true,
         event = "VeryLazy",
         opts = {
             search = {
