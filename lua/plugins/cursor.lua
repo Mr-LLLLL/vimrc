@@ -188,10 +188,10 @@ return {
     {
         'mg979/vim-visual-multi',
         keys = {
-            { "<leader>v", nil, mode = { "n", "x" } },
-            { "<leader>V", nil, mode = { "n", "x" } },
-            { "<C-Up>",    nil, mode = { "n" } },
-            { "<C-Down>",  nil, mode = { "n" } },
+            { "<leader>v", nil, mode = { "n", "x" }, desc = "VisualMutil One" },
+            { "<leader>V", nil, mode = { "n", "x" }, desc = "VisualMutil All" },
+            { "<C-Up>",    nil, mode = { "n" },      desc = "VisualMutil Up" },
+            { "<C-Down>",  nil, mode = { "n" },      desc = "VisualMutil Down" },
         },
         init = function()
             g.VM_maps = {

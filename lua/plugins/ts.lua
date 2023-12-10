@@ -182,8 +182,8 @@ return {
     {
         'mizlan/iswap.nvim',
         keys = {
-            { "<leader>s", "<cmd>ISwapWith<CR>",     { noremap = true, silent = true } },
-            { "<leader>S", "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true } },
+            { "<leader>s", "<cmd>ISwapWith<CR>",     { noremap = true, silent = true }, desc = "ISwap" },
+            { "<leader>S", "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true }, desc = "ISwapNode" },
         },
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
@@ -237,7 +237,7 @@ return {
             'nvim-treesitter/nvim-treesitter',
         },
         keys = {
-            { "<leader>j", "<cmd>TSJToggle<CR>", { noremap = true, silent = true } },
+            { "<leader>j", "<cmd>TSJToggle<CR>", { noremap = true, silent = true }, desc = "TSJoinToggle" },
         },
         config = function()
             require('treesj').setup({

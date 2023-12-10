@@ -205,7 +205,7 @@ return {
     {
         'nvim-telescope/telescope-frecency.nvim',
         keys = {
-            { "<space>sm", "<cmd>Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true } }
+            { "<space>sm", "<cmd>Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true }, desc = "Telescope Frecency File" }
         },
         dependencies = {
             'kkharji/sqlite.lua',
@@ -218,7 +218,7 @@ return {
     {
         'nvim-telescope/telescope-file-browser.nvim',
         keys = {
-            { "<space>sf", "<cmd>Telescope file_browser<CR>", { noremap = true, silent = true } }
+            { "<space>sf", "<cmd>Telescope file_browser<CR>", { noremap = true, silent = true }, desc = "Telescope FileBrowser" }
         },
         dependencies = {
             'nvim-telescope/telescope.nvim',
@@ -231,8 +231,12 @@ return {
         'nvim-telescope/telescope-project.nvim',
         event = { "CursorHold" },
         keys = {
-            { '<space>i', require("common").get_tele_project,
-                { noremap = true, silent = true, desc = "telescope projects" } }
+            {
+                '<space>i',
+                require("common").get_tele_project,
+                { noremap = true, silent = true },
+                desc = "telescope projects"
+            }
         },
         dependencies = {
             'nvim-telescope/telescope.nvim',
@@ -244,7 +248,7 @@ return {
     {
         'gbprod/yanky.nvim',
         keys = {
-            { "<space>sy", "<cmd>Telescope yank_history<CR>", { noremap = true, silent = true } },
+            { "<space>sy", "<cmd>Telescope yank_history<CR>", { noremap = true, silent = true }, desc = "Yanky" },
         },
         dependencies = {
             'kkharji/sqlite.lua',
@@ -293,7 +297,7 @@ return {
             'nvim-telescope/telescope.nvim',
         },
         keys = {
-            { "<space>z", "<cmd>Telekasten<CR>", { noremap = true, silent = true } }
+            { "<space>z", "<cmd>Telekasten<CR>", { noremap = true, silent = true }, desc = "Telekasten" }
         },
         config = function()
             g.calendar_no_mappings = 1

@@ -167,7 +167,7 @@ return {
     {
         'numToStr/Comment.nvim',
         keys = {
-            { "<leader>/", nil, mode = { "n", "v" } }
+            { "<leader>/", nil, mode = { "n", "v" }, desc = "Comment" }
         },
         config = function()
             require('Comment').setup({
@@ -397,11 +397,74 @@ return {
                 desc = "Flash"
             },
             {
-                "s",
-                mode = { "n", "o", "x" },
-                function() require("flash").treesitter() end,
+                "ss",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").treesitter({
+                        labels = "abefhijklmnopqrstuwz",
+                        jump = { pos = "range" },
+                        search = { incremental = false },
+                        label = {
+                            before = true,
+                            after = true,
+                            style = "inline",
+                        },
+                        highlight = {
+                            backdrop = false,
+                            matches = false,
+                        },
+                    })
+                end,
                 desc =
-                "Flash Treesitter"
+                "Flash Treesitter Range"
+            },
+            {
+                "s[",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").treesitter(
+                        {
+                            labels = "abefhijklmnopqrstuwz",
+                            jump = { pos = "start" },
+                            search = { incremental = false },
+                            label = {
+                                before = true,
+                                after = false,
+                                style = "inline",
+                            },
+                            highlight = {
+                                backdrop = false,
+                                matches = false,
+                            },
+                        }
+                    )
+                end,
+                desc =
+                "Flash Treesitter Start"
+            },
+            {
+                "s]",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").treesitter(
+                        {
+                            labels = "abefhijklmnopqrstuwz",
+                            jump = { pos = "end" },
+                            search = { incremental = false },
+                            label = {
+                                before = false,
+                                after = true,
+                                style = "inline",
+                            },
+                            highlight = {
+                                backdrop = false,
+                                matches = false,
+                            },
+                        }
+                    )
+                end,
+                desc =
+                "Flash Treesitter End"
             },
             {
                 "r",
@@ -770,7 +833,7 @@ return {
             'nvim-telescope/telescope.nvim',
         },
         keys = {
-            { "<leader>rf", nil, mode = { "n", "v" } }
+            { "<leader>rf", nil, mode = { "n", "v" }, desc = "Refactor" }
         },
         config = function()
             require('refactoring').setup({
@@ -851,6 +914,7 @@ return {
                 function()
                     require("dial.map").manipulate("increment", "normal")
                 end,
+                desc = "Increment",
                 mode = { "n" }
             },
             {
@@ -858,6 +922,7 @@ return {
                 function()
                     require("dial.map").manipulate("decrement", "normal")
                 end,
+                desc = "Decrement",
                 mode = { "n" }
             },
             {
@@ -865,6 +930,7 @@ return {
                 function()
                     require("dial.map").manipulate("increment", "gnormal")
                 end,
+                desc = "Increment",
                 mode = { "n" }
             },
             {
@@ -872,6 +938,7 @@ return {
                 function()
                     require("dial.map").manipulate("decrement", "gnormal")
                 end,
+                desc = "Decrement",
                 mode = { "n" }
             },
             {
@@ -879,6 +946,7 @@ return {
                 function()
                     require("dial.map").manipulate("increment", "visual")
                 end,
+                desc = "Increment",
                 mode = { "v" }
             },
             {
@@ -886,6 +954,7 @@ return {
                 function()
                     require("dial.map").manipulate("decrement", "visual")
                 end,
+                desc = "Decrement",
                 mode = { "v" }
             },
             {
@@ -893,6 +962,7 @@ return {
                 function()
                     require("dial.map").manipulate("increment", "gvisual")
                 end,
+                desc = "Increment",
                 mode = { "v" }
             },
             {
@@ -900,6 +970,7 @@ return {
                 function()
                     require("dial.map").manipulate("decrement", "gvisual")
                 end,
+                desc = "Decrement",
                 mode = { "v" }
             },
         },

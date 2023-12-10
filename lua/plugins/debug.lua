@@ -299,7 +299,7 @@ return {
         'michaelb/sniprun',
         build = 'bash ./install.sh',
         keys = {
-            { "<leader>rr", nil, mode = { "n", "v" } },
+            { "<leader>rr", nil, mode = { "n", "v" }, desc = "Sniprun" },
         },
         config = function()
             require('sniprun').setup({})

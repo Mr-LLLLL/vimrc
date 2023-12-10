@@ -5,7 +5,7 @@ return {
     {
         'nvim-tree/nvim-tree.lua',
         keys = {
-            { "<space>q", "<cmd>NvimTreeFindFileToggle<cr>", { noremap = true, silent = true } }
+            { "<space>q", "<cmd>NvimTreeFindFileToggle<cr>", { noremap = true, silent = true }, desc = "Nvim Tree" }
         },
         config = function()
             local glyphs = require("common").glyphs
@@ -374,8 +374,8 @@ return {
     {
         'MR-LLLLL/interestingwords.nvim',
         keys = {
-            { "<leader>k", nil, mode = { "n", "v" } },
-            { "<leader>m", nil, mode = { "n", "v" } },
+            { "<leader>k", nil, mode = { "n", "v" }, desc = "Interestingwords Highlight" },
+            { "<leader>m", nil, mode = { "n", "v" }, desc = "Interestingwords Search" },
             { "n",         nil, mode = { "n", "v" } },
             { "N",         nil, mode = { "n", "v" } },
             { "?",         nil, mode = { "n", "v" } },
