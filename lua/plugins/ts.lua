@@ -1,3 +1,5 @@
+local km = vim.keymap
+
 return {
     {
         'RRethy/nvim-treesitter-endwise',
@@ -73,11 +75,11 @@ return {
                         -- * method: eg 'v' or 'o'
                         -- and should return the mode ('v', 'V', or '<c-v>') or a table
                         -- mapping query_strings to modes.
-                        selection_modes = {
-                            ['@parameter.outer'] = 'v', -- charwise
-                            ['@function.outer'] = 'V',  -- linewise
-                            ['@class.outer'] = '<c-v>', -- blockwise
-                        },
+                        -- selection_modes = {
+                        --     ['@parameter.outer'] = 'v', -- charwise
+                        --     ['@function.outer'] = 'V',  -- linewise
+                        --     ['@class.outer'] = '<c-v>', -- blockwise
+                        -- },
                         -- If you set this to `true` (default is `false`) then any textobject is
                         -- extended to include preceding or succeeding whitespace. Succeeding
                         -- whitespace has priority in order to act similarly to eg the built-in
@@ -92,6 +94,7 @@ return {
                     move = {
                         enable = true,
                         set_jumps = true, -- whether to set jumps in the jumplist
+                        disable = { "go" },
                         goto_next_start = {
                             ["]]"] = "@function.outer",
                             ["]m"] = { query = "@class.outer", desc = "Next class start" },
@@ -132,6 +135,88 @@ return {
                     enable = true,
                 },
             })
+
+            local custom_auto_cmd = vim.api.nvim_create_augroup("CustomFunctionJump", { clear = true })
+            local default_map = {
+                ["1"] = {
+                    "[[",
+                    "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Previous Function Start" },
+                },
+                ["2"] = {
+                    "]]",
+                    "<cmd>TSTextobjectGotoNextStart @function.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Next Function Start" },
+                },
+                ["3"] = {
+                    "[]",
+                    "<cmd>TSTextobjectGotoPreviousEnd @function.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Previous Function End" },
+                },
+                ["4"] = {
+                    "][",
+                    "<cmd>TSTextobjectGotoNextEnd @function.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Next Function End" },
+                },
+                ["5"] = {
+                    "[m",
+                    "<cmd>TSTextobjectGotoPreviousStart @class.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Previous Class Start" },
+                },
+                ["6"] = {
+                    "]m",
+                    "<cmd>TSTextobjectGotoNextStart @class.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Next Class Start" },
+                },
+                ["7"] = {
+                    "[M",
+                    "<cmd>TSTextobjectGotoPreviousEnd @class.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Previous Class End" },
+                },
+                ["8"] = {
+                    "]M",
+                    "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
+                    { noremap = true, silent = true, desc = "Goto Next Class End" },
+                },
+            }
+            local map = {
+                go = {
+                    ["1"] = {
+                        "[[",
+                        function()
+                            vim.fn.search("^func (.\\{-}) .\\|^func .", "be")
+                        end,
+                        { noremap = true, silent = true, desc = "Goto Previous Function Start" },
+                    },
+                    ["2"] = {
+                        "]]",
+                        function()
+                            vim.fn.search("^func (.\\{-}) .\\|^func .", "e")
+                        end,
+                        { noremap = true, silent = true, desc = "Goto Next Function Start" },
+                    },
+                }
+            }
+            vim.api.nvim_create_autocmd(
+                { "Filetype" },
+                {
+                    pattern = { "*" },
+                    callback = function(_)
+                        local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+                        if map[ft] then
+                            for _, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft])) do
+                                km.set(
+                                    { 'x', 'n', 'o' },
+                                    v[1],
+                                    v[2],
+                                    v[3]
+                                )
+                            end
+                        end
+                    end,
+                    group = custom_auto_cmd,
+                }
+            )
         end
     },
     {
