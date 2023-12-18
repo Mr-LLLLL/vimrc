@@ -94,7 +94,7 @@ return {
                     move = {
                         enable = true,
                         set_jumps = true, -- whether to set jumps in the jumplist
-                        disable = { "go" },
+                        disable = { "go", "rust" },
                         goto_next_start = {
                             ["]]"] = "@function.outer",
                             ["]m"] = { query = "@class.outer", desc = "Next class start" },
@@ -136,67 +136,93 @@ return {
                 },
             })
 
-            local custom_auto_cmd = vim.api.nvim_create_augroup("CustomFunctionJump", { clear = true })
             local default_map = {
                 ["1"] = {
                     "[[",
-                    "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Previous Function Start" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function Start" },
+                    map = "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>",
+
                 },
                 ["2"] = {
                     "]]",
-                    "<cmd>TSTextobjectGotoNextStart @function.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Next Function Start" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Function Start" },
+                    map = "<cmd>TSTextobjectGotoNextStart @function.outer<cr>",
+
                 },
                 ["3"] = {
                     "[]",
-                    "<cmd>TSTextobjectGotoPreviousEnd @function.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Previous Function End" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function End" },
+                    map = "<cmd>TSTextobjectGotoPreviousEnd @function.outer<cr>",
+
                 },
                 ["4"] = {
                     "][",
-                    "<cmd>TSTextobjectGotoNextEnd @function.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Next Function End" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Function End" },
+                    map = "<cmd>TSTextobjectGotoNextEnd @function.outer<cr>",
+
                 },
                 ["5"] = {
                     "[m",
-                    "<cmd>TSTextobjectGotoPreviousStart @class.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Previous Class Start" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class Start" },
+                    map = "<cmd>TSTextobjectGotoPreviousStart @class.outer<cr>",
+
                 },
                 ["6"] = {
                     "]m",
-                    "<cmd>TSTextobjectGotoNextStart @class.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Next Class Start" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Class Start" },
+                    map = "<cmd>TSTextobjectGotoNextStart @class.outer<cr>",
+
                 },
                 ["7"] = {
                     "[M",
-                    "<cmd>TSTextobjectGotoPreviousEnd @class.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Previous Class End" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class End" },
+                    map = "<cmd>TSTextobjectGotoPreviousEnd @class.outer<cr>",
+
                 },
                 ["8"] = {
                     "]M",
-                    "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
-                    { noremap = true, silent = true, desc = "Goto Next Class End" },
+                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Class End" },
+                    map = "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
                 },
             }
             local map = {
                 go = {
                     ["1"] = {
-                        "[[",
-                        function()
-                            vim.fn.search("^func (.\\{-}) .\\|^func .", "be")
+                        map = function()
+                            local pos = vim.fn.searchpos("^func\\|\\sfunc()", "bnz")
+                            if pos[2] == 1 then
+                                vim.fn.search("^func (.\\{-}) \\h\\|^func \\h", "bez")
+                            else
+                                vim.fn.search("\\h\\+ := func()\\|func()", "bz")
+                            end
                         end,
-                        { noremap = true, silent = true, desc = "Goto Previous Function Start" },
                     },
                     ["2"] = {
-                        "]]",
-                        function()
-                            vim.fn.search("^func (.\\{-}) .\\|^func .", "e")
+                        map = function()
+                            local pos = vim.fn.searchpos("^func\\|\\sfunc()", "nz")
+                            if pos[2] == 1 then
+                                vim.fn.search("^func (.\\{-}) \\h\\|^func \\h", "ez")
+                            else
+                                vim.fn.search("\\h\\+ := func()\\|func()", "z")
+                            end
                         end,
-                        { noremap = true, silent = true, desc = "Goto Next Function Start" },
+                    },
+                },
+                rust = {
+                    ["1"] = {
+                        map = function()
+                            vim.fn.search("\\s*\\(pub \\)\\?fn \\h", "be")
+                        end,
+                    },
+                    ["2"] = {
+                        map = function()
+                            vim.fn.search("\\s*\\(pub \\)\\?fn \\h", "e")
+                        end,
                     },
                 }
             }
+
+            local custom_auto_cmd = vim.api.nvim_create_augroup("CustomFunctionJump", { clear = true })
             vim.api.nvim_create_autocmd(
                 { "Filetype" },
                 {
@@ -208,8 +234,8 @@ return {
                                 km.set(
                                     { 'x', 'n', 'o' },
                                     v[1],
-                                    v[2],
-                                    v[3]
+                                    v.map,
+                                    v[2]
                                 )
                             end
                         end
