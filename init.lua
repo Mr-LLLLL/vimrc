@@ -12,7 +12,7 @@ local function load_base()
     o.winblend                           = g.custom_blend
     o.pumblend                           = g.custom_blend
     o.number                             = true
-    o.rnu                                = false
+    o.rnu                                = true
     o.hidden                             = true
     o.cmdheight                          = 0
     o.updatetime                         = 300

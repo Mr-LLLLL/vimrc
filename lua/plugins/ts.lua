@@ -1,4 +1,6 @@
 local km = vim.keymap
+local fn = vim.fn
+local api = vim.api
 
 return {
     {
@@ -94,7 +96,7 @@ return {
                     move = {
                         enable = true,
                         set_jumps = true, -- whether to set jumps in the jumplist
-                        disable = { "go", "rust" },
+                        disable = { "go", "rust", "lua" },
                         goto_next_start = {
                             ["]]"] = "@function.outer",
                             ["]m"] = { query = "@class.outer", desc = "Next class start" },
@@ -185,38 +187,101 @@ return {
                     map = "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
                 },
             }
+
+            local func_jump = {
+                go = function()
+                    local pos = api.nvim_win_get_cursor(0)
+                    local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
+                    if lines[1]:sub(pos[2] + 5, pos[2] + 5) == "(" then
+                        if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
+                            fn.search("\\h\\+ :\\?=", "b")
+                        else
+                            return
+                        end
+                    else
+                        fn.search("func\\( (.\\{-})\\)\\? \\h", "e")
+                    end
+                end,
+                rust = function()
+                    fn.search("\\(pub \\)\\?fn \\h", "e")
+                end,
+                lua = function()
+                    local pos = api.nvim_win_get_cursor(0)
+                    local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
+                    if lines[1]:sub(pos[2] + 9, pos[2] + 9) == "(" then
+                        if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
+                            fn.search("\\h\\+ =", "b")
+                        else
+                            return
+                        end
+                    else
+                        fn.search("function \\(\\h\\+\\.\\)\\?\\h", "e")
+                    end
+                end,
+            }
+
+            local wrap_func_jump = function(ft, backward)
+                local prev_pos = api.nvim_win_get_cursor(0)
+                local current_pos
+                local text_move = require("nvim-treesitter.textobjects.move")
+                if backward then
+                    text_move.goto_previous_start("@function.outer")
+                    current_pos = api.nvim_win_get_cursor(0)
+                    if current_pos[1] == prev_pos[1] then
+                        text_move.goto_previous_start("@function.outer")
+                    end
+                else
+                    text_move.goto_next_start("@function.outer")
+                    current_pos = api.nvim_win_get_cursor(0)
+                    if current_pos[1] == prev_pos[1] then
+                        text_move.goto_next_start("@function.outer")
+                    end
+                end
+
+                current_pos = api.nvim_win_get_cursor(0)
+                if prev_pos[1] == current_pos[1] and prev_pos[2] == current_pos[2] then
+                    return
+                end
+
+                func_jump[ft]()
+
+                vim.cmd("normal! zz")
+            end
+
             local map = {
                 go = {
                     ["1"] = {
                         map = function()
-                            local pos = vim.fn.searchpos("^func\\|\\sfunc()", "bnz")
-                            if pos[2] == 1 then
-                                vim.fn.search("^func (.\\{-}) \\h\\|^func \\h", "bez")
-                            else
-                                vim.fn.search("\\h\\+ := func()\\|func()", "bz")
-                            end
+                            wrap_func_jump("go", true)
                         end,
                     },
                     ["2"] = {
                         map = function()
-                            local pos = vim.fn.searchpos("^func\\|\\sfunc()", "nz")
-                            if pos[2] == 1 then
-                                vim.fn.search("^func (.\\{-}) \\h\\|^func \\h", "ez")
-                            else
-                                vim.fn.search("\\h\\+ := func()\\|func()", "z")
-                            end
+                            wrap_func_jump("go", false)
                         end,
                     },
                 },
                 rust = {
                     ["1"] = {
                         map = function()
-                            vim.fn.search("\\s*\\(pub \\)\\?fn \\h", "be")
+                            wrap_func_jump("rust", true)
                         end,
                     },
                     ["2"] = {
                         map = function()
-                            vim.fn.search("\\s*\\(pub \\)\\?fn \\h", "e")
+                            wrap_func_jump("rust", false)
+                        end,
+                    },
+                },
+                lua = {
+                    ["1"] = {
+                        map = function()
+                            wrap_func_jump("lua", true)
+                        end
+                    },
+                    ["2"] = {
+                        map = function()
+                            wrap_func_jump("lua", false)
                         end,
                     },
                 }
