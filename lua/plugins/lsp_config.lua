@@ -54,7 +54,8 @@ local function set_lsp()
                     upgrade_dependency = true,
                 },
                 staticcheck = true,
-                allowModfileModifications = true,
+                -- this option will cause go.work error
+                allowModfileModifications = false,
                 diagnosticsDelay = '500ms',
                 usePlaceholders = false,
                 completeUnimported = true,
