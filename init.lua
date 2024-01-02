@@ -89,9 +89,6 @@ local function load_neovide()
     km.set({ 'i' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = true })
     km.set({ 'n' }, "<C-S-v>", '"*p', { noremap = true, silent = true })
     km.set({ 'c' }, "<C-S-v>", "<C-r>*", { noremap = true, silent = false })
-    -- BUG: it's not work, and will be block
-    -- km.set({ 't' }, "<C-r>", '<C-\\><C-N>"' .. fn.nr2char(fn.getchar()) .. 'pi',
-    --     { silent = true, expr = true })
     km.set({ 't' }, "<C-S-v>", '<C-\\><C-N>"*pi', { noremap = false, silent = true })
 
     km.set(

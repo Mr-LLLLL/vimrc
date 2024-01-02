@@ -239,7 +239,7 @@ local function set_lsp()
     }
 end
 
-local function set_lsp_cmd()
+local function set_lsp_autocmd()
     local custom_auto_format = api.nvim_create_augroup("CustomAutoFormat", { clear = true })
     api.nvim_create_autocmd(
         { 'BufWritePre' },
@@ -284,14 +284,6 @@ local function set_lsp_cmd()
     api.nvim_create_user_command("FormatDisable", function()
         m.format_disable = true
     end, {})
-    -- LspRestart have supported
-    -- api.nvim_create_user_command("LspReattach", function()
-    --     local matching_configs = require('lspconfig.util').get_config_by_ft(vim.bo.filetype)
-    --     for _, config in ipairs(matching_configs) do
-    --         config.launch()
-    --     end
-    --     vim.lsp.buf.add_workspace_folder(vim.fn.getcwd())
-    -- end, {})
 end
 
 return {
@@ -347,7 +339,7 @@ return {
             require('lspconfig.ui.windows').default_options.border = 'rounded'
             api.nvim_set_hl(0, "LspInfoBorder", { link = 'CustomBorder' })
 
-            set_lsp_cmd()
+            set_lsp_autocmd()
             set_lsp()
         end
     },
