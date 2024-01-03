@@ -96,7 +96,7 @@ return {
                     move = {
                         enable = true,
                         set_jumps = true, -- whether to set jumps in the jumplist
-                        disable = { "go", "rust", "lua" },
+                        disable = { "go", "rust", "lua", "http" },
                         goto_next_start = {
                             ["]]"] = "@function.outer",
                             ["]m"] = { query = "@class.outer", desc = "Next class start" },
@@ -140,50 +140,50 @@ return {
 
             local default_map = {
                 ["1"] = {
-                    "[[",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function Start" },
+                    key = "[[",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function Start" },
                     map = "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>",
 
                 },
                 ["2"] = {
-                    "]]",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Function Start" },
+                    key = "]]",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Function Start" },
                     map = "<cmd>TSTextobjectGotoNextStart @function.outer<cr>",
 
                 },
                 ["3"] = {
-                    "[]",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function End" },
+                    key = "[]",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function End" },
                     map = "<cmd>TSTextobjectGotoPreviousEnd @function.outer<cr>",
 
                 },
                 ["4"] = {
-                    "][",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Function End" },
+                    key = "][",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Function End" },
                     map = "<cmd>TSTextobjectGotoNextEnd @function.outer<cr>",
 
                 },
                 ["5"] = {
-                    "[m",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class Start" },
+                    key = "[m",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class Start" },
                     map = "<cmd>TSTextobjectGotoPreviousStart @class.outer<cr>",
 
                 },
                 ["6"] = {
-                    "]m",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Class Start" },
+                    key = "]m",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Class Start" },
                     map = "<cmd>TSTextobjectGotoNextStart @class.outer<cr>",
 
                 },
                 ["7"] = {
-                    "[M",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class End" },
+                    key = "[M",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class End" },
                     map = "<cmd>TSTextobjectGotoPreviousEnd @class.outer<cr>",
 
                 },
                 ["8"] = {
-                    "]M",
-                    { noremap = true, silent = true, buffer = true, desc = "Goto Next Class End" },
+                    key = "]M",
+                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Class End" },
                     map = "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
                 },
             }
@@ -284,6 +284,22 @@ return {
                             wrap_func_jump("lua", false)
                         end,
                     },
+                },
+                http = {
+                    ["1"] = {
+                        map = function()
+                            fn.search("^\\(GET\\|POST\\|DELETE\\|PUT\\) ", "b")
+                            vim.cmd("normal! zz")
+                        end,
+                        opts = { desc = "Goto Previous HTTP Item" }
+                    },
+                    ["2"] = {
+                        map = function()
+                            fn.search("^\\(GET\\|POST\\|DELETE\\|PUT\\) ")
+                            vim.cmd("normal! zz")
+                        end,
+                        opts = { desc = "Goto Next HTTP Item" }
+                    },
                 }
             }
 
@@ -298,9 +314,9 @@ return {
                             for _, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft])) do
                                 km.set(
                                     { 'x', 'n', 'o' },
-                                    v[1],
+                                    v.key,
                                     v.map,
-                                    v[2]
+                                    v.opts
                                 )
                             end
                         end
