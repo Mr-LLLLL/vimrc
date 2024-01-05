@@ -126,6 +126,7 @@ return {
         dev = true,
         event = "VeryLazy",
         opts = {
+            use_upper_select_visual_line = true,
             search = {
                 multi_window = true,
                 wrap = true,
@@ -150,7 +151,6 @@ return {
                 },
                 treesitter = {
                     labels = "abefhijklmnopqrstuwz",
-                    use_upper_select_visual_line = true,
                     jump = { pos = "range" },
                     search = { incremental = false },
                     label = {
@@ -193,6 +193,12 @@ return {
                 end,
                 desc =
                 "Flash Treesitter Range"
+            },
+            {
+                "S",
+                mode = { "n", "o", "x" },
+                function() require("flash").treesitter_search() end,
+                desc = "Treesitter Search",
             },
             {
                 "s[",
