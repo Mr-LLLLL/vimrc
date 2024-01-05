@@ -150,6 +150,7 @@ return {
                 },
                 treesitter = {
                     labels = "abefhijklmnopqrstuwz",
+                    use_upper_select_visual_line = true,
                     jump = { pos = "range" },
                     search = { incremental = false },
                     label = {
@@ -188,20 +189,7 @@ return {
                 "ss",
                 mode = { "n", "x", "o" },
                 function()
-                    require("flash").treesitter({
-                        labels = "abefhijklmnopqrstuwz",
-                        jump = { pos = "range" },
-                        search = { incremental = false },
-                        label = {
-                            before = true,
-                            after = true,
-                            style = "inline",
-                        },
-                        highlight = {
-                            backdrop = false,
-                            matches = false,
-                        },
-                    })
+                    require("flash").treesitter()
                 end,
                 desc =
                 "Flash Treesitter Range"
