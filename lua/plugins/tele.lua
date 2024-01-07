@@ -41,7 +41,7 @@ return {
                             ["<C-l>"] = false,
                             ["<C-u>"] = false,
                             ["<C-d>"] = false,
-                            ["<C-o>"] = { "<cmd>:stopinsert<cr>", type = "command" },
+                            ["<C-o>"] = function() vim.cmd("stopinsert") end,
                             ["<esc>"] = actions.close,
                             ["<C-j>"] = actions.move_selection_next,
                             ["<C-k>"] = actions.move_selection_previous,

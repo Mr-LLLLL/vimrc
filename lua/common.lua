@@ -234,15 +234,18 @@ m.get_tele_project = function()
                 require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
             end)
             map({ 'n' }, 'e', act.search_in_project_files)
-            map({ 'n' }, 's', function() end)
             map({ 'n' }, 'f', act.browse_project_files)
-            map({ 'n' }, 'b', function() end)
             map({ 'n' }, 'r', act.recent_project_files)
+            map({ 'n' }, 'b', function() end)
+            map({ 'n' }, 's', function() end)
+            map({ 'n' }, 'o', function() end)
 
             map({ 'i' }, '<c-e>', act.search_in_project_files)
-            map({ 'i' }, '<c-s>', function() end)
             map({ 'i' }, '<c-f>', act.browse_project_files)
+            map({ 'i' }, '<c-s>', function() end)
+            map({ 'i' }, '<c-v>', function() end)
             map({ 'i' }, '<c-b>', function() end)
+            map({ 'i' }, '<c-o>', function() vim.cmd("stopinsert") end)
             return true
         end,
     }
