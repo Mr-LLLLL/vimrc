@@ -375,35 +375,6 @@ return {
             lsp_document_formatting = false,
             -- set to true: use gopls to format
             -- false if you want to use other formatter tool(e.g. efm, nulls)
-            lsp_inlay_hints = {
-                enable = true,
-                -- Only show inlay hints for the current line
-                only_current_line = false,
-                -- Event which triggers a refersh of the inlay hints.
-                -- You can make this "CursorHold" or "CursorHold,CursorHoldI" but
-                -- not that this may cause higher CPU usage.
-                -- This option is only respected when only_current_line and
-                -- autoSetHints both are true.
-                only_current_line_autocmd = "CursorHold",
-                -- whether to show variable name before type hints with the inlay hints or not
-                -- default: false
-                show_variable_name = true,
-                -- prefix for parameter hints
-                parameter_hints_prefix = " ",
-                show_parameter_hints = true,
-                -- prefix for all the other hints (type, chaining)
-                other_hints_prefix = "=> ",
-                -- whether to align to the lenght of the longest line in the file
-                max_len_align = false,
-                -- padding from the left if max_len_align is true
-                max_len_align_padding = 1,
-                -- whether to align to the extreme right or not
-                right_align = false,
-                -- padding from the right if right_align is true
-                right_align_padding = 6,
-                -- The color of the hints
-                highlight = "CustomVirtualText",
-            },
             gopls_cmd = nil,           -- if you need to specify gopls path and cmd, e.g {"/home/user/lsp/gopls", "-logfile","/var/log/gopls.log" }
             gopls_remote_auto = false, -- add -remote=auto to gopls
             gocoverage_sign = "█",
@@ -434,53 +405,15 @@ return {
         }
     },
     {
-        'simrat39/rust-tools.nvim',
+        "mrcjkb/rustaceanvim",
+        version = '^3', -- Recommended
         ft = "rust",
         config = function()
-            local rt = require("rust-tools")
-            local lspconfig = require("lspconfig")
-
-            rt.setup({
+            vim.g.rustaceanvim = {
                 tools = {
                     -- how to execute terminal commands
                     -- options right now: termopen / quickfix / toggleterm / vimux
-                    executor = require("rust-tools.executors").toggleterm,
-                    -- These apply to the default RustSetInlayHints command
-                    inlay_hints = {
-                        -- automatically set inlay hints (type hints)
-                        -- default: true
-                        auto = true,
-
-                        -- Only show inlay hints for the current line
-                        only_current_line = false,
-
-                        -- whether to show parameter hints with the inlay hints or not
-                        -- default: true
-                        show_parameter_hints = true,
-
-                        -- prefix for parameter hints
-                        -- default: "<-"
-                        parameter_hints_prefix = "<- ",
-
-                        -- prefix for all the other hints (type, chaining)
-                        -- default: "=>"
-                        other_hints_prefix = "=> ",
-
-                        -- whether to align to the length of the longest line in the file
-                        max_len_align = false,
-
-                        -- padding from the left if max_len_align is true
-                        max_len_align_padding = 1,
-
-                        -- whether to align to the extreme right or not
-                        right_align = false,
-
-                        -- padding from the right if right_align is true
-                        right_align_padding = 7,
-
-                        -- The color of the hints
-                        highlight = "CustomVirtualText",
-                    },
+                    executor = require("rustaceanvim").toggleterm,
                 },
                 server = {
                     on_attach = require("common").lsp_on_attack,
@@ -488,7 +421,7 @@ return {
                     flags = require("common").lsp_flags,
                     cmd = { "rust-analyzer" },
                     filetypes = { "rust" },
-                    root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json"),
+                    root_dir = require("lspconfig").util.root_pattern("Cargo.toml", "rust-project.json"),
                     settings = {
                         ['rust-analyzer'] = {
                             cargo = {
@@ -502,7 +435,7 @@ return {
                         }
                     },
                 },
-            })
+            }
         end
     },
 }

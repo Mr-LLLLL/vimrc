@@ -284,6 +284,14 @@ local function set_lsp_autocmd()
     api.nvim_create_user_command("FormatDisable", function()
         m.format_disable = true
     end, {})
+    api.nvim_create_user_command("ToggleInlayHint", function()
+        local ft = api.nvim_buf_get_option(0, 'filetype')
+        if ft == "go" then
+            require('go.inlay').toggle_inlay_hints()
+        else
+            vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
+        end
+    end, {})
 end
 
 return {
