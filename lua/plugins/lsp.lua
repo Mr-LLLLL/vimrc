@@ -408,12 +408,12 @@ return {
         "mrcjkb/rustaceanvim",
         version = '^3', -- Recommended
         ft = "rust",
-        config = function()
+        init = function()
             vim.g.rustaceanvim = {
                 tools = {
                     -- how to execute terminal commands
                     -- options right now: termopen / quickfix / toggleterm / vimux
-                    executor = require("rustaceanvim").toggleterm,
+                    executor = require('rustaceanvim.executors').toggleterm,
                 },
                 server = {
                     on_attach = require("common").lsp_on_attack,
