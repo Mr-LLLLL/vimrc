@@ -436,6 +436,10 @@ return {
                     },
                 },
             }
+
+            api.nvim_create_user_command("CargoRun", function()
+                vim.cmd("!cargo run")
+            end, {})
         end
     },
 }
