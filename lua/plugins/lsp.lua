@@ -226,7 +226,7 @@ return {
                 },
             })
             api.nvim_set_hl(0, "SagaBorder", { link = 'CustomBorder' })
-            api.nvim_set_hl(0, "SagaVirtLine", { link = 'CustomVirtualText' })
+            api.nvim_set_hl(0, "SagaVirtLine", { link = 'NonText' })
 
             load_saga_keymap()
         end

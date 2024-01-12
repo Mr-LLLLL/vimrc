@@ -512,7 +512,7 @@ return {
                     end
                     curWidth = curWidth + chunkWidth
                 end
-                table.insert(newVirtText, { suffix, 'CustomVirtualText' })
+                table.insert(newVirtText, { suffix, 'NonText' })
                 return newVirtText
             end
 
