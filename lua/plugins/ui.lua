@@ -76,6 +76,7 @@ return {
 
             api.nvim_set_hl(0, "NvimTreeCursorLine", { bg = require("common").colors.NvimTreeCursorLineBg })
             api.nvim_set_hl(0, "NvimTreeNormal", { link = 'Normal' })
+            api.nvim_set_hl(0, "NvimTreeWinSeparator", { link = 'CustomBorder' })
             api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { link = 'EndOfBuffer' })
         end
     },
