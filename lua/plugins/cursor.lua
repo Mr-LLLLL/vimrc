@@ -92,7 +92,12 @@ local function autopair_confirm_done()
     local cmp = require('cmp')
     cmp.event:on(
         'confirm_done',
-        cmp_autopairs.on_confirm_done()
+        cmp_autopairs.on_confirm_done({
+            filetypes = {
+                rust = false,
+                go = false,
+            },
+        })
     )
 end
 
