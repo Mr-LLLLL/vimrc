@@ -73,11 +73,13 @@ return {
                                         return
                                     end
                                     local content = vim.split(value, '\n', { trimempty = true })
-                                    if clients[1].name == "rust_analyzer" then
+                                    if clients[1].name == "rust-analyzer" then
                                         if #content > 2 then
                                             lsp_info[k] = content[2]
                                             if #content > 6 and content[5] == "```rust" then
                                                 lsp_info[k] = lsp_info[k] .. "  "
+                                            elseif #content == 4 then
+                                                lsp_info[k] = content[3] .. content[2]
                                             else
                                                 return
                                             end
