@@ -1,6 +1,6 @@
 local g = vim.g
 
-local function autopair_multi_jump()
+local function autopair_multi_line_jump()
     local npairs               = require("nvim-autopairs")
     local cond                 = require('nvim-autopairs.conds')
     local utils                = require('nvim-autopairs.utils')
@@ -101,6 +101,24 @@ local function autopair_confirm_done()
     )
 end
 
+local function autopair_pairs()
+    local npairs = require('nvim-autopairs')
+    local Rule = require('nvim-autopairs.rule')
+    local cond = require('nvim-autopairs.conds')
+    npairs.add_rules({
+        Rule("<", ">", { "rust" })
+            :with_pair(cond.not_before_regex(" ", 1))
+            :with_move(function(opts)
+                if opts.char == "<" then
+                    return false
+                else
+                    return true
+                end
+            end)
+            :with_cr(cond.none())
+    }
+    )
+end
 
 local function autopair_move_past()
     for _, punct in pairs { ",", ";" } do
@@ -151,10 +169,11 @@ return {
                 },
             }
 
-            autopair_multi_jump()
+            autopair_multi_line_jump()
             autopair_insert_space()
             autopair_confirm_done()
             autopair_move_past()
+            autopair_pairs()
         end,
     },
     {
