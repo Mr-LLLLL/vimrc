@@ -437,7 +437,7 @@ return {
                 },
             }
 
-            api.nvim_create_user_command("CargoRun", function()
+            api.nvim_create_user_command("RSRun", function()
                 vim.cmd("!cargo run")
             end, {})
         end
