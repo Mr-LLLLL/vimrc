@@ -6,7 +6,17 @@ local function load_autocmd()
     api.nvim_create_autocmd(
         { "Filetype" },
         {
-            pattern = { "qf", "spectre_panel", "git", "fugitive", "fugitiveblame", "help", "guihua", "notify" },
+            pattern = {
+                "qf",
+                "spectre_panel",
+                "git",
+                "fugitive",
+                "fugitiveblame",
+                "help",
+                "guihua",
+                "notify",
+                "tsplayground",
+            },
             callback = function(_)
                 km.set('n', 'q', '<cmd>quit!<cr>', { noremap = true, silent = true, buffer = true })
             end,

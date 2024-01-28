@@ -28,7 +28,6 @@ local function set_lsp()
                     unusedparams = true,
                     useany = true,
                     unusedwrite = true,
-                    ST1003 = false,
                     undeclaredname = true,
                     fillreturns = true,
                     nonewvars = true,
@@ -46,7 +45,7 @@ local function set_lsp()
                 },
                 codelenses = {
                     generate = true,
-                    gc_details = false,
+                    gc_details = true,
                     test = true,
                     tidy = true,
                     vendor = true,
@@ -54,12 +53,13 @@ local function set_lsp()
                     upgrade_dependency = true,
                 },
                 staticcheck = true,
-                -- this option will cause go.work error
-                allowModfileModifications = false,
                 diagnosticsDelay = '500ms',
                 usePlaceholders = false,
                 completeUnimported = true,
                 experimentalPostfixCompletions = true,
+                matcher = 'Fuzzy',
+                symbolMatcher = 'fuzzy',
+                buildFlags = { '-tags', 'integration' },
             },
         },
     }
