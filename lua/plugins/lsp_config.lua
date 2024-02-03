@@ -255,17 +255,20 @@ local function set_lsp_autocmd()
                     return
                 end
 
-                for _, client in ipairs(clients) do
-                    if not client.supports_method("textDocument/formatting") then
-                        return
+                local format = function()
+                    local ft = api.nvim_buf_get_option(0, 'filetype')
+                    if ft == "go" then
+                        require('go.format').goimport()
+                    else
+                        vim.lsp.buf.format({ async = false })
                     end
                 end
 
-                local ft = api.nvim_buf_get_option(0, 'filetype')
-                if ft == "go" then
-                    require('go.format').goimport()
-                else
-                    vim.lsp.buf.format({ async = false })
+                for _, client in ipairs(clients) do
+                    if client.supports_method("textDocument/formatting") then
+                        format()
+                        return
+                    end
                 end
             end,
             group = custom_auto_format,
