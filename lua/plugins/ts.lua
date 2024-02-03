@@ -249,7 +249,7 @@ return {
                     local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
                     if lines[1]:sub(pos[2] + 9, pos[2] + 9) == "(" then
                         if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
-                            fn.search("\\h\\+ =", "b")
+                            fn.search("\\h\\+\\s\\+=", "b")
                         else
                             return true
                         end
