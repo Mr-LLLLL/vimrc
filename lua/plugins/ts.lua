@@ -98,25 +98,26 @@ return {
                         include_surrounding_whitespace = true,
                     },
                     move = {
-                        enable = true,
-                        set_jumps = true, -- whether to set jumps in the jumplist
-                        disable = { "go", "rust", "lua", "http" },
-                        goto_next_start = {
-                            ["]]"] = "@function.outer",
-                            ["]m"] = { query = "@class.outer", desc = "Next class start" },
-                        },
-                        goto_next_end = {
-                            ["]["] = "@function.outer",
-                            ["]M"] = "@class.outer",
-                        },
-                        goto_previous_start = {
-                            ["[["] = "@function.outer",
-                            ["[m"] = "@class.outer",
-                        },
-                        goto_previous_end = {
-                            ["[]"] = "@function.outer",
-                            ["[M"] = "@class.outer",
-                        },
+                        -- use custom
+                        enable = false,
+                        -- set_jumps = true, -- whether to set jumps in the jumplist
+                        -- disable = { "go", "rust", "lua", "http" },
+                        -- goto_next_start = {
+                        --     ["]]"] = "@function.outer",
+                        --     ["]m"] = { query = "@class.outer", desc = "Next class start" },
+                        -- },
+                        -- goto_next_end = {
+                        --     ["]["] = "@function.outer",
+                        --     ["]M"] = "@class.outer",
+                        -- },
+                        -- goto_previous_start = {
+                        --     ["[["] = "@function.outer",
+                        --     ["[m"] = "@class.outer",
+                        -- },
+                        -- goto_previous_end = {
+                        --     ["[]"] = "@function.outer",
+                        --     ["[M"] = "@class.outer",
+                        -- },
                     },
                     -- swap = {
                     --     enable = false,
@@ -143,88 +144,48 @@ return {
             })
 
             local default_map = {
-                ["1"] = {
-                    key = "[[",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function Start" },
+                ["[["] = {
+                    desc = "Goto Previous Function Start",
                     map = "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>",
 
                 },
-                ["2"] = {
-                    key = "]]",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Function Start" },
+                ["]]"] = {
+                    desc = "Goto Next Function Start",
                     map = "<cmd>TSTextobjectGotoNextStart @function.outer<cr>",
 
                 },
-                ["3"] = {
-                    key = "[]",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Function End" },
+                ["[]"] = {
+                    desc = "Goto Previous Function End",
                     map = "<cmd>TSTextobjectGotoPreviousEnd @function.outer<cr>",
 
                 },
-                ["4"] = {
-                    key = "][",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Function End" },
+                ["]["] = {
+                    desc = "Goto Next Function End",
                     map = "<cmd>TSTextobjectGotoNextEnd @function.outer<cr>",
 
                 },
-                ["5"] = {
-                    key = "[m",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class Start" },
+                ["[m"] = {
+                    desc = "Goto Previous Class Start",
                     map = "<cmd>TSTextobjectGotoPreviousStart @class.outer<cr>",
 
                 },
-                ["6"] = {
-                    key = "]m",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Class Start" },
+                ["]m"] = {
+                    desc = "Goto Next Class Start",
                     map = "<cmd>TSTextobjectGotoNextStart @class.outer<cr>",
 
                 },
-                ["7"] = {
-                    key = "[M",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Previous Class End" },
+                ["[M"] = {
+                    desc = "Goto Previous Class End",
                     map = "<cmd>TSTextobjectGotoPreviousEnd @class.outer<cr>",
 
                 },
-                ["8"] = {
-                    key = "]M",
-                    opts = { noremap = true, silent = true, buffer = true, desc = "Goto Next Class End" },
+                ["]M"] = {
+                    desc = "Goto Next Class End",
                     map = "<cmd>TSTextobjectGotoNextEnd @class.outer<cr>",
                 },
             }
 
-            local func_jump = {
-                go = function()
-                    local pos = api.nvim_win_get_cursor(0)
-                    local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
-                    if lines[1]:sub(pos[2] + 5, pos[2] + 5) == "(" then
-                        if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
-                            fn.search("\\h\\+ :\\?=", "b")
-                        else
-                            return
-                        end
-                    else
-                        fn.search("func\\( (.\\{-})\\)\\? \\h", "e")
-                    end
-                end,
-                rust = function()
-                    fn.search("\\(pub \\)\\?fn \\h", "e")
-                end,
-                lua = function()
-                    local pos = api.nvim_win_get_cursor(0)
-                    local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
-                    if lines[1]:sub(pos[2] + 9, pos[2] + 9) == "(" then
-                        if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
-                            fn.search("\\h\\+ =", "b")
-                        else
-                            return
-                        end
-                    else
-                        fn.search("function \\(\\h\\+\\.\\)\\?\\h", "e")
-                    end
-                end,
-            }
-
-            local wrap_func_jump = function(ft, backward)
+            local jumped_by_ts_move = function(backward)
                 local prev_pos = api.nvim_win_get_cursor(0)
                 local current_pos
                 local text_move = require("nvim-treesitter.textobjects.move")
@@ -244,65 +205,129 @@ return {
 
                 current_pos = api.nvim_win_get_cursor(0)
                 if prev_pos[1] == current_pos[1] and prev_pos[2] == current_pos[2] then
-                    return
+                    return false
                 end
 
-                func_jump[ft]()
-
-                vim.cmd("normal! zz")
+                return true
             end
+
+            local func_jump = {
+                go = function(backward)
+                    if not jumped_by_ts_move(backward) then
+                        return false
+                    end
+
+                    local pos = api.nvim_win_get_cursor(0)
+                    local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
+                    if lines[1]:sub(pos[2] + 5, pos[2] + 5) == "(" then
+                        if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
+                            fn.search("\\h\\+ :\\?=", "b")
+                        else
+                            return true
+                        end
+                    else
+                        fn.search("func\\( (.\\{-})\\)\\? \\h", "e")
+                    end
+
+                    return true
+                end,
+                rust = function(backward)
+                    if not jumped_by_ts_move(backward) then
+                        return false
+                    end
+
+                    fn.search("\\(pub \\)\\?fn \\h", "e")
+
+                    return true
+                end,
+                lua = function(backward)
+                    if not jumped_by_ts_move(backward) then
+                        return false
+                    end
+
+                    local pos = api.nvim_win_get_cursor(0)
+                    local lines = api.nvim_buf_get_lines(0, pos[1] - 1, pos[1], false)
+                    if lines[1]:sub(pos[2] + 9, pos[2] + 9) == "(" then
+                        if lines[1]:sub(pos[2] - 1, pos[2] - 1) == "=" then
+                            fn.search("\\h\\+ =", "b")
+                        else
+                            return true
+                        end
+                    else
+                        fn.search("function \\(\\h\\+\\.\\)\\?\\h", "e")
+                    end
+
+                    return true
+                end,
+                http = function(backward)
+                    if backward then
+                        fn.search("^\\(GET\\|POST\\|DELETE\\|PUT\\) ", "b")
+                    else
+                        fn.search("^\\(GET\\|POST\\|DELETE\\|PUT\\) ")
+                    end
+
+                    return true
+                end
+            }
+
+            local function wrap_func_jump(ft, backward)
+                if func_jump[ft] then
+                    if func_jump[ft](backward) then
+                        vim.cmd("normal! zz")
+                    end
+                end
+            end
+
 
             local map = {
                 go = {
-                    ["1"] = {
+                    ["[["] = {
                         map = function()
                             wrap_func_jump("go", true)
                         end,
                     },
-                    ["2"] = {
+                    ["]]"] = {
                         map = function()
                             wrap_func_jump("go", false)
                         end,
                     },
                 },
                 rust = {
-                    ["1"] = {
+                    ["[["] = {
                         map = function()
                             wrap_func_jump("rust", true)
                         end,
                     },
-                    ["2"] = {
+                    ["]]"] = {
                         map = function()
                             wrap_func_jump("rust", false)
                         end,
                     },
                 },
                 lua = {
-                    ["1"] = {
+                    ["[["] = {
                         map = function()
                             wrap_func_jump("lua", true)
                         end
                     },
-                    ["2"] = {
+                    ["]]"] = {
                         map = function()
                             wrap_func_jump("lua", false)
                         end,
                     },
                 },
                 http = {
-                    ["1"] = {
+                    ["[["] = {
                         map = function()
-                            fn.search("^\\(GET\\|POST\\|DELETE\\|PUT\\) ", "b")
-                            vim.cmd("normal! zz")
+                            wrap_func_jump("http", true)
                         end,
-                        opts = { desc = "Goto Previous HTTP Item" }
+                        desc = "Goto Previous HTTP Item"
                     },
-                    ["2"] = {
+                    ["]]"] = {
                         map = function()
-                            fn.search("^\\(GET\\|POST\\|DELETE\\|PUT\\) ")
-                            vim.cmd("normal! zz")
+                            wrap_func_jump("http", false)
                         end,
-                        opts = { desc = "Goto Next HTTP Item" }
+                        desc = "Goto Next HTTP Item"
                     },
                 }
             }
@@ -315,12 +340,17 @@ return {
                     callback = function(_)
                         local ft = vim.api.nvim_buf_get_option(0, 'filetype')
                         if map[ft] then
-                            for _, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft])) do
+                            for k, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft])) do
                                 km.set(
                                     { 'x', 'n', 'o' },
-                                    v.key,
+                                    k,
                                     v.map,
-                                    v.opts
+                                    {
+                                        noremap = true,
+                                        silent = true,
+                                        buffer = true,
+                                        desc = v.desc,
+                                    }
                                 )
                             end
                         end
@@ -363,7 +393,7 @@ return {
 
             vim.keymap.set("n", "[q", function()
                 require("treesitter-context").go_to_context()
-            end, { silent = true })
+            end, { silent = true, desc = "Goto current treesitter contenxt start" })
         end
     },
     {
