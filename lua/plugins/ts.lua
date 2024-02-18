@@ -339,20 +339,18 @@ return {
                     pattern = { "*" },
                     callback = function(_)
                         local ft = vim.api.nvim_buf_get_option(0, 'filetype')
-                        if map[ft] then
-                            for k, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft])) do
-                                km.set(
-                                    { 'x', 'n', 'o' },
-                                    k,
-                                    v.map,
-                                    {
-                                        noremap = true,
-                                        silent = true,
-                                        buffer = true,
-                                        desc = v.desc,
-                                    }
-                                )
-                            end
+                        for k, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft] or {})) do
+                            km.set(
+                                { 'x', 'n', 'o' },
+                                k,
+                                v.map,
+                                {
+                                    noremap = true,
+                                    silent = true,
+                                    buffer = true,
+                                    desc = v.desc,
+                                }
+                            )
                         end
                     end,
                     group = custom_auto_cmd,
