@@ -143,6 +143,8 @@ return {
                 },
             })
 
+            local disabled_ft = { "git" }
+
             local default_map = {
                 ["[["] = {
                     desc = "Goto Previous Function Start",
@@ -339,6 +341,9 @@ return {
                     pattern = { "*" },
                     callback = function(_)
                         local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+                        if vim.tbl_contains(disabled_ft, ft) then
+                            return
+                        end
                         for k, v in pairs(vim.tbl_deep_extend('force', default_map, map[ft] or {})) do
                             km.set(
                                 { 'x', 'n', 'o' },
