@@ -373,8 +373,6 @@ return {
 
                     -- shell
                     null_ls.builtins.formatting.shfmt,
-                    null_ls.builtins.code_actions.shellcheck,
-                    -- null_ls.builtins.diagnostics.shellcheck, // bashls will call shellcheck to diagnostics
 
                     -- yaml
                     null_ls.builtins.formatting.yamlfmt,
