@@ -428,17 +428,6 @@ return {
                     augend.hexcolor.new {
                         case = "lower",
                     },
-                    -- uppercase hex number (0x1A1A, 0xEEFE, etc.)
-                    augend.user.new {
-                        find = require("dial.augend.common").find_pattern("%d+"),
-                        add = function(text, addend, cursor)
-                            local n = tonumber(text)
-                            n = math.floor(n * (2 ^ addend))
-                            text = tostring(n)
-                            cursor = #text
-                            return { text = text, cursor = cursor }
-                        end
-                    },
                     augend.integer.alias.decimal,
                     augend.integer.alias.decimal_int,
                     augend.integer.alias.hex,
