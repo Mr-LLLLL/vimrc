@@ -49,6 +49,7 @@ local function load_neovide()
     if g.neovide == nil then
         return
     end
+    vim.api.nvim_set_hl(0, "NonText", { fg = "#4f585e", italic = true })
 
     -- set by neovide config.toml
     -- o.guifont                                = "JetBrainsMono Nerd Font Mono:h10"

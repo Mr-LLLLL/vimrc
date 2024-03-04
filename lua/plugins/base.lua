@@ -9,6 +9,11 @@ return {
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
             cmd("colorscheme everforest")
+            vim.api.nvim_set_hl(0, "NonText", {
+                fg = require("common").colors.NonTextFg,
+                ctermfg = require("common").colors.NonTextCtermFg,
+                italic = true,
+            })
 
             api.nvim_set_hl(0, "NormalFloat", { bg = require("common").colors.CustomBorderBg })
             api.nvim_set_hl(0, "CustomBorder",

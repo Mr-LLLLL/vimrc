@@ -31,7 +31,9 @@ m.colors           = {
     CustomBorderBg = '#2d353b',
     LualineTabInactiveBg = '#4f5b58',
     LualineTabInactiveFg = '#9da9a0',
-    NvimTreeCursorLineBg = '#374145'
+    NvimTreeCursorLineBg = '#374145',
+    NonTextFg = '#4f585e',
+    NonTextCtermFg = 239,
 }
 
 m.weeks            = {
