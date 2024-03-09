@@ -170,43 +170,6 @@ return {
                                 newfile = '[New]',             -- Text to show for newly created file before first write
                             }
                         },
-                        {
-                            function()
-                                return "󰁞 " .. lsp_info["textDocument/references"]
-                            end,
-                            cond = function()
-                                return lsp_info["textDocument/references"] ~= ""
-                            end,
-                            on_click = function()
-                                local tele_builtin = require("telescope.builtin")
-                                require("common").list_or_jump("textDocument/references", tele_builtin.lsp_references,
-                                    { include_declaration = false })
-                            end
-                        },
-                        {
-                            function()
-                                return " " .. lsp_info["textDocument/implementation"]
-                            end,
-                            cond = function()
-                                return lsp_info["textDocument/implementation"] ~= ""
-                            end,
-                            on_click = function()
-                                local tele_builtin = require("telescope.builtin")
-                                require("common").list_or_jump("textDocument/implementation",
-                                    tele_builtin.lsp_implementations)
-                            end
-                        },
-                        {
-                            function()
-                                return " " .. lsp_info["textDocument/hover"]
-                            end,
-                            cond = function()
-                                return lsp_info["textDocument/hover"] ~= ""
-                            end,
-                            on_click = function()
-                                require('lspsaga.hover'):render_hover_doc()
-                            end
-                        },
                     },
                     lualine_x = {
                         -- {
@@ -249,73 +212,6 @@ return {
                     lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
-                },
-                tabline = {
-                    lualine_a = { {
-                        "tabs",
-                        max_length = o.columns * 2 / 3,
-                        mode = 2,
-                        fmt = function(name, context)
-                            local emptyName = '[No Name]'
-                            local buflist = fn.tabpagebuflist(context.tabnr)
-                            local winnr = fn.tabpagewinnr(context.tabnr)
-                            local bufnr = buflist[winnr]
-                            local winid = fn.win_getid(winnr, context.tabnr)
-                            local bufferPath = fn.bufname(bufnr)
-                            local project_icon = fn.tabpagenr() == context.tabnr and " " or " "
-                            local file_icon = fn.tabpagenr() == context.tabnr and " " or " "
-                            if bufferPath == "" then
-                                return emptyName .. file_icon
-                            end
-                            if api.nvim_buf_get_option(bufnr, 'buftype') == "nofile" then
-                                return bufferPath .. file_icon
-                            end
-
-                            if bufferPath:sub(1, 1) ~= '/' then
-                                bufferPath = fn.getcwd() .. "/" .. bufferPath
-
-                                local title = fn.findfile('.git', bufferPath .. ';')
-                                if title == "" then
-                                    title = fn.finddir('.git', bufferPath .. ';')
-                                end
-                                title = fn.getcwd() .. "/" .. title
-                                return fn.fnamemodify(title, ':h:t') .. project_icon
-                            end
-
-                            local title = fn.findfile('.git', bufferPath .. ';')
-                            if title == "" then
-                                title = fn.finddir('.git', bufferPath .. ';')
-                            end
-
-                            if title == "" then
-                                if fn.getqflist({ ['qfbufnr'] = 0 }).qfbufnr == bufnr then
-                                    return '[Quickfix List]'
-                                elseif winid and fn.getloclist(winid, { ['qfbufnr'] = 0 }).qfbufnr == bufnr then
-                                    return '[Location List]'
-                                end
-                                return fn.fnamemodify(bufferPath, ':p:t') .. file_icon
-                            end
-
-                            return fn.fnamemodify(title, ':h:t') .. project_icon
-                        end,
-                        separator = { left = '', right = '' },
-                        tabs_color = {
-                            -- Same values as the general color option can be used here.
-                            -- active = { fg = colors.black, bg = colors.grey },
-                            inactive = { fg = require("common").colors.LualineTabInactiveFg, bg = require("common").colors.LualineTabInactiveBg }, -- Color for inactive tab.
-                        },
-                    } },
-                    lualine_b = {},
-                    lualine_c = {},
-                    lualine_x = {},
-                    lualine_y = { {
-                        function() return "󰕶 " .. require("common").weeks[os.date('%w')] .. "  " .. os.date('%y-%m-%d') end,
-                        separator = { left = '' },
-                    } },
-                    lualine_z = { {
-                        function() return "󰔛 " .. os.date('%H:%M:%S') end,
-                        separator = { right = '' }
-                    } },
                 },
                 winbar = {},
                 inactive_winbar = {},
@@ -381,62 +277,7 @@ return {
             "nvim-lualine/lualine.nvim",
         },
         config = function()
-            local navic = require("nvim-navic")
-            navic.setup({
-                icons = {
-                    File          = "󰈙 ",
-                    Module        = " ",
-                    Namespace     = "󰌗 ",
-                    Package       = " ",
-                    Class         = "󰌗 ",
-                    Method        = "󰆧 ",
-                    Property      = " ",
-                    Field         = " ",
-                    Constructor   = " ",
-                    Enum          = "󰕘",
-                    Interface     = "󰕘",
-                    Function      = "󰊕 ",
-                    Variable      = "󰆧 ",
-                    Constant      = "󰏿 ",
-                    String        = "󰀬 ",
-                    Number        = "󰎠 ",
-                    Boolean       = "◩ ",
-                    Array         = "󰅪 ",
-                    Object        = "󰅩 ",
-                    Key           = "󰌋 ",
-                    Null          = "󰟢 ",
-                    EnumMember    = " ",
-                    Struct        = "󰌗 ",
-                    Event         = " ",
-                    Operator      = "󰆕 ",
-                    TypeParameter = "󰊄 ",
-                },
-                lsp = {
-                    auto_attach = true,
-                    preference = nil,
-                },
-                highlight = false,
-                separator = "",
-                depth_limit = 0,
-                depth_limit_indicator = "..",
-                safe_output = true,
-                lazy_update_context = false,
-                click = true
-            })
-
-            local old = require("lualine").get_config()
-            table.insert(old.tabline.lualine_c, #old.tabline.lualine_c + 1, {
-                function()
-                    return navic.get_location({ click = true })
-                end,
-                cond = function()
-                    return navic.is_available()
-                end,
-                on_click = function()
-                    _G.navic_click_handler(api.nvim_get_current_win())
-                end
-            })
-            require("lualine").setup(old)
+            require("lualine-ext").init_tab_navic()
         end
     },
     {
@@ -517,6 +358,29 @@ return {
                 },
                 zindex = 50
             },
+        }
+    },
+    {
+        "Mr-LLLLL/lualine-ext.nvim",
+        dev = true,
+        event = "VeryLazy",
+        opts = {
+            init_tab_project = {
+                disabled = false,
+                tabs_color = {
+                    inactive = {
+                        fg = "#9da9a0",
+                        bg = "#4f5b58",
+                    },
+                }
+            },
+            init_lsp = {
+                disabled = false,
+                document_on_click = function()
+                    require('lspsaga.hover'):render_hover_doc()
+                end,
+            },
+            init_tab_date = true,
         }
     },
 }
