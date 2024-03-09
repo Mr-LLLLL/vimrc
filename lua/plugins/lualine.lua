@@ -362,7 +362,6 @@ return {
     },
     {
         "Mr-LLLLL/lualine-ext.nvim",
-        dev = true,
         event = "VeryLazy",
         opts = {
             init_tab_project = {
