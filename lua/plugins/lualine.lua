@@ -1,7 +1,4 @@
 local api = vim.api
-local g = vim.g
-local o = vim.o
-local fn = vim.fn
 
 return {
     {

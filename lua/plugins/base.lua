@@ -1,4 +1,3 @@
-local g = vim.g
 local api = vim.api
 local cmd = vim.cmd
 
