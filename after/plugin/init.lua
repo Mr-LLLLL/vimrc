@@ -2,6 +2,7 @@ local api = vim.api
 local km = vim.keymap
 
 local function load_autocmd()
+    local custom_auto_cmd = api.nvim_create_augroup("CustomAutoCmd", { clear = true })
     api.nvim_create_autocmd(
         { "BufWinLeave" },
         {
