@@ -71,30 +71,6 @@ return {
                         },
                     },
                     lualine_x = {
-                        -- {
-                        --     require("noice").api.status.message.get_hl,
-                        --     cond = require("noice").api.status.message.has,
-                        -- },
-                        {
-                            require("noice").api.status.command.get,
-                            cond = require("noice").api.status.command.has,
-                            color = { fg = "#ff9e64" },
-                        },
-                        {
-                            require("noice").api.status.mode.get,
-                            cond = function()
-                                local msg = require("noice").api.status.mode.get()
-                                if msg == nil then
-                                    return false
-                                end
-                                if string.match(msg, "recording") == "recording" then
-                                    return true
-                                else
-                                    return false
-                                end
-                            end,
-                            color = { fg = "#ff9e64" },
-                        },
                         'encoding',
                     },
                     lualine_y = {

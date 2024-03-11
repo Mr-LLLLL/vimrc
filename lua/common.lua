@@ -56,51 +56,12 @@ m.lsp_capabilities = function()
 end
 
 
-m.list_or_jump     = function(action, f, param)
-    local tele_action = require("telescope.actions")
-    local lspParam = vim.lsp.util.make_position_params(fn.win_getid())
-    lspParam.context = { includeDeclaration = false }
-    vim.lsp.buf_request(api.nvim_get_current_buf(), action, lspParam, function(err, result, ctx, _)
-        if err then
-            api.nvim_err_writeln("Error when executing " .. action .. " : " .. err.message)
-            return
-        end
-        local flattened_results = {}
-        if result then
-            -- textDocument/definition can return Location or Location[]
-            if not vim.tbl_islist(result) then
-                flattened_results = { result }
-            end
-
-            vim.list_extend(flattened_results, result)
-        end
-
-        local offset_encoding = vim.lsp.get_client_by_id(ctx.client_id).offset_encoding
-
-        if #flattened_results == 0 then
-            return
-            -- definitions will be two result in lua, i think first is pretty goods
-        elseif #flattened_results == 1 or action == "textDocument/definition" then
-            if type(param) == "table" then
-                if param.jump_type == "vsplit" then
-                    vim.cmd("vsplit")
-                elseif param.jump_type == "tab" then
-                    vim.cmd("tab split")
-                end
-            end
-            vim.lsp.util.jump_to_location(flattened_results[1], offset_encoding)
-            tele_action.center()
-        else
-            f(param)
-        end
-    end)
-end
-
 ---@diagnostic disable-next-line: unused-local
 m.lsp_on_attack    = function(client, bufnr)
     vim.lsp.inlay_hint.enable(bufnr)
 
     local tele_builtin = require("telescope.builtin")
+    local util = require("utilities")
 
     --     -- Enable completion triggered by <c-x><c-o>
     api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -111,51 +72,51 @@ m.lsp_on_attack    = function(client, bufnr)
     --     km.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     --     km.set('n', 'gd', vim.lsp.buf.definition, bufopts)
     km.set('n', '<c-]>', function()
-        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
+        util.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
     end, m.keymap_desc(bufopts, "lsp definition"))
 
     km.set('n', '<c-w>]', function()
-        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
+        util.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "vsplit" })
     end, m.keymap_desc(bufopts, "lsp definition with vsplit"))
 
     km.set('n', '<c-w><c-]>', function()
-        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
+        util.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions, { jump_type = "tab" })
     end, m.keymap_desc(bufopts, "lsp definition with tab"))
 
     km.set('n', '<C-LeftMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        m.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
+        util.list_or_jump("textDocument/definition", tele_builtin.lsp_definitions)
     end, m.keymap_desc(bufopts, "lsp definition"))
 
     km.set('n', 'gi', function()
-        m.list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
+        util.list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
     end, m.keymap_desc(bufopts, "lsp implementation"))
 
     km.set('n', 'g<LeftMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        m.list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
+        util.list_or_jump("textDocument/implementation", tele_builtin.lsp_implementations)
     end, m.keymap_desc(bufopts, "lsp implementation"))
 
     km.set('n', 'gr', function()
-        m.list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
+        util.list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
     end, m.keymap_desc(bufopts, "lsp references"))
 
     km.set('n', '<C-RightMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        m.list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
+        util.list_or_jump("textDocument/references", tele_builtin.lsp_references, { include_declaration = false })
     end, m.keymap_desc(bufopts, "lsp references"))
 
     km.set('n', 'gy', function()
-        m.list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
+        util.list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
     end, m.keymap_desc(bufopts, "lsp typeDefinition"))
 
     km.set('n', 'g<RightMouse>', function()
         local pos = fn.getmousepos()
         fn.cursor(pos.line, pos.column)
-        m.list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
+        util.list_or_jump("textDocument/typeDefinition", tele_builtin.lsp_type_definitions)
     end, m.keymap_desc(bufopts, "lsp typeDefinition"))
 
     km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end,
