@@ -343,15 +343,16 @@ return {
     },
     {
         'ray-x/go.nvim',
-        ft = "go",
+        ft = { "go", 'gomod' },
         dependencies = { 'ray-x/guihua.lua' },
+        build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
         opts = {
             disable_defaults = false, -- true|false when true set false to all boolean settings and replace all table
             -- settings with {}
             go = 'go', -- go command, can be go[default] or go1.18beta1
             goimport = 'gopls', -- goimport command, can be gopls[default] or goimport
             fillstruct = 'gopls', -- can be nil (use fillstruct, slower) and gopls
-            gofmt = 'gopls', --gofmt cmd,
+            gofmt = 'gofumpt', --gofmt cmd,
             max_line_len = 128, -- max line length in golines format, Target maximum line length for golines
             tag_transform = "camelcase", -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
             tag_options = "json=", -- sets options sent to gomodifytags, i.e., json=omitempty
@@ -363,7 +364,7 @@ return {
             lsp_cfg = false, --[[ true: use non-default gopls setup specified in go/lsp.lua
                               false: do nothing if lsp_cfg is a table, merge table with with non-default gopls setup in go/lsp.lua, e.g.
                               lsp_cfg = {settings={gopls={matcher='CaseInsensitive', ['local'] = 'your_local_module_path', gofumpt = true }}} ]]
-            lsp_gofumpt = false, -- true: set default gofmt in gopls format to gofumpt
+            lsp_gofumpt = true,  -- true: set default gofmt in gopls format to gofumpt
             lsp_on_attach = nil, -- nil: do nothing if lsp_on_attach is a function: use this function as on_attach function for gopls, when lsp_cfg is true
             lsp_keymaps = false, -- true: use default keymaps defined in go/lsp.lua
             lsp_codelens = false,
