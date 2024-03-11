@@ -490,6 +490,25 @@ return {
             -- ```
             -- but this is need telescope when result is greater one
             ctrl_t_with_center = true,
+
+            smart_move_textobj = {
+                disabled = false,
+                -- disabled filetype, default support all language just like treesitter-textobj behavior
+                disabled_filetypes = { "git" },
+                -- if you want to support some filetypes, uncomment it and fill your language
+                -- enabled_filetypes = {},
+                mapping = {
+                    prev_func_start = "[[",
+                    next_func_start = "]]",
+                    prev_func_end = "[]",
+                    next_func_end = "][",
+
+                    prev_class_start = "[m",
+                    next_class_start = "]m",
+                    prev_class_end = "[M",
+                    next_class_end = "]M",
+                }
+            }
         }
     }
 }
