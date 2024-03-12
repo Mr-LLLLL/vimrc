@@ -323,7 +323,7 @@ return {
                 })
             })
 
-            require("private.private").setup()
+            require("private.private").load_db()
         end
     },
     {
