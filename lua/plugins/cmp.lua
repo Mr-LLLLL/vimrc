@@ -142,6 +142,7 @@ return {
                     },
                 }),
                 sources = cmp.config.sources({
+                    { name = 'codeium' },
                     { name = 'nvim_lsp' },
 
                     -- { name = 'vsnip' }, -- For vsnip users.
@@ -184,6 +185,7 @@ return {
                                 nerdfont = "[Font]",
                                 cmdline = "[Cmd]",
                                 path = "[Path]",
+                                Codium = "[Code]",
                             })
                         })(entry, vim_item)
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
