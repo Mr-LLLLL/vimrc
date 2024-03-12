@@ -174,6 +174,7 @@ return {
                             --     vim_item.menu = entry.source.name
                             --     return vim_item
                             -- end,
+                            symbol_map = { Codeium = "" },
                             menu = ({
                                 buffer = "[B]",
                                 nvim_lsp = "[LSP]",
@@ -185,7 +186,7 @@ return {
                                 nerdfont = "[Font]",
                                 cmdline = "[Cmd]",
                                 path = "[Path]",
-                                Codium = "[Code]",
+                                codeium = "[Cod]",
                             })
                         })(entry, vim_item)
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
