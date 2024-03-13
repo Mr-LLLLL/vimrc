@@ -7,6 +7,17 @@ return {
         end
     },
     {
+        "Exafunction/codeium.nvim",
+        event = { "InsertEnter", "CmdlineEnter" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/nvim-cmp",
+        },
+        config = function()
+            require("codeium").setup({})
+        end
+    },
+    {
         'hrsh7th/nvim-cmp',
         event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
@@ -226,5 +237,5 @@ return {
                 })
             })
         end
-    }
+    },
 }
