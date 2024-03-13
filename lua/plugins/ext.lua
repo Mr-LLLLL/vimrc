@@ -736,7 +736,6 @@ return {
     {
         "David-Kunz/gen.nvim",
         cmd = "Gen",
-        dev = true,
         opts = {
             model = "mistral",      -- The default model to use.
             host = "localhost",     -- The host running the Ollama service.
