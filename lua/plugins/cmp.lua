@@ -8,10 +8,9 @@ return {
     },
     {
         "Exafunction/codeium.nvim",
-        event = { "InsertEnter", "CmdlineEnter" },
+        lazy = true,
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "hrsh7th/nvim-cmp",
         },
         config = function()
             require("codeium").setup({})
@@ -36,6 +35,7 @@ return {
             'kristijanhusak/vim-dadbod-completion',
             'hrsh7th/cmp-nvim-lua',
             'onsails/lspkind.nvim',
+            "Exafunction/codeium.nvim",
         },
         config = function()
             local cmp = require 'cmp'
