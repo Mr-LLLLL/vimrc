@@ -8,6 +8,7 @@ local function load_base()
 
     g.everforest_show_eob                = 0
     g.everforest_diagnostic_virtual_text = 'colored'
+    g.everforest_enable_italic           = 1
 
     o.winblend                           = g.custom_blend
     o.pumblend                           = g.custom_blend
