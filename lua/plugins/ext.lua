@@ -737,7 +737,7 @@ return {
         "David-Kunz/gen.nvim",
         cmd = "Gen",
         keys = {
-            { "<space>l", ":Gen<CR>", mode = { "n", "v" }, { noremap = true, silent = true }, desc = "Gen Nvim" }
+            { "<space>l", ":Gen<CR>", mode = { "n", "x" }, { noremap = true, silent = true }, desc = "Gen Nvim" }
         },
         config = function()
             require("gen").setup {
@@ -747,7 +747,7 @@ return {
                 display_mode = "float",                          -- The display mode. Can be "float" or "split".
                 show_prompt = true,                              -- Shows the Prompt submitted to Ollama.
                 show_model = true,                               -- Displays which model you are using at the beginning of your chat session.
-                no_auto_close = false,                           -- Never closes the window automatically.
+                no_auto_close = true,                            -- Never closes the window automatically.
                 init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
                 -- Function to initialize Ollama
                 command = function(options)
