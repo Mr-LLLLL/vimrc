@@ -7,16 +7,6 @@ return {
         end
     },
     {
-        "Exafunction/codeium.nvim",
-        lazy = true,
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        config = function()
-            require("codeium").setup({})
-        end
-    },
-    {
         'hrsh7th/nvim-cmp',
         event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
@@ -35,7 +25,8 @@ return {
             'kristijanhusak/vim-dadbod-completion',
             'hrsh7th/cmp-nvim-lua',
             'onsails/lspkind.nvim',
-            "Exafunction/codeium.nvim",
+            "sourcegraph/sg.nvim",
+            -- "Exafunction/codeium.nvim",
         },
         config = function()
             local cmp = require 'cmp'
@@ -153,7 +144,8 @@ return {
                     },
                 }),
                 sources = cmp.config.sources({
-                    { name = 'codeium' },
+                    -- { name = 'codeium' },
+                    { name = 'cody' },
                     { name = 'nvim_lsp' },
 
                     -- { name = 'vsnip' }, -- For vsnip users.
@@ -185,7 +177,10 @@ return {
                             --     vim_item.menu = entry.source.name
                             --     return vim_item
                             -- end,
-                            symbol_map = { Codeium = "" },
+                            symbol_map = {
+                                -- Codeium = "",
+                                Cody = ""
+                            },
                             menu = ({
                                 buffer = "[B]",
                                 nvim_lsp = "[LSP]",
@@ -197,7 +192,8 @@ return {
                                 nerdfont = "[Font]",
                                 cmdline = "[Cmd]",
                                 path = "[Path]",
-                                codeium = "[Cod]",
+                                -- codeium = "[Cod]",
+                                cody = "[Cod]",
                             })
                         })(entry, vim_item)
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
