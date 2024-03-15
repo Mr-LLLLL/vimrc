@@ -193,7 +193,7 @@ return {
                                 cmdline = "[Cmd]",
                                 path = "[Path]",
                                 -- codeium = "[Cod]",
-                                cody = "[Cod]",
+                                cody = "[AI]",
                             })
                         })(entry, vim_item)
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
