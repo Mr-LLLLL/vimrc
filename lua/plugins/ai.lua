@@ -7,13 +7,13 @@ return {
         },
         config = function()
             require("gen").setup {
-                model = "llama2:13b",                            -- The default model to use.
-                host = require("private.private").gen_nvim_host, -- The host running the Ollama service.
-                port = "11434",                                  -- The port on which the Ollama service is listening.
-                display_mode = "float",                          -- The display mode. Can be "float" or "split".
-                show_prompt = true,                              -- Shows the Prompt submitted to Ollama.
-                show_model = true,                               -- Displays which model you are using at the beginning of your chat session.
-                no_auto_close = true,                            -- Never closes the window automatically.
+                model = "llama2",       -- The default model to use.
+                host = "localhost",     -- The host running the Ollama service.
+                port = "11434",         -- The port on which the Ollama service is listening.
+                display_mode = "float", -- The display mode. Can be "float" or "split".
+                show_prompt = true,     -- Shows the Prompt submitted to Ollama.
+                show_model = true,      -- Displays which model you are using at the beginning of your chat session.
+                no_auto_close = true,   -- Never closes the window automatically.
                 init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
                 -- Function to initialize Ollama
                 command = function(options)
