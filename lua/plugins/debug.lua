@@ -266,6 +266,9 @@ return {
     },
     {
         'rcarriga/nvim-dap-ui',
+        dependencies = {
+            "nvim-neotest/nvim-nio",
+        },
         lazy = true,
         config = function()
             require("dapui").setup(get_dapui_conf())

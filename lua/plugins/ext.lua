@@ -260,46 +260,81 @@ return {
         },
     },
     {
+        "vhyrro/luarocks.nvim",
+        lazy = true,
+        opts = {
+            rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
+        },
+        config = function()
+            require("luarocks").setup({})
+        end,
+    },
+    {
         'rest-nvim/rest.nvim',
         ft = "http",
+        dependencies = { "vhyrro/luarocks.nvim" },
         config = function()
             require("rest-nvim").setup({
-                -- Open request results in a horizontal split
-                result_split_horizontal = false,
-                -- Keep the http file buffer above|left when split horizontal|vertical
-                result_split_in_place = false,
+                client = "curl",
+                env_file = ".env",
+                env_pattern = "\\.env$",
+                env_edit_command = "tabedit",
+                custom_dynamic_variables = {},
+                logs = {
+                    level = "info",
+                    save = true,
+                },
                 -- Skip SSL verification, useful for unknown certificates
                 skip_ssl_verification = true,
                 -- Encode URL before making request
                 encode_url = false,
                 -- Highlight request on run
                 highlight = {
-                    enabled = true,
-                    timeout = 150,
+                    enable = true,
+                    timeout = 750,
                 },
                 result = {
-                    -- toggle showing URL, HTTP info, headers at top the of result window
-                    show_url = true,
-                    show_http_info = true,
-                    show_headers = true,
-                    -- executables or functions for formatting response body [optional]
-                    -- set them to nil if you want to disable them
-                    formatters = {
-                        json = "jq",
-                        html = function(body)
-                            return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
-                        end
+                    split = {
+                        horizontal = false,
+                        in_place = false,
+                        stay_in_current_window_after_split = true,
                     },
-                },
-                -- Jump to request line on run
-                jump_to_request = false,
-                env_file = '.env',
-                custom_dynamic_variables = {},
-                yank_dry_run = true,
-            })
+                    behavior = {
+                        show_info = {
+                            url = true,
+                            headers = true,
+                            http_info = true,
+                            curl_command = true,
+                        },
+                        -- executables or functions for formatting response body [optional]
+                        -- set them to nil if you want to disable them
+                        formatters = {
+                            json = "jq",
+                            html = function(body)
+                                if vim.fn.executable("tidy") == 0 then
+                                    return body, { found = false, name = "tidy" }
+                                end
+                                local fmt_body = vim.fn.system({
+                                    "tidy",
+                                    "-i",
+                                    "-q",
+                                    "--tidy-mark", "no",
+                                    "--show-body-only", "auto",
+                                    "--show-errors", "0",
+                                    "--show-warnings", "0",
+                                    "-",
+                                }, body):gsub("\n$", "")
 
-            km.set('n', "<leader>cc", "<Plug>RestNvim", { noremap = true, silent = true })
-            km.set('n', "<leader>cp", "<Plug>RestNvimPreview", { noremap = true, silent = true })
+                                return fmt_body, { found = true, name = "tidy" }
+                            end,
+                        },
+                    }
+                },
+                keybinds = {
+                    { "<leader>cc", "<cmd>Rest run<cr>",      "Rest Run" },
+                    { "<leader>cp", "<cmd>Rest run last<cr>", "Rest Run Last" },
+                },
+            })
         end
     },
     {
