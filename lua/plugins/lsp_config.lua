@@ -258,7 +258,7 @@ local function set_lsp_autocmd()
                 local format = function()
                     local ft = api.nvim_buf_get_option(0, 'filetype')
                     if ft == "go" then
-                        require('go.format').goimport()
+                        require('go.format').goimports()
                     else
                         vim.lsp.buf.format({ async = false })
                     end
@@ -276,7 +276,7 @@ local function set_lsp_autocmd()
     )
     api.nvim_create_user_command("Format", function()
         if api.nvim_buf_get_option(0, 'filetype') == "go" then
-            require('go.format').goimport()
+            require('go.format').goimports()
         else
             vim.lsp.buf.format({ async = false })
         end

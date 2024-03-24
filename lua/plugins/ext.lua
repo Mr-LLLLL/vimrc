@@ -265,9 +265,7 @@ return {
         opts = {
             rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
         },
-        config = function()
-            require("luarocks").setup({})
-        end,
+        config = true,
     },
     {
         'rest-nvim/rest.nvim',
