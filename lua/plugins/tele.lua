@@ -8,22 +8,11 @@ return {
         build = 'make',
     },
     {
-        'dhruvmanila/telescope-bookmarks.nvim',
-        lazy = true,
-        version = '*',
-        -- Uncomment if the selected browser is Firefox, Waterfox or buku
-        dependencies = {
-            'tyru/open-browser.vim',
-            'kkharji/sqlite.lua',
-        },
-    },
-    {
         'nvim-telescope/telescope.nvim',
         branch = '0.1.x',
         event = "VeryLazy",
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
-            'dhruvmanila/telescope-bookmarks.nvim',
         },
         config = function()
             local glyphs = require("common").glyphs
@@ -117,36 +106,6 @@ return {
                         search_by = "title",
                         sync_with_nvim_tree = false, -- default false
                     },
-                    bookmarks = {
-                        -- Available:
-                        --  * 'brave'
-                        --  * 'brave_beta'
-                        --  * 'buku'
-                        --  * 'chrome'
-                        --  * 'chrome_beta'
-                        --  * 'edge'
-                        --  * 'firefox'
-                        --  * 'qutebrowser'
-                        --  * 'safari'
-                        --  * 'vivaldi'
-                        --  * 'waterfox'
-                        selected_browser = 'chrome',
-                        -- Either provide a shell command to open the URL
-                        url_open_command = 'open',
-                        -- Or provide the plugin name which is already installed
-                        -- Available: 'vim_external', 'open_browser'
-                        url_open_plugin = 'open_browser',
-                        -- Show the full path to the bookmark instead of just the bookmark name
-                        full_path = true,
-                        -- Provide a custom profile name for Firefox browser
-                        firefox_profile_name = nil,
-                        -- Provide a custom profile name for Waterfox browser
-                        waterfox_profile_name = nil,
-                        -- Add a column which contains the tags for each bookmark for buku
-                        buku_include_tags = false,
-                        -- Provide debug messages
-                        debug = false,
-                    },
                     frecency = {
                         db_safe_mode = false,
                         show_filter_column = false,
@@ -191,7 +150,6 @@ return {
             require("telescope").load_extension("noice")
             require("telescope").load_extension("notify")
 
-            require('telescope').load_extension('bookmarks')
             require('telescope').load_extension('fzf')
 
             km.set('n', "<space>ss", "<cmd>Telescope<CR>", { noremap = true, silent = true })
