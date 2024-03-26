@@ -441,6 +441,23 @@ return {
             api.nvim_create_user_command("RSRun", function()
                 vim.cmd("!cargo run")
             end, {})
+
+            local group = vim.api.nvim_create_augroup("RustaceanvimCustomGroup", { clear = true })
+            vim.api.nvim_create_autocmd(
+                { "Filetype" },
+                {
+                    pattern = { "rust" },
+                    callback = function()
+                        vim.keymap.set(
+                            'n',
+                            '<leader>t',
+                            "<cmd>RustLsp runnables<cr>",
+                            { noremap = true, silent = true, buffer = true }
+                        )
+                    end,
+                    group = group,
+                }
+            )
         end
     },
 }
