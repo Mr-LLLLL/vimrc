@@ -139,6 +139,8 @@ local function load_lazy()
             border = "rounded",
         }
     })
+
+    vim.api.nvim_set_hl(0, "LazyBackdrop", { bg = require("common").colors.CustomBorderBg })
 end
 
 local function init()
