@@ -206,7 +206,7 @@ return {
     {
         'junegunn/vim-easy-align',
         keys = {
-            { "ga", "<Plug>(EasyAlign)", { noremap = true, silent = true }, mode = { "n", "x" } }
+            { "ga", "<Plug>(EasyAlign)", { noremap = true, silent = true }, mode = { "n", "x" }, desc = "EasyAlign" }
         },
     },
     {
