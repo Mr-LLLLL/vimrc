@@ -20,6 +20,7 @@ return {
 
             api.nvim_set_hl(0, "FloatBorder", { link = 'CustomBorder' })
             api.nvim_set_hl(0, "TelescopeBorder", { link = 'CustomBorder' })
+            api.nvim_set_hl(0, "Visual", { bg = require("common").colors.VisualBg, italic = false, nocombine = true })
         end
     },
     {

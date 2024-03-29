@@ -27,6 +27,7 @@ m.glyphs           = {
 }
 
 m.colors           = {
+    VisualBg = '#543a48',
     CustomBorderFg = '#5c6a72',
     CustomBorderBg = '#2d353b',
     NvimTreeCursorLineBg = '#374145',
