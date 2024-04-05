@@ -31,6 +31,7 @@ local function load_base()
     o.wildmode                           = "longest,full"
     o.laststatus                         = 3
     -- o.scrolloff      = 5
+    o.conceallevel                       = 1
 
     o.tabstop                            = 4
     o.expandtab                          = true

@@ -40,6 +40,12 @@ m.lsp_flags        = {
     debounce_text_changes = 150,
 }
 
+m.registers        = {}
+
+m.register         = function(fn)
+    table.insert(m.registers, fn)
+end
+
 m.keymap_desc      = function(opts, desc)
     return vim.tbl_extend("keep", opts, { desc = desc })
 end
@@ -55,7 +61,6 @@ m.lsp_capabilities = function()
 
     return capabilities
 end
-
 
 ---@diagnostic disable-next-line: unused-local
 m.lsp_on_attack    = function(client, bufnr)
@@ -134,6 +139,10 @@ m.lsp_on_attack    = function(client, bufnr)
     km.set('n', '<space>wl', function()
         vim.print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, m.keymap_desc(bufopts, "show lsp workspaces"))
+
+    for _, func in ipairs(m.registers) do
+        func(bufopts)
+    end
 end
 
 m.get_tele_project = function()

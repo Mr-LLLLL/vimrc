@@ -8,62 +8,6 @@ local function set_lsp()
     local capabilities = require("common").lsp_capabilities()
 
     local lspconfig = require("lspconfig")
-    lspconfig.gopls.setup {
-        on_attach = on_attach,
-        capabilities = capabilities,
-        flags = { allow_incremental_sync = true, debounce_text_changes = 500 },
-        filetypes = { 'go', 'gomod', 'gowork', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
-        root_dir = function(fname)
-            return lspconfig.util.root_pattern 'go.work' (fname) or lspconfig.util.root_pattern('go.mod', '.git')(fname)
-        end,
-        single_file_support = true,
-        cmd = { 'gopls' },
-        settings = {
-            gopls = {
-                allExperiments = true,
-                analyses = {
-                    unusedvariable = true,
-                    unreachable = true,
-                    nilness = true,
-                    unusedparams = true,
-                    useany = true,
-                    unusedwrite = true,
-                    undeclaredname = true,
-                    fillreturns = true,
-                    nonewvars = true,
-                    fieldalignment = false,
-                    shadow = false,
-                },
-                hints = {
-                    assignVariableTypes = true,
-                    compositeLiteralFields = true,
-                    compositeLiteralTypes = true,
-                    constantValues = true,
-                    functionTypeParameters = true,
-                    parameterNames = true,
-                    rangeVariableTypes = true,
-                },
-                codelenses = {
-                    generate = true,
-                    gc_details = true,
-                    test = true,
-                    tidy = true,
-                    vendor = true,
-                    regenerate_cgo = true,
-                    upgrade_dependency = true,
-                },
-                staticcheck = true,
-                diagnosticsDelay = '500ms',
-                usePlaceholders = false,
-                completeUnimported = true,
-                experimentalPostfixCompletions = true,
-                matcher = 'Fuzzy',
-                symbolMatcher = 'fuzzy',
-                buildFlags = { '-tags', 'integration' },
-            },
-        },
-    }
-
     lspconfig.lua_ls.setup {
         on_attach = on_attach,
         capabilities = capabilities,

@@ -1,15 +1,16 @@
 local api = vim.api
 local km = vim.keymap
 
-local function load_saga_keymap()
+local function load_saga_keymap(opts)
     -- Lsp finder find the symbol definition implement reference
     -- if there is no implement it will hide
     -- when you use action in finder like open vsplit then you can
     -- use <C-t> to jump back
-    km.set("n", "gD", "<cmd>Lspsaga finder<CR>", { silent = true })
+    km.set("n", "gD", "<cmd>Lspsaga finder<CR>", require("common").keymap_desc(opts, "Lspsaga Finder"))
 
     -- Code action
-    km.set({ "n", "v" }, "<leader>a", "<cmd>Lspsaga code_action<CR>", { silent = true })
+    km.set({ "n", "v" }, "<leader>a", "<cmd>Lspsaga code_action<CR>",
+        require("common").keymap_desc(opts, "Lspsaga CodeAction"))
 
     -- Rename
     -- km.set("n", "<space>r", "<cmd>Lspsaga rename<CR>", { silent = true })
@@ -18,7 +19,7 @@ local function load_saga_keymap()
     -- you can edit the definition file in this flaotwindow
     -- also support open/vsplit/etc operation check definition_action_keys
     -- support tagstack C-t jump back
-    km.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
+    km.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>", require("common").keymap_desc(opts, "Lspsaga Peek Definition"))
 
     -- Show line diagnostics
     -- km.set("n", "<space>a", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
@@ -27,22 +28,24 @@ local function load_saga_keymap()
     -- km.set("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
 
     -- Diagnostic jump can use `<c-o>` to jump back
-    km.set("n", "[D", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true, desc = "Lspsaga diagnostic backward" })
-    km.set("n", "]D", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true, desc = "Lspsaga diagnostic forward" })
+    km.set("n", "[D", "<cmd>Lspsaga diagnostic_jump_prev<CR>",
+        require("common").keymap_desc(opts, "Lspsaga Diagnostic Backward"))
+    km.set("n", "]D", "<cmd>Lspsaga diagnostic_jump_next<CR>",
+        require("common").keymap_desc(opts, "Lspsaga Diagnostic Forward"))
 
     -- Only jump to error
     km.set("n", "[d", function()
         require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-    end, { silent = true, desc = "Lspsaga error diagnostic backward" })
+    end, require("common").keymap_desc(opts, "Lspsaga Error Diagnostic Backward"))
     km.set("n", "]d", function()
         require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
-    end, { silent = true, desc = "lspsaga error diagnostic forward" })
+    end, require("common").keymap_desc(opts, "Lspsaga Error Diagnostic Forward"))
 
     -- Outline
-    km.set("n", "<space>p", "<cmd>Lspsaga outline<CR>", { silent = true })
+    km.set("n", "<space>p", "<cmd>Lspsaga outline<CR>", require("common").keymap_desc(opts, "Lspsaga Outline"))
 
     -- Hover Doc
-    km.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
+    km.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", require("common").keymap_desc(opts, "Lspsaga HoverDoc"))
 
     -- Float terminal
     -- km.set("n", "<A-d>", "<cmd>Lspsaga open_floaterm<CR>", { silent = true })
@@ -228,7 +231,7 @@ return {
             api.nvim_set_hl(0, "SagaBorder", { link = 'CustomBorder' })
             api.nvim_set_hl(0, "SagaVirtLine", { link = 'NonText' })
 
-            load_saga_keymap()
+            require("common").register(load_saga_keymap)
         end
     },
     {
@@ -361,13 +364,23 @@ return {
             comment_placeholder = '', -- comment_placeholder your cool placeholder e.g. ﳑ       
             icons = { breakpoint = '🧘', currentpos = '🏃' }, -- setup to `false` to disable icons setup
             verbose = false, -- output loginf in messages
-            lsp_cfg = false, --[[ true: use non-default gopls setup specified in go/lsp.lua
-                              false: do nothing if lsp_cfg is a table, merge table with with non-default gopls setup in go/lsp.lua, e.g.
-                              lsp_cfg = {settings={gopls={matcher='CaseInsensitive', ['local'] = 'your_local_module_path', gofumpt = true }}} ]]
+            lsp_cfg = {
+                on_attach = require("common").lsp_on_attack,
+                capabilities = require("common").lsp_capabilities(),
+                flags = require("common").lsp_flags,
+                settings = {
+                    gopls = {
+                        usePlaceholders = false,
+                        analyses = {
+                            shadow = false,
+                        }
+                    }
+                }
+            },
             lsp_gofumpt = true,  -- true: set default gofmt in gopls format to gofumpt
             lsp_on_attach = nil, -- nil: do nothing if lsp_on_attach is a function: use this function as on_attach function for gopls, when lsp_cfg is true
             lsp_keymaps = false, -- true: use default keymaps defined in go/lsp.lua
-            lsp_codelens = false,
+            lsp_codelens = true,
             lsp_diag_hdlr = nil, -- hook lsp diag handler
             -- virtual text setup
             lsp_diag_virtual_text = nil,

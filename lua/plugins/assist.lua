@@ -538,5 +538,5 @@ return {
             }
             vim.keymap.set({ "n", "x" }, "sr", function() require("ssr").open() end)
         end
-    }
+    },
 }
