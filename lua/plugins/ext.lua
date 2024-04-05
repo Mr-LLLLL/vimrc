@@ -255,7 +255,7 @@ return {
     {
         "sontungexpt/url-open",
         keys = {
-            { "<space>o", "<cmd>URLOpenUnderCursor<cr>", mode = { "n" }, desc = "Open URL under cursor" },
+            { "gf", "<cmd>URLOpenUnderCursor<cr>", mode = { "n" }, desc = "Open URL under cursor" },
         },
         config = function()
             require("url-open").setup({
@@ -414,10 +414,6 @@ return {
 
             require("private.private").load_db()
         end
-    },
-    {
-        'renerocksai/calendar-vim',
-        cmd = "Calendar"
     },
     {
         'eandrju/cellular-automaton.nvim',
