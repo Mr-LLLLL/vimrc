@@ -170,7 +170,7 @@ m.get_tele_project = function()
             map({ 'i' }, '<c-s>', function() end)
             map({ 'i' }, '<c-v>', function() end)
             map({ 'i' }, '<c-b>', function() end)
-            map({ 'i' }, '<c-o>', function() vim.cmd("stopinsert") end)
+            -- map({ 'i' }, '<c-o>', function() vim.cmd("stopinsert") end)
             return true
         end,
     }
