@@ -107,9 +107,21 @@ return {
                         sync_with_nvim_tree = false, -- default false
                     },
                     frecency = {
+                        recency_values = {
+                            { age = 10,     value = 200 },
+                            { age = 30,     value = 160 },
+                            { age = 60,     value = 140 },
+                            { age = 120,    value = 120 },
+                            { age = 240,    value = 100 }, -- past 4 hours
+                            { age = 1440,   value = 80 },  -- past day
+                            { age = 4320,   value = 60 },  -- past 3 days
+                            { age = 10080,  value = 40 },  -- past week
+                            { age = 43200,  value = 20 },  -- past month
+                            { age = 129600, value = 10 },  -- past 90 days
+                        },
                         db_safe_mode = false,
                         show_filter_column = false,
-                        show_scores = false,
+                        show_scores = true,
                         show_unindexed = false,
                         disable_devicons = false,
                     },
