@@ -242,7 +242,7 @@ local function load_dap()
             { noremap = true, silent = true, desc = "Backward breakpoint" })
         vim.keymap.set('n', ']b', function() next_bk(true) end,
             { noremap = true, silent = true, desc = "Forward breakpoint" })
-        vim.keymap.set('n', '<leader>d', require('dapui').float_element,
+        vim.keymap.set('n', '<space>d', require('dapui').float_element,
             { noremap = true, silent = true, desc = "dap float elements" })
     end
 

@@ -401,68 +401,126 @@ return {
             require("lualine").setup(old)
         end,
     },
+    -- {
+    --     'lukas-reineke/indent-blankline.nvim',
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("ibl").setup({
+    --             indent = {
+    --                 char = "│",
+    --                 tab_char = "│",
+    --                 highlight = "Whitespace",
+    --                 smart_indent_cap = true,
+    --                 priority = 1,
+    --             },
+    --             whitespace = {
+    --                 highlight = "Whitespace",
+    --                 remove_blankline_trail = true,
+    --             },
+    --             scope = {
+    --                 enabled = true,
+    --                 show_start = false,
+    --                 show_end = false,
+    --                 char = "│",
+    --                 highlight = "CursorLineNr",
+    --                 include = {
+    --                     node_type = {
+    --                         lua = {
+    --                             'chunk',
+    --                             'do_statement',
+    --                             'while_statement',
+    --                             'repeat_statement',
+    --                             'if_statement',
+    --                             'for_statement',
+    --                             'function_declaration',
+    --                             'function_definition',
+    --                             'table_constructor',
+    --                             'assignment_statement',
+    --                         },
+    --                         python = {
+    --                             "module",
+    --                         },
+    --                     }
+    --                 }
+    --             },
+    --             exclude = {
+    --                 filetypes = {
+    --                     "lspinfo",
+    --                     "packer",
+    --                     "checkhealth",
+    --                     "help",
+    --                     "man",
+    --                     "gitcommit",
+    --                     "TelescopePrompt",
+    --                     "TelescopeResults",
+    --                     "",
+    --                     "dashboard",
+    --                 },
+    --                 buftypes = {
+    --                     "terminal",
+    --                     "nofile",
+    --                     "quickfix",
+    --                     "prompt",
+    --                 },
+    --             },
+    --         })
+    --     end,
+    -- },
     {
-        'lukas-reineke/indent-blankline.nvim',
-        event = "VeryLazy",
+        "shellRaining/hlchunk.nvim",
+        event = { "UIEnter" },
         config = function()
-            require("ibl").setup({
+            local ft = require("hlchunk.utils.filetype")
+            require("hlchunk").setup({
+                chunk = {
+                    enable = true,
+                    notify = true,
+                    use_treesitter = true,
+                    support_filetypes = ft.support_filetypes,
+                    exclude_filetypes = ft.exclude_filetypes,
+                    chars = {
+                        horizontal_line = "─",
+                        vertical_line = "│",
+                        left_top = "╭",
+                        left_bottom = "╰",
+                        right_arrow = ">",
+                    },
+                    style = {
+                        { fg = require("common").colors.ChunkFg, },
+                        { fg = require("common").colors.ChunkErrorFg, }, -- this fg is used to highlight wrong chunk
+                    },
+                    textobject = "",
+                    max_file_size = 1024 * 1024,
+                    error_sign = true,
+                },
                 indent = {
-                    char = "│",
-                    tab_char = "│",
-                    highlight = "Whitespace",
-                    smart_indent_cap = true,
-                    priority = 1,
-                },
-                whitespace = {
-                    highlight = "Whitespace",
-                    remove_blankline_trail = true,
-                },
-                scope = {
-                    enabled = true,
-                    show_start = false,
-                    show_end = false,
-                    char = "│",
-                    highlight = "CursorLineNr",
-                    include = {
-                        node_type = {
-                            lua = {
-                                'chunk',
-                                'do_statement',
-                                'while_statement',
-                                'repeat_statement',
-                                'if_statement',
-                                'for_statement',
-                                'function_declaration',
-                                'function_definition',
-                                'table_constructor',
-                                'assignment_statement',
-                            },
-                            python = {
-                                "module",
-                            },
-                        }
-                    }
-                },
-                exclude = {
-                    filetypes = {
-                        "lspinfo",
-                        "packer",
-                        "checkhealth",
-                        "help",
-                        "man",
-                        "gitcommit",
-                        "TelescopePrompt",
-                        "TelescopeResults",
-                        "",
-                        "dashboard",
+                    enable = true,
+                    use_treesitter = true,
+                    chars = {
+                        "│",
                     },
-                    buftypes = {
-                        "terminal",
-                        "nofile",
-                        "quickfix",
-                        "prompt",
+                    style = {
+                        { fg = require("common").colors.NonTextFg, },
                     },
                 },
+                blank = {
+                    enable = false,
+                },
+                line_num = {
+                    enable = true,
+                    use_treesitter = true,
+                    style = require("common").colors.ChunkFg,
+                },
+                context = {
+                    chars = {
+                        "│",
+                    },
+                    style = {
+                        require("common").colors.ChunkContextFt,
+                    },
+                    enable = true,
+                    use_treesitter = true,
+                }
             })
         end,
     },

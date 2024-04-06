@@ -33,7 +33,7 @@ return {
     {
         'numToStr/Comment.nvim',
         keys = {
-            { "<leader>/", nil, mode = { "n", "v" }, desc = "Comment" }
+            { "gc", nil, mode = { "n", "v" }, desc = "Comment" }
         },
         config = function()
             require('Comment').setup({
@@ -83,7 +83,7 @@ return {
             -- forbid default mapping, customer my key mapping
             km.set("n", "<leader>/", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' })
             km.set("n",
-                "<leader>//",
+                "gcc",
                 function()
                     return api.nvim_get_vvar('count') == 0 and '<Plug>(comment_toggle_linewise_current)'
                         or '<Plug>(comment_toggle_linewise_count)'
@@ -91,7 +91,7 @@ return {
                 { expr = true, desc = 'Comment toggle current line' })
             km.set(
                 "x",
-                "<leader>/",
+                "gc",
                 '<Plug>(comment_toggle_linewise_visual)',
                 { desc = 'Comment toggle linewise (visual)' })
         end

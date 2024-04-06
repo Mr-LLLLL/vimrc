@@ -3,7 +3,7 @@ return {
         "David-Kunz/gen.nvim",
         cmd = "Gen",
         keys = {
-            { "<space>l", ":Gen<CR>", mode = { "n", "x" }, { noremap = true, silent = true }, desc = "Gen Nvim" }
+            { "<space>/", ":Gen<CR>", mode = { "n", "x" }, { noremap = true, silent = true }, desc = "Gen Nvim" }
         },
         config = function()
             require("gen").setup {

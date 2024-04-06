@@ -33,6 +33,9 @@ m.colors           = {
     NvimTreeCursorLineBg = '#374145',
     NonTextFg = '#4f585e',
     NonTextCtermFg = 239,
+    ChunkFg = '#806d9c',
+    ChunkErrorFg = '#e67e80',
+    ChunkContextFt = '#859289',
 }
 
 m.lsp_flags        = {

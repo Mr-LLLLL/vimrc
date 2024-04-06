@@ -52,8 +52,9 @@ local function load_neovide()
         return
     end
 
-    -- set by neovide config.toml
-    -- o.guifont                                = "JetBrainsMono Nerd Font Mono:h10"
+    -- BUG: fix verticle line have some space in neovide
+    o.linespace                              = -2
+
     g.neovide_fullscreen                     = true
     g.neovide_confirm_quit                   = true
     g.neovide_floating_blur_amount_x         = 0.0

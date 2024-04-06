@@ -373,6 +373,7 @@ return {
                         usePlaceholders = false,
                         analyses = {
                             shadow = false,
+                            ST1003 = false,
                         }
                     }
                 }
@@ -463,7 +464,7 @@ return {
                     callback = function()
                         vim.keymap.set(
                             'n',
-                            '<leader>t',
+                            '<space>r',
                             "<cmd>RustLsp runnables<cr>",
                             { noremap = true, silent = true, buffer = true }
                         )
