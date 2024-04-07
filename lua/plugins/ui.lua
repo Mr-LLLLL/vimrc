@@ -468,6 +468,7 @@ return {
     -- },
     {
         "shellRaining/hlchunk.nvim",
+        dev = true,
         event = { "UIEnter" },
         config = function()
             local ft = require("hlchunk.utils.filetype")
@@ -476,6 +477,7 @@ return {
                     enable = true,
                     notify = true,
                     use_treesitter = true,
+                    in_performance = true,
                     support_filetypes = ft.support_filetypes,
                     exclude_filetypes = ft.exclude_filetypes,
                     chars = {
@@ -495,6 +497,7 @@ return {
                 },
                 indent = {
                     enable = true,
+                    in_performance = true,
                     use_treesitter = true,
                     chars = {
                         "│",
@@ -505,13 +508,16 @@ return {
                 },
                 blank = {
                     enable = false,
+                    in_performance = true,
                 },
                 line_num = {
                     enable = true,
+                    in_performance = true,
                     use_treesitter = true,
                     style = require("common").colors.ChunkFg,
                 },
                 context = {
+                    in_performance = true,
                     chars = {
                         "│",
                     },

@@ -32,6 +32,7 @@ local function load_base()
     o.laststatus                         = 3
     -- o.scrolloff      = 5
     o.conceallevel                       = 1
+    o.lcs                                = "tab:/ "
 
     o.tabstop                            = 4
     o.expandtab                          = true
