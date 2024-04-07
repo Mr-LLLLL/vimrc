@@ -374,7 +374,8 @@ return {
                         analyses = {
                             shadow = false,
                             ST1003 = false,
-                        }
+                        },
+                        diagnosticsTrigger = '',
                     }
                 }
             },
@@ -382,11 +383,8 @@ return {
             lsp_on_attach = nil, -- nil: do nothing if lsp_on_attach is a function: use this function as on_attach function for gopls, when lsp_cfg is true
             lsp_keymaps = false, -- true: use default keymaps defined in go/lsp.lua
             lsp_codelens = true,
-            lsp_diag_hdlr = nil, -- hook lsp diag handler
             -- virtual text setup
-            lsp_diag_virtual_text = nil,
             diagnostic = false,
-            lsp_diag_update_in_insert = false,
             lsp_document_formatting = false,
             -- set to true: use gopls to format
             -- false if you want to use other formatter tool(e.g. efm, nulls)
