@@ -203,7 +203,7 @@ return {
                                 -- Use this table to add additional mappings for the normal mode in
                                 -- the translation window. Either strings or function references are
                                 -- supported.
-                                ["q"] = pantran_actions.close,
+                                ["<C-c>"] = pantran_actions.close,
                                 ["<C-a>"] = pantran_actions.append_close_translation,
                                 ["<C-r>"] = pantran_actions.replace_close_translation,
                                 ["<C-s>"] = pantran_actions.select_source,

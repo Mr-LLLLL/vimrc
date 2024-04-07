@@ -51,7 +51,7 @@ return {
                             ["<C-t>"] = actions.select_tab + actions.center,
                             ["<C-u>"] = false,
                             ["<C-d>"] = false,
-                            ["q"] = actions.close,
+                            ["<C-c>"] = actions.close,
                             ["<C-b>"] = actions.results_scrolling_up,
                             ["<C-f>"] = actions.results_scrolling_down,
                             ["<C-n>"] = actions.preview_scrolling_down,
