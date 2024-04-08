@@ -319,7 +319,7 @@ return {
         "vhyrro/luarocks.nvim",
         lazy = true,
         opts = {
-            rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
+            rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua", "magick" }, -- Specify LuaRocks packages to install
         },
         config = true,
     },
@@ -1133,5 +1133,20 @@ return {
                 end,
             },
         },
-    }
+    },
+    {
+        "mistricky/codesnap.nvim",
+        build = "make",
+        cmd = "CodeSnap",
+        opts = {
+            mac_window_bar = true,
+            code_font_family = "JetBrainsMono Nerd Font Mono",
+            watermark_font_family = "Pacifico",
+            watermark = "CodeSnapshot",
+            bg_theme = "default",
+            breadcrumbs_separator = "/",
+            has_breadcrumbs = true,
+            save_path = "~/Pictures"
+        }
+    },
 }

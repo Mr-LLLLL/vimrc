@@ -496,7 +496,7 @@ return {
                     error_sign = true,
                 },
                 indent = {
-                    enable = true,
+                    enable = false,
                     in_performance = true,
                     use_treesitter = true,
                     chars = {

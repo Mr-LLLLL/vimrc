@@ -375,7 +375,7 @@ return {
                             shadow = false,
                             ST1003 = false,
                         },
-                        diagnosticsTrigger = '',
+                        diagnosticsTrigger = "Edit",
                     }
                 }
             },
