@@ -468,8 +468,7 @@ return {
     -- },
     {
         "shellRaining/hlchunk.nvim",
-        dev = true,
-        event = { "UIEnter" },
+        event = "VeryLazy",
         config = function()
             local ft = require("hlchunk.utils.filetype")
             require("hlchunk").setup({
