@@ -145,7 +145,7 @@ return {
                 }),
                 sources = cmp.config.sources({
                     -- { name = 'codeium' },
-                    { name = 'cody' },
+                    -- { name = 'cody' },
                     { name = 'nvim_lsp' },
 
                     -- { name = 'vsnip' }, -- For vsnip users.

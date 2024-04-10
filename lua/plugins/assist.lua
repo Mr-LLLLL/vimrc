@@ -122,9 +122,9 @@ return {
         event = "VeryLazy",
     },
     {
-        "folke/flash.nvim",
-        dev = true,
+        "Mr-LLLLL/flash.nvim",
         event = "VeryLazy",
+        branch = "dev",
         opts = {
             use_upper_select_visual_line = true,
             search = {

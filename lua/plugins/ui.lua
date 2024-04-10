@@ -401,73 +401,9 @@ return {
             require("lualine").setup(old)
         end,
     },
-    -- {
-    --     'lukas-reineke/indent-blankline.nvim',
-    --     event = "VeryLazy",
-    --     config = function()
-    --         require("ibl").setup({
-    --             indent = {
-    --                 char = "│",
-    --                 tab_char = "│",
-    --                 highlight = "Whitespace",
-    --                 smart_indent_cap = true,
-    --                 priority = 1,
-    --             },
-    --             whitespace = {
-    --                 highlight = "Whitespace",
-    --                 remove_blankline_trail = true,
-    --             },
-    --             scope = {
-    --                 enabled = true,
-    --                 show_start = false,
-    --                 show_end = false,
-    --                 char = "│",
-    --                 highlight = "CursorLineNr",
-    --                 include = {
-    --                     node_type = {
-    --                         lua = {
-    --                             'chunk',
-    --                             'do_statement',
-    --                             'while_statement',
-    --                             'repeat_statement',
-    --                             'if_statement',
-    --                             'for_statement',
-    --                             'function_declaration',
-    --                             'function_definition',
-    --                             'table_constructor',
-    --                             'assignment_statement',
-    --                         },
-    --                         python = {
-    --                             "module",
-    --                         },
-    --                     }
-    --                 }
-    --             },
-    --             exclude = {
-    --                 filetypes = {
-    --                     "lspinfo",
-    --                     "packer",
-    --                     "checkhealth",
-    --                     "help",
-    --                     "man",
-    --                     "gitcommit",
-    --                     "TelescopePrompt",
-    --                     "TelescopeResults",
-    --                     "",
-    --                     "dashboard",
-    --                 },
-    --                 buftypes = {
-    --                     "terminal",
-    --                     "nofile",
-    --                     "quickfix",
-    --                     "prompt",
-    --                 },
-    --             },
-    --         })
-    --     end,
-    -- },
     {
-        "shellRaining/hlchunk.nvim",
+        "Mr-LLLLL/hlchunk.nvim",
+        branch = "dev",
         event = "VeryLazy",
         config = function()
             local ft = require("hlchunk.utils.filetype")
@@ -475,8 +411,6 @@ return {
                 chunk = {
                     enable = true,
                     notify = true,
-                    use_treesitter = true,
-                    in_performance = true,
                     support_filetypes = ft.support_filetypes,
                     exclude_filetypes = ft.exclude_filetypes,
                     chars = {
@@ -486,45 +420,18 @@ return {
                         left_bottom = "╰",
                         right_arrow = ">",
                     },
-                    style = {
-                        { fg = require("common").colors.ChunkFg, },
-                        { fg = require("common").colors.ChunkErrorFg, }, -- this fg is used to highlight wrong chunk
-                    },
-                    textobject = "",
-                    max_file_size = 1024 * 1024,
+                    textobject = "ah",
                     error_sign = true,
-                },
-                indent = {
-                    enable = false,
-                    in_performance = true,
-                    use_treesitter = true,
-                    chars = {
-                        "│",
-                    },
-                    style = {
-                        { fg = require("common").colors.NonTextFg, },
-                    },
-                },
-                blank = {
-                    enable = false,
-                    in_performance = true,
                 },
                 line_num = {
                     enable = true,
-                    in_performance = true,
-                    use_treesitter = true,
-                    style = require("common").colors.ChunkFg,
                 },
                 context = {
-                    in_performance = true,
                     chars = {
                         "│",
                     },
-                    style = {
-                        require("common").colors.ChunkContextFt,
-                    },
+                    textobject = "ih",
                     enable = true,
-                    use_treesitter = true,
                 }
             })
         end,
