@@ -427,11 +427,11 @@ return {
                     enable = true,
                 },
                 context = {
+                    enable = true,
                     chars = {
                         "│",
                     },
                     textobject = "ih",
-                    enable = true,
                 }
             })
         end,

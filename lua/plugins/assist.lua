@@ -81,7 +81,7 @@ return {
             })
 
             -- forbid default mapping, customer my key mapping
-            km.set("n", "<leader>/", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' })
+            km.set("n", "gc", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' })
             km.set("n",
                 "gcc",
                 function()
