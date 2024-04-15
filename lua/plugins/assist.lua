@@ -325,13 +325,6 @@ return {
         end
     },
     {
-        'Mr-LLLLL/treesitter-outer',
-        ft = { "lua", "python" },
-        opts = {
-            filetypes = { "lua", "python" }
-        },
-    },
-    {
         "danymat/neogen",
         version = "*",
         cmd = "Neogen",

@@ -402,17 +402,13 @@ return {
         end,
     },
     {
-        "Mr-LLLLL/hlchunk.nvim",
-        branch = "dev",
+        "Mr-LLLLL/cool-chunk.nvim",
         event = "VeryLazy",
         config = function()
-            local ft = require("hlchunk.utils.filetype")
-            require("hlchunk").setup({
+            require("cool-chunk").setup({
                 chunk = {
                     enable = true,
                     notify = true,
-                    support_filetypes = ft.support_filetypes,
-                    exclude_filetypes = ft.exclude_filetypes,
                     chars = {
                         horizontal_line = "─",
                         vertical_line = "│",
