@@ -403,7 +403,6 @@ return {
     },
     {
         "Mr-LLLLL/hlchunk.nvim",
-        branch = "dev",
         event = "VeryLazy",
         config = function()
             local ft = require("hlchunk.utils.filetype")
