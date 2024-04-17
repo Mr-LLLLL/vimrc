@@ -534,7 +534,7 @@ return {
     },
     {
         "ThePrimeagen/harpoon",
-        branch = "harpoon2",
+        commit = 'e76cb03',
         dependencies = { "nvim-lua/plenary.nvim" },
         event = "VeryLazy",
         config = function()
@@ -565,7 +565,7 @@ return {
             })
 
             km.set("n", "<space>m", function()
-                require("harpoon").ui:toggle_quick_menu(harpoon:list())
+                harpoon.ui:toggle_quick_menu(harpoon:list())
             end, { desc = "Open harpoon window" })
             km.set("n", "<leader>sp", function()
                 harpoon:list():prev()
