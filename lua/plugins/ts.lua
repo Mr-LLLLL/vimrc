@@ -188,8 +188,8 @@ return {
     {
         'mizlan/iswap.nvim',
         keys = {
-            { "<leader>s", "<cmd>ISwapWith<CR>",     { noremap = true, silent = true }, desc = "ISwap" },
-            { "<leader>S", "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true }, desc = "ISwapNode" },
+            { "<leader>ss", "<cmd>ISwapWith<CR>",     { noremap = true, silent = true }, desc = "ISwap" },
+            { "<leader>S",  "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true }, desc = "ISwapNode" },
         },
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
