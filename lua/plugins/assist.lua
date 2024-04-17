@@ -536,12 +536,7 @@ return {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" },
-        keys = {
-            { "<space>m",   function() require("harpoon").ui:toggle_quick_menu(require("harpoon"):list()) end, desc = "Open harpoon window" },
-            { "<leader>sn", function() require("harpoon"):list():next() end,                                   desc = "Open harpoon next" },
-            { "<leader>sp", function() require("harpoon"):list():prev() end,                                   desc = "Open harpoon previous" },
-            { "<leader>f",  function() require("harpoon"):list():add() end,                                    desc = "Add file to harpoon" },
-        },
+        event = "VeryLazy",
         config = function()
             local harpoon = require("harpoon")
             local extensions = require("harpoon.extensions");
@@ -568,7 +563,22 @@ return {
                     end, { buffer = cx.bufnr })
                 end,
             })
+
+            km.set("n", "<space>m", function()
+                require("harpoon").ui:toggle_quick_menu(harpoon:list())
+            end, { desc = "Open harpoon window" })
+            km.set("n", "<leader>sp", function()
+                harpoon:list():prev()
+            end, { desc = "Open harpoon previous" })
+            km.set("n", "<leader>sn", function()
+                harpoon:list():next()
+            end, { desc = "Open harpoon next" })
+            km.set("n", "<leader>f", function()
+                harpoon:list():add()
+            end, { desc = "Add file to harpoon" })
+
             harpoon:extend(extensions.builtins.navigate_with_number());
+            require("lualine-ext").init_harpoon()
         end
     }
 }
