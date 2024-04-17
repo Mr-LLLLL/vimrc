@@ -83,7 +83,7 @@ return {
             -- forbid default mapping, customer my key mapping
             km.set("n", "gc", '<Plug>(comment_toggle_linewise)', { desc = 'Comment toggle linewise' })
             km.set("n",
-                "gcc",
+                "<leader>//",
                 function()
                     return api.nvim_get_vvar('count') == 0 and '<Plug>(comment_toggle_linewise_current)'
                         or '<Plug>(comment_toggle_linewise_count)'
@@ -91,7 +91,7 @@ return {
                 { expr = true, desc = 'Comment toggle current line' })
             km.set(
                 "x",
-                "gc",
+                "<leader>/",
                 '<Plug>(comment_toggle_linewise_visual)',
                 { desc = 'Comment toggle linewise (visual)' })
         end
