@@ -26,7 +26,7 @@ return {
             'hrsh7th/cmp-nvim-lua',
             'onsails/lspkind.nvim',
             "sourcegraph/sg.nvim",
-            -- "Exafunction/codeium.nvim",
+            "Exafunction/codeium.nvim",
         },
         config = function()
             local cmp = require 'cmp'
@@ -144,7 +144,7 @@ return {
                     },
                 }),
                 sources = cmp.config.sources({
-                    -- { name = 'codeium' },
+                    { name = 'codeium' },
                     -- { name = 'cody' },
                     { name = 'nvim_lsp' },
 
@@ -178,8 +178,8 @@ return {
                             --     return vim_item
                             -- end,
                             symbol_map = {
-                                -- Codeium = "",
-                                Cody = ""
+                                Codeium = "",
+                                -- Cody = ""
                             },
                             menu = ({
                                 buffer = "[B]",
@@ -192,8 +192,8 @@ return {
                                 nerdfont = "[Font]",
                                 cmdline = "[Cmd]",
                                 path = "[Path]",
-                                -- codeium = "[Cod]",
-                                cody = "[AI]",
+                                codeium = "[AI]",
+                                -- cody = "[AI]",
                             })
                         })(entry, vim_item)
                         local strings = vim.split(kind.kind, "%s", { trimempty = true })
