@@ -28,7 +28,7 @@ return {
                 respect_buf_cwd = true,
                 sort_by = "name",
                 view = {
-                    adaptive_size = true,
+                    centralize_selection = true,
                     preserve_window_proportions = true,
                 },
                 renderer = {
