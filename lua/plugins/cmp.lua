@@ -144,7 +144,7 @@ return {
                     },
                 }),
                 sources = cmp.config.sources({
-                    { name = 'codeium' },
+                    -- { name = 'codeium' },
                     -- { name = 'cody' },
                     { name = 'nvim_lsp' },
 
@@ -178,7 +178,7 @@ return {
                             --     return vim_item
                             -- end,
                             symbol_map = {
-                                Codeium = "",
+                                -- Codeium = "",
                                 -- Cody = ""
                             },
                             menu = ({
@@ -192,7 +192,7 @@ return {
                                 nerdfont = "[Font]",
                                 cmdline = "[Cmd]",
                                 path = "[Path]",
-                                codeium = "[AI]",
+                                -- codeium = "[AI]",
                                 -- cody = "[AI]",
                             })
                         })(entry, vim_item)
