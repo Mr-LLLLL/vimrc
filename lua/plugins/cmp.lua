@@ -26,7 +26,7 @@ return {
             'hrsh7th/cmp-nvim-lua',
             'onsails/lspkind.nvim',
             "sourcegraph/sg.nvim",
-            "Exafunction/codeium.nvim",
+            -- "Exafunction/codeium.nvim",
         },
         config = function()
             local cmp = require 'cmp'
