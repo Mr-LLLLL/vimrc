@@ -177,7 +177,8 @@ return {
         end
     },
     {
-        'nvim-telescope/telescope-frecency.nvim',
+        'Mr-LLLLL/telescope-frecency.nvim',
+        -- 'nvim-telescope/telescope-frecency.nvim',
         keys = {
             { "<space>sm", "<cmd>Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true }, desc = "Telescope Frecency File" }
         },
