@@ -190,7 +190,8 @@ return {
         end
     },
     {
-        'nvim-telescope/telescope-file-browser.nvim',
+        'Mr-LLLLL/telescope-file-browser.nvim',
+        -- 'nvim-telescope/telescope-file-browser.nvim',
         keys = {
             { "<space>sf", "<cmd>Telescope file_browser<CR>", { noremap = true, silent = true }, desc = "Telescope FileBrowser" }
         },
