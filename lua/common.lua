@@ -64,7 +64,7 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 m.lsp_on_attack    = function(client, bufnr)
-    vim.lsp.inlay_hint.enable(bufnr)
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 
     local tele_builtin = require("telescope.builtin")
     local util = require("utilities")

@@ -236,7 +236,7 @@ local function set_lsp_autocmd()
         if ft == "go" then
             require('go.inlay').toggle_inlay_hints()
         else
-            vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
         end
     end, {})
 end

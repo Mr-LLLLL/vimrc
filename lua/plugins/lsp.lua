@@ -374,6 +374,7 @@ return {
                         analyses = {
                             shadow = false,
                             ST1003 = false,
+                            fieldalignment = false,
                         },
                         diagnosticsTrigger = "Edit",
                     }
