@@ -49,13 +49,13 @@ return {
                     end
 
                     -- Navigation
-                    map('n', ']c', function()
+                    map({ 'n', 'x' }, ']c', function()
                         if vim.wo.diff then return ']c' end
                         vim.schedule(function() gs.next_hunk() end)
                         return '<Ignore>'
                     end, { expr = true, desc = "Gitsigns forward hunk" })
 
-                    map('n', '[c', function()
+                    map({ 'n', 'x' }, '[c', function()
                         if vim.wo.diff then return '[c' end
                         vim.schedule(function() gs.prev_hunk() end)
                         return '<Ignore>'
