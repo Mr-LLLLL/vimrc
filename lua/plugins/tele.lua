@@ -9,7 +9,6 @@ return {
     },
     {
         'nvim-telescope/telescope.nvim',
-        branch = '0.1.x',
         event = "VeryLazy",
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
@@ -19,6 +18,11 @@ return {
             local actions = require("telescope.actions")
             require('telescope').setup({
                 defaults = {
+                    path_display = {
+                        filename_first = {
+                            reverse_directories = false
+                        }
+                    },
                     winblend = vim.g.custom_blend + (vim.g.neovide and 20 or 0),
                     mappings = {
                         i = {
@@ -44,6 +48,7 @@ return {
                             ["<ScrollWheelUp>"] = actions.move_selection_previous,
                         },
                         n = {
+                            ["q"] = actions.close,
                             ["<CR>"] = actions.select_default + actions.center,
                             ["<C-s>"] = actions.select_horizontal + actions.center,
                             ["<C-x>"] = false,
