@@ -406,33 +406,9 @@ return {
     },
     {
         "Mr-LLLLL/cool-chunk.nvim",
-        event = "VeryLazy",
+        event = { "CursorHold", "CursorHoldI" },
         config = function()
-            require("cool-chunk").setup({
-                chunk = {
-                    enable = true,
-                    notify = true,
-                    chars = {
-                        horizontal_line = "─",
-                        vertical_line = "│",
-                        left_top = "╭",
-                        left_bottom = "╰",
-                        right_arrow = ">",
-                    },
-                    textobject = "ah",
-                    error_sign = true,
-                },
-                line_num = {
-                    enable = true,
-                },
-                context = {
-                    enable = true,
-                    chars = {
-                        "│",
-                    },
-                    textobject = "ih",
-                }
-            })
+            require("cool-chunk").setup({})
         end,
     },
     {
