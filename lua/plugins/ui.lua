@@ -230,6 +230,8 @@ return {
                 vim.cmd("mode")
                 notifyClear()
             end, { noremap = true, silent = true, desc = "refresh screen" })
+
+            require("telescope").load_extension("notify")
         end
     },
     {
@@ -377,6 +379,7 @@ return {
             }
 
             require("lualine-ext").init_noice()
+            require("telescope").load_extension("noice")
         end
     },
     {

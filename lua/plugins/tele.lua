@@ -6,6 +6,9 @@ return {
         'nvim-telescope/telescope-fzf-native.nvim',
         lazy = true,
         build = 'make',
+        config = function()
+            require('telescope').load_extension('fzf')
+        end
     },
     {
         'nvim-telescope/telescope.nvim',
@@ -161,12 +164,6 @@ return {
                     },
                 },
             })
-
-            require("telescope").load_extension("todo-comments")
-            require("telescope").load_extension("noice")
-            require("telescope").load_extension("notify")
-
-            require('telescope').load_extension('fzf')
 
             km.set('n', "<space>ss", "<cmd>Telescope<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sp", "<cmd>Telescope resume<CR>", { noremap = true, silent = true })

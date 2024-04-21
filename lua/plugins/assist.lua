@@ -115,6 +115,8 @@ return {
                 function() require("todo-comments").jump_prev() end,
                 { desc = "Previous todo comment" }
             )
+
+            require("telescope").load_extension("todo-comments")
         end
     },
     {
