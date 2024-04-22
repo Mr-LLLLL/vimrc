@@ -152,10 +152,10 @@ return {
         config = function()
             local glyphs = require("common").glyphs
             local scroll_to_bottom = function(win, buf)
-                local content_line_cnt = api.nvim_buf_line_count(buf)
-                if not api.nvim_win_is_valid(win) then
+                if not api.nvim_win_is_valid(win) or api.nvim_win_get_buf(win) ~= buf then
                     return
                 end
+                local content_line_cnt = api.nvim_buf_line_count(buf)
                 local win_height = api.nvim_win_get_height(win)
                 local scroll_interal_millisec = 30
 
