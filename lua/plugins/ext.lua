@@ -213,10 +213,10 @@ return {
                             i = {
                                 -- Similar table but for insert mode. Using 'false' disables
                                 -- existing keybindings.
-                                -- ["<esc>"] = function(ui)
-                                --     pantran_actions.close(ui)
-                                --     vim.cmd("stopinsert")
-                                -- end,
+                                ["<c-c>"] = function(ui)
+                                    pantran_actions.close(ui)
+                                    vim.cmd("stopinsert")
+                                end,
                                 -- ["<c-o>"] = function()
                                 --     vim.cmd("stopinsert")
                                 -- end,
