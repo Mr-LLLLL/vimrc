@@ -1146,7 +1146,8 @@ return {
             bg_theme = "default",
             breadcrumbs_separator = "/",
             has_breadcrumbs = true,
-            save_path = "~/Pictures"
+            save_path = "~/Pictures",
+            has_line_number = true,
         }
     },
 }
