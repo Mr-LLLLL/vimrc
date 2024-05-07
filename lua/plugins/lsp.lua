@@ -377,6 +377,15 @@ return {
                             ST1003 = false,
                             fieldalignment = false,
                         },
+                        codelenses = {
+                            generate = false,   -- show the `go generate` lens.
+                            gc_details = false, -- Show a code lens toggling the display of gc's choices.
+                            test = false,
+                            tidy = false,
+                            vendor = false,
+                            regenerate_cgo = false,
+                            upgrade_dependency = false,
+                        },
                         diagnosticsTrigger = "Edit",
                     }
                 }
@@ -384,7 +393,7 @@ return {
             lsp_gofumpt = true,  -- true: set default gofmt in gopls format to gofumpt
             lsp_on_attach = nil, -- nil: do nothing if lsp_on_attach is a function: use this function as on_attach function for gopls, when lsp_cfg is true
             lsp_keymaps = false, -- true: use default keymaps defined in go/lsp.lua
-            lsp_codelens = true,
+            lsp_codelens = false,
             -- virtual text setup
             diagnostic = false,
             lsp_document_formatting = false,
