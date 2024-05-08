@@ -44,9 +44,6 @@ local function load_custom_map()
     km.set({ 'n' }, "<c-j>", "<c-w>j", { noremap = true, silent = true, desc = "jump to right window" })
     km.set({ 'n' }, "<c-k>", "<c-w>k", { noremap = true, silent = true, desc = "jump to up window" })
     km.set({ 'n' }, "<c-l>", "<c-w>l", { noremap = true, silent = true, desc = "jump to down window" })
-
-    km.del({ 'n', 'v' }, 'crr')
-    km.del({ 'n' }, 'crn')
 end
 
 local function load()
