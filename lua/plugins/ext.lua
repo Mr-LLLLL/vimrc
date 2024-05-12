@@ -230,11 +230,16 @@ return {
                         -- Keybindings here are used in the selection window.
                         select = {
                             i = {
+                                ["<c-c>"] = function(ui)
+                                    pantran_actions.close(ui)
+                                    vim.cmd("stopinsert")
+                                end,
                                 ["<C-s>"] = pantran_actions.select_source,
                                 ["<C-t>"] = pantran_actions.select_target,
                                 ["<C-e>"] = pantran_actions.select_engine,
                             },
                             n = {
+                                ["<C-c>"] = pantran_actions.close,
                                 ["<C-s>"] = pantran_actions.select_source,
                                 ["<C-t>"] = pantran_actions.select_target,
                                 ["<C-e>"] = pantran_actions.select_engine,
