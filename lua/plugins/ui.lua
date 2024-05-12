@@ -387,6 +387,7 @@ return {
         keys = {
             { "<leader>k", nil, mode = { "n", "v" }, desc = "Interestingwords Highlight" },
             { "<leader>m", nil, mode = { "n", "v" }, desc = "Interestingwords Search" },
+            { "<leader>M", nil, mode = { "n" },      desc = "Interestingwords UnSearch" },
             { "n",         nil, mode = { "n", "v" } },
             { "N",         nil, mode = { "n", "v" } },
             { "?",         nil, mode = { "n", "v" } },
