@@ -195,7 +195,7 @@ return {
                     keys = {
                         expand_or_jump = 'o',
                         jump = '<cr>',
-                        quit = "q",
+                        quit = "<space>p",
                     },
                 },
                 callhierarchy = {
