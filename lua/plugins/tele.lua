@@ -6,15 +6,13 @@ return {
         'nvim-telescope/telescope-fzf-native.nvim',
         lazy = true,
         build = 'make',
-        config = function()
-            require('telescope').load_extension('fzf')
-        end
     },
     {
         'nvim-telescope/telescope.nvim',
         event = "VeryLazy",
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
+            "tsakirist/telescope-lazy.nvim",
         },
         config = function()
             local glyphs = require("common").glyphs
@@ -163,6 +161,19 @@ return {
                             },
                         },
                     },
+                    lazy = {
+                        mappings = {
+                            open_in_browser = "<C-o>",
+                            open_in_file_browser = "<C-f>",
+                            open_in_find_files = "<m-f>",
+                            open_in_live_grep = "<C-e>",
+                            open_in_terminal = "<C-t>",
+                            open_plugins_picker = "<C-b>", -- Works only after having called first another action
+                            open_lazy_root_find_files = "<C-r>f",
+                            open_lazy_root_live_grep = "<C-r>e",
+                            change_cwd_to_plugin = "<c-d>",
+                        },
+                    },
                 },
             })
 
@@ -172,7 +183,32 @@ return {
             km.set('n', "<space>sr", "<cmd>Telescope oldfiles<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sl", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
+
+            require("telescope").load_extension("fzf")
+            require("telescope").load_extension("lazy")
         end
+    },
+    {
+        "ryanmsnyder/toggleterm-manager.nvim",
+        dependencies = {
+            "akinsho/toggleterm.nvim",
+            "nvim-telescope/telescope.nvim",
+            "nvim-lua/plenary.nvim", -- only needed because it's a dependency of telescope
+        },
+        keys = {
+            { "<space>st", function() end, { noremap = true, silent = true }, desc = "Telescope Toggleterm" }
+        },
+        config = function()
+            local toggleterm_manager = require("toggleterm-manager")
+            local actions = toggleterm_manager.actions
+            require("toggleterm-manager").setup {
+                mappings = {
+                    i = {
+                        ["<CR>"] = { action = actions.open_term, exit_on_action = true }, -- toggles terminal open/closed
+                    },
+                }
+            }
+        end,
     },
     {
         -- 'Mr-LLLLL/telescope-frecency.nvim',
