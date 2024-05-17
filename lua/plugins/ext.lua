@@ -41,8 +41,12 @@ local function load_toggle_term_map()
         return max_value
     end
 
+    local short_cwd = function()
+        return string.match(vim.fn.getcwd(), '([^/]+/[^/]+)/?$')
+    end
+
     km.set({ 'n', 't' }, "<M-w>", function()
-        cmd(get_curr_value() .. 'ToggleTerm')
+        cmd(get_curr_value() .. 'ToggleTerm' .. ' name=' .. short_cwd())
     end, { noremap = true, silent = true, desc = "ToggleTerm toggle terminal" })
     km.set({ 'n', 't' }, "<M-e>", function()
         if get_curr_value() == get_next_value(get_curr_value()) then
@@ -50,7 +54,7 @@ local function load_toggle_term_map()
         else
             set_curr_value(get_next_value(get_curr_value()))
         end
-        cmd(get_curr_value() .. 'ToggleTerm')
+        cmd(get_curr_value() .. 'ToggleTerm' .. ' name=' .. short_cwd())
     end, { noremap = true, silent = true, desc = "ToggleTerm next terminal" })
     km.set({ 'n', 't' }, "<M-q>", function()
         if get_curr_value() == get_prev_value(get_curr_value()) then
@@ -58,11 +62,11 @@ local function load_toggle_term_map()
         else
             set_curr_value(get_prev_value(get_curr_value()))
         end
-        cmd(get_curr_value() .. 'ToggleTerm')
+        cmd(get_curr_value() .. 'ToggleTerm' .. ' name=' .. short_cwd())
     end, { noremap = true, silent = true, desc = "ToggleTerm prev terminal" })
     km.set({ 'n', 't' }, "<M-r>", function()
         set_curr_value(get_max_value() + 1)
-        cmd(get_curr_value() .. 'ToggleTerm')
+        cmd(get_curr_value() .. 'ToggleTerm' .. ' name=' .. short_cwd())
     end, { noremap = true, silent = true, desc = "ToggleTerm new terminal" })
     km.set({ 'n', 't' }, "<M-s>", function()
         cmd(get_curr_value() .. "TermExec cmd=exit dir=~")
@@ -73,6 +77,7 @@ local function load_toggle_term_map()
         if mongoTerm == nil then
             set_curr_value(get_max_value() + 1)
             mongoTerm = require("toggleterm.terminal").Terminal:new({
+                display_name = "Mongo",
                 cmd = "bash ~/.config/nvim/lua/private/mongo.sh",
                 count = get_curr_value(),
                 hidden = false,
@@ -89,6 +94,7 @@ local function load_toggle_term_map()
         if redisTerm == nil then
             set_curr_value(get_max_value() + 1)
             redisTerm = require("toggleterm.terminal").Terminal:new({
+                display_name = "Redis",
                 cmd = "bash ~/.config/nvim/lua/private/redis.sh",
                 count = get_curr_value(),
                 hidden = false,
@@ -105,6 +111,7 @@ local function load_toggle_term_map()
         if sshTerm == nil then
             set_curr_value(get_max_value() + 1)
             sshTerm = require("toggleterm.terminal").Terminal:new({
+                display_name = "ssh",
                 cmd = "bash ~/.config/nvim/lua/private/ssh.sh",
                 count = get_curr_value(),
                 hidden = false,
@@ -435,7 +442,8 @@ return {
         'akinsho/toggleterm.nvim',
         version = "*",
         keys = {
-            { "<M-w>", nil }
+            { "<M-w>", nil },
+            { "<M-r>", nil },
         },
         config = function()
             require("toggleterm").setup({

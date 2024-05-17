@@ -196,7 +196,7 @@ return {
             "nvim-lua/plenary.nvim", -- only needed because it's a dependency of telescope
         },
         keys = {
-            { "<space>st", function() end, { noremap = true, silent = true }, desc = "Telescope Toggleterm" }
+            { "<space>st", "<cmd>Telescope toggleterm_manager<cr>", { noremap = true, silent = true }, desc = "Telescope Toggleterm" }
         },
         config = function()
             local toggleterm_manager = require("toggleterm-manager")
