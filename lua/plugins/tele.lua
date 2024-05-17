@@ -47,6 +47,7 @@ return {
                             ["<RightMouse>"] = actions.close,
                             ["<ScrollWheelDown>"] = actions.move_selection_next,
                             ["<ScrollWheelUp>"] = actions.move_selection_previous,
+                            ["<m-s>"] = function() vim.cmd("Telescope") end,
                         },
                         n = {
                             ["q"] = actions.close,
@@ -66,6 +67,7 @@ return {
                             ["<LeftMouse>"] = actions.select_default + actions.center,
                             ["<ScrollWheelDown>"] = actions.move_selection_next,
                             ["<ScrollWheelUp>"] = actions.move_selection_previous,
+                            ["<m-s>"] = function() vim.cmd("Telescope") end,
                         }
                     }
                 },
@@ -168,7 +170,7 @@ return {
                             open_in_find_files = "<c-d>",
                             open_in_live_grep = "<C-e>",
                             open_in_terminal = "<c-t>",
-                            open_plugins_picker = "<m-f>", -- Works only after having called first another action
+                            open_plugins_picker = "<m-s>", -- Works only after having called first another action
                             open_lazy_root_find_files = "<C-r>f",
                             open_lazy_root_live_grep = "<C-r>e",
                             change_cwd_to_plugin = "<c-d>",
