@@ -164,14 +164,24 @@ return {
                     lazy = {
                         mappings = {
                             open_in_browser = "<C-o>",
-                            open_in_file_browser = "<C-f>",
-                            open_in_find_files = "<m-f>",
+                            open_in_file_browser = "<cr>",
+                            open_in_find_files = "<c-d>",
                             open_in_live_grep = "<C-e>",
-                            open_in_terminal = "<C-t>",
-                            open_plugins_picker = "<C-b>", -- Works only after having called first another action
+                            open_in_terminal = "<c-t>",
+                            open_plugins_picker = "<m-f>", -- Works only after having called first another action
                             open_lazy_root_find_files = "<C-r>f",
                             open_lazy_root_live_grep = "<C-r>e",
                             change_cwd_to_plugin = "<c-d>",
+                        },
+                        actions_opts = {
+                            open_in_browser = {
+                                -- Close the telescope window after the action is executed
+                                auto_close = true,
+                            },
+                            change_cwd_to_plugin = {
+                                -- Close the telescope window after the action is executed
+                                auto_close = false,
+                            },
                         },
                     },
                 },
