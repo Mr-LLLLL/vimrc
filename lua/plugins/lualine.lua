@@ -27,7 +27,7 @@ return {
                 },
                 sections = {
                     lualine_a = {
-                        { 'mode', separator = { left = '' }, right_padding = 2 },
+                        { 'mode', separator = { left = glyphs.left_bracket }, right_padding = 2 },
                     },
                     lualine_b = {
                         'branch',
@@ -48,7 +48,7 @@ return {
                                 hint = glyphs["sign_hint"],
                             },
                         },
-                        { 'fileformat', separator = { right = '' } }
+                        { 'fileformat', separator = { right = glyphs.right_bracket } }
                     },
                     lualine_c = {
                         {
@@ -74,10 +74,10 @@ return {
                         'encoding',
                     },
                     lualine_y = {
-                        { 'filetype', separator = { left = '' }, right_padding = 2 },
+                        { 'filetype', separator = { left = glyphs.left_bracket }, right_padding = 2 },
                     },
                     lualine_z = {
-                        { '%3l/%L:%2v', separator = { right = '' } },
+                        { '%3l/%L:%2v', separator = { right = glyphs.right_bracket } },
                     },
                 },
                 inactive_sections = {

@@ -46,9 +46,17 @@ local function load_custom_map()
     km.set({ 'n' }, "<c-l>", "<c-w>l", { noremap = true, silent = true, desc = "jump to down window" })
 end
 
+local function load_hi()
+    api.nvim_set_hl(0, "SagaBorder", { link = 'CustomBorder' })
+    api.nvim_set_hl(0, "SagaVirtLine", { link = 'NonText' })
+
+    api.nvim_set_hl(0, "LspInfoBorder", { link = 'CustomBorder' })
+end
+
 local function load()
     load_custom_map()
     load_autocmd()
+    load_hi()
 end
 
 load()

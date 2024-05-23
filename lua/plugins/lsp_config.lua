@@ -292,7 +292,6 @@ return {
 
             vim.diagnostic.config(config)
             require('lspconfig.ui.windows').default_options.border = 'rounded'
-            api.nvim_set_hl(0, "LspInfoBorder", { link = 'CustomBorder' })
 
             set_lsp_autocmd()
             set_lsp()

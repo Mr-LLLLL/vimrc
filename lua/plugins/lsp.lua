@@ -224,12 +224,12 @@ return {
                 ui = {
                     theme = 'round',
                     border = 'rounded',
+                    button = { '(', ')' },
+                    lines = { '└', '├', '│', '─', '┌' },
                     winblend = vim.g.custom_blend,
                     kind = {},
                 },
             })
-            api.nvim_set_hl(0, "SagaBorder", { link = 'CustomBorder' })
-            api.nvim_set_hl(0, "SagaVirtLine", { link = 'NonText' })
 
             require("common").register(load_saga_keymap)
         end

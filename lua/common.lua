@@ -24,6 +24,8 @@ m.glyphs           = {
     sign_warn = "",
     sign_hint = "",
     sign_info = "",
+    left_bracket = "",
+    right_bracket = "",
 }
 
 m.colors           = {
