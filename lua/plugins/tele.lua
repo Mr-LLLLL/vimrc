@@ -1,5 +1,4 @@
 local km = vim.keymap
-local g = vim.g
 
 return {
     {
