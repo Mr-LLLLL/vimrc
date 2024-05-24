@@ -113,7 +113,9 @@ local function load_neovide()
     km.set({ 'n' }, "<c-->", function() scale(1 / 1.25) end,
         { noremap = true, silent = true, expr = true, desc = "scale out for neovide" })
     -- only neovide support <c-/>, don't suport this in neovim
-    km.set({ 'n', 'x' }, "<c-/>", "/", { noremap = true, silent = true, desc = "search" })
+    km.set({ 'n', 'x' }, "<c-/>", function()
+        vim.fn.feedkeys("/", "n")
+    end, { noremap = true, silent = true, desc = "search" })
 end
 
 local function load_lazy()
