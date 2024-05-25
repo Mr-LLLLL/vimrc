@@ -3,7 +3,7 @@ local api = vim.api
 local m = {}
 
 local function set_lsp()
-    local on_attach = require("common").lsp_on_attack
+    local on_attach = require("common").lsp_on_attach
     local lsp_flags = require("common").lsp_flags
     local capabilities = require("common").lsp_capabilities()
 
@@ -184,7 +184,7 @@ local function set_lsp()
 end
 
 local function set_lsp_autocmd()
-    local custom_auto_format = api.nvim_create_augroup("CustomAutoFormat", { clear = true })
+    local custom_lsp_autocmd = api.nvim_create_augroup("CustomLspAutocmd", { clear = true })
     api.nvim_create_autocmd(
         { 'BufWritePre' },
         {
@@ -215,7 +215,27 @@ local function set_lsp_autocmd()
                     end
                 end
             end,
-            group = custom_auto_format,
+            group = custom_lsp_autocmd,
+        }
+    )
+    api.nvim_create_autocmd(
+        { "BufEnter", "InsertLeave" },
+        {
+            pattern = { "*" },
+            callback = function()
+                local clients = vim.lsp.get_active_clients({ bufnr = api.nvim_get_current_buf() })
+                if not vim.tbl_islist(clients) or #clients == 0 then
+                    return
+                end
+
+                for _, client in ipairs(clients) do
+                    if client.supports_method("textDocument/codeLens") then
+                        vim.lsp.codelens.refresh()
+                        return
+                    end
+                end
+            end,
+            group = custom_lsp_autocmd,
         }
     )
     api.nvim_create_user_command("Format", function()

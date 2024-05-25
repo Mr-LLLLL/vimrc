@@ -1,10 +1,12 @@
 return {
     {
-        'L3MON4D3/LuaSnip',
+        "garymjr/nvim-snippets",
         lazy = true,
-        config = function()
-            require("luasnip.loaders.from_vscode").lazy_load()
-        end
+        opts = {
+            friendly_snippets = true,
+            create_cmp_source = true,
+            highlight_preview = true,
+        }
     },
     {
         'hrsh7th/nvim-cmp',
@@ -14,10 +16,8 @@ return {
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline',
-            --  For luasnip users.
-            'L3MON4D3/LuaSnip',
-            'saadparwaiz1/cmp_luasnip',
             "rafamadriz/friendly-snippets",
+            "garymjr/nvim-snippets",
 
             'hrsh7th/cmp-emoji',
             'chrisgrieser/cmp-nerdfont',
@@ -30,7 +30,6 @@ return {
         },
         config = function()
             local cmp = require 'cmp'
-            local luasnip = require 'luasnip'
 
             ---@diagnostic disable-next-line: unused-function, unused-local
             local has_words_before = function()
@@ -45,9 +44,10 @@ return {
                     -- REQUIRED - you must specify a snippet engine
                     expand = function(args)
                         -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
                         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
                         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+                        vim.snippet.expand(args.body)
                     end,
                 },
                 window = {
@@ -120,36 +120,33 @@ return {
                         end,
                         i = cmp.mapping.select_prev_item({ behavior = require("cmp.types").cmp.SelectBehavior.Select }),
                     },
-                    ["<c-n>"] = {
-                        i = function(fallback)
-                            if luasnip.locally_jumpable(1) then
-                                -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-                                -- they way you will only jump inside the snippet region
-                                luasnip.jump(1)
-                            else
-                                fallback()
-                            end
+                    ["<c-n>"] = cmp.mapping(function(fallback)
+                        if vim.snippet.active({ direction = 1 }) then
+                            vim.schedule(function()
+                                vim.snippet.jump(1)
+                            end)
+                            return
                         end
-                    },
-                    ["<c-p>"] = {
-                        i = function(fallback)
-                            if luasnip.locally_jumpable(-1) then
-                                -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-                                -- they way you will only jump inside the snippet region
-                                luasnip.jump(-1)
-                            else
-                                fallback()
-                            end
+                        return fallback()
+                    end, { "i", "s" }),
+                    ["<c-p>"] = cmp.mapping(function(fallback)
+                        if vim.snippet.active({ direction = -1 }) then
+                            vim.schedule(function()
+                                vim.snippet.jump(-1)
+                            end)
+                            return
                         end
-                    },
+                        return fallback()
+                    end, { "i", "s" }),
                 }),
                 sources = cmp.config.sources({
                     -- { name = 'codeium' },
                     -- { name = 'cody' },
                     { name = 'nvim_lsp' },
+                    { name = "snippets" },
 
                     -- { name = 'vsnip' }, -- For vsnip users.
-                    { name = 'luasnip' }, -- For luasnip users.
+                    -- { name = 'luasnip' }, -- For luasnip users.
                     -- { name = 'ultisnips' }, -- For ultisnips users.
                     -- { name = 'snippy' }, -- For snippy users.
 
@@ -184,7 +181,7 @@ return {
                             menu = ({
                                 buffer = "[B]",
                                 nvim_lsp = "[LSP]",
-                                luasnip = "[Snip]",
+                                snippets = "[Snip]",
                                 nvim_lua = "[Lua]",
                                 latex_symbols = "[Latex]",
                                 calc = "[Cal]",

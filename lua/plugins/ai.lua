@@ -35,7 +35,7 @@ return {
         dependencies = { "nvim-lua/plenary.nvim", --[[ "nvim-telescope/telescope.nvim ]] },
         config = function()
             require("sg").setup {
-                on_attach = require("common").lsp_on_attack,
+                on_attach = require("common").lsp_on_attach,
             }
         end
     },

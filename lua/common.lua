@@ -1,10 +1,10 @@
-local km           = vim.keymap
-local api          = vim.api
-local fn           = vim.fn
+local km             = vim.keymap
+local api            = vim.api
+local fn             = vim.fn
 
-local m            = {}
+local m              = {}
 
-m.glyphs           = {
+m.glyphs             = {
     modified = "",
     added = "",
     unmerged = "",
@@ -28,7 +28,7 @@ m.glyphs           = {
     right_bracket = "",
 }
 
-m.colors           = {
+m.colors             = {
     VisualBg = '#543a48',
     CustomBorderFg = '#5c6a72',
     CustomBorderBg = '#2d353b',
@@ -37,22 +37,22 @@ m.colors           = {
     NonTextCtermFg = 239,
 }
 
-m.lsp_flags        = {
+m.lsp_flags          = {
     -- This is the default in Nvim 0.7+
     debounce_text_changes = 150,
 }
 
-m.registers        = {}
+m.registers          = {}
 
-m.register         = function(fn)
+m.register           = function(fn)
     table.insert(m.registers, fn)
 end
 
-m.keymap_desc      = function(opts, desc)
+m.keymap_desc        = function(opts, desc)
     return vim.tbl_extend("keep", opts, { desc = desc })
 end
 
-m.lsp_capabilities = function()
+m.lsp_capabilities   = function()
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     capabilities.textDocument.completion.completionItem.preselectSupport = true
@@ -64,18 +64,12 @@ m.lsp_capabilities = function()
     return capabilities
 end
 
----@diagnostic disable-next-line: unused-local
-m.lsp_on_attack    = function(client, bufnr)
-    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-
+m.lsp_attach_mapping = function(bufnr)
+    --     -- Mappings.
+    --     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local tele_builtin = require("telescope.builtin")
     local util = require("utilities")
 
-    --     -- Enable completion triggered by <c-x><c-o>
-    api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-    --
-    --     -- Mappings.
-    --     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local bufopts = { noremap = true, silent = true, buffer = bufnr }
     --     km.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
     --     km.set('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -147,7 +141,16 @@ m.lsp_on_attack    = function(client, bufnr)
     end
 end
 
-m.get_tele_project = function()
+m.lsp_on_attach      = function(client, bufnr)
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
+    m.lsp_attach_mapping(bufnr)
+
+    --     -- Enable completion triggered by <c-x><c-o>
+    -- api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+end
+
+m.get_tele_project   = function()
     local act = require("telescope._extensions.project.actions")
     require("telescope").extensions.project.project {
         display_type = 'two-segment',
@@ -175,10 +178,10 @@ m.get_tele_project = function()
     }
 end
 
-m.keymaps_backup   = {}
-m.keymaps          = {}
+m.keymaps_backup     = {}
+m.keymaps            = {}
 
-m.set_key_map      = function(module, keys)
+m.set_key_map        = function(module, keys)
     if not module or module == "" or not keys or m.keymaps[module] then
         return
     end
@@ -237,7 +240,7 @@ m.set_key_map      = function(module, keys)
         })
 end
 
-m.revert_key_map   = function(module)
+m.revert_key_map     = function(module)
     if not module or module == "" or not m.keymaps[module] then
         return
     end

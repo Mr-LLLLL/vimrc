@@ -303,37 +303,13 @@ return {
         end
     },
     {
-        'Abstract-IDE/penvim',
-        event = "VeryLazy",
-        config = function()
-            require("penvim").setup({
-                rooter = {
-                    enable = true, -- enable/disable rooter
-                    patterns = { '.git' }
-                },
-                indentor = {
-                    enable = false,    -- enable/disable indentor
-                    indent_length = 4, -- tab indent width
-                    accuracy = 5,      -- positive integer. higher the number, the more accurate result (but affects the startup time)
-                    disable_types = {
-                        'help', 'dashboard', 'dashpreview', 'NvimTree', 'vista', 'sagahover', 'terminal',
-                    },
-                },
-                project_env = {
-                    enable = false,               -- enable/disable project_env
-                    config_name = '.__nvim__.lua' -- config file name
-                },
-            })
-        end
-    },
-    {
         "danymat/neogen",
         version = "*",
         cmd = "Neogen",
         dependencies = "nvim-treesitter/nvim-treesitter",
         config = function()
             require('neogen').setup {
-                snippet_engine = "luasnip"
+                snippet_engine = "nvim"
             }
         end,
     },
@@ -487,6 +463,8 @@ return {
             -- ```
             -- but this is need telescope when result is greater one
             ctrl_t_with_center = true,
+
+            auto_change_cwd_to_project = true,
 
             smart_move_textobj = {
                 disabled = false,

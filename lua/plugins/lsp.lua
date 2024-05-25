@@ -239,7 +239,7 @@ return {
         ft = "java",
         config = function()
             local on_attach = function(client, bufnr)
-                require("common").lsp_on_attack(client, bufnr)
+                require("common").lsp_on_attach(client, bufnr)
                 require('jdtls').setup_dap({ hotcodereplace = 'auto' })
                 require("jdtls.setup"):add_commands()
             end
@@ -366,7 +366,7 @@ return {
             icons = { breakpoint = '🧘', currentpos = '🏃' }, -- setup to `false` to disable icons setup
             verbose = false, -- output loginf in messages
             lsp_cfg = {
-                on_attach = require("common").lsp_on_attack,
+                on_attach = require("common").lsp_on_attach,
                 capabilities = require("common").lsp_capabilities(),
                 flags = require("common").lsp_flags,
                 settings = {
@@ -378,13 +378,14 @@ return {
                             fieldalignment = false,
                         },
                         codelenses = {
-                            generate = false,   -- show the `go generate` lens.
-                            gc_details = false, -- Show a code lens toggling the display of gc's choices.
-                            test = false,
-                            tidy = false,
-                            vendor = false,
-                            regenerate_cgo = false,
-                            upgrade_dependency = false,
+                            generate = true,   -- show the `go generate` lens.
+                            gc_details = true, -- Show a code lens toggling the display of gc's choices.
+                            test = true,
+                            tidy = true,
+                            vendor = true,
+                            regenerate_cgo = true,
+                            upgrade_dependency = true,
+                            run_govulncheck = true,
                         },
                         diagnosticsTrigger = "Edit",
                     }
@@ -424,7 +425,7 @@ return {
             },
             trouble = false,          -- true: use trouble to open quickfix
             test_efm = false,         -- errorfomat for quickfix, default mix mode, set to true will be efm only
-            luasnip = true,           -- enable included luasnip snippets. you can also disable while add lua/snips folder to luasnip load
+            luasnip = false,          -- enable included luasnip snippets. you can also disable while add lua/snips folder to luasnip load
             --  Do not enable this if you already added the path, that will duplicate the entries
         }
     },
@@ -440,7 +441,7 @@ return {
                     executor = require('rustaceanvim.executors').toggleterm,
                 },
                 server = {
-                    on_attach = require("common").lsp_on_attack,
+                    on_attach = require("common").lsp_on_attach,
                     capabilities = require("common").lsp_capabilities(),
                     flags = require("common").lsp_flags,
                     cmd = { "rust-analyzer" },
@@ -455,7 +456,24 @@ return {
                                 callable = {
                                     snippets = "add_parentheses"
                                 }
-                            }
+                            },
+                            lens = {
+                                enable = true,
+                                references = {
+                                    adt = {
+                                        enable = true,
+                                    },
+                                    enumVariant = {
+                                        enable = true,
+                                    },
+                                    method = {
+                                        enable = true,
+                                    },
+                                    trait = {
+                                        enable = true,
+                                    }
+                                },
+                            },
                         }
                     },
                 },

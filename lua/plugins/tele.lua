@@ -23,7 +23,7 @@ return {
                             reverse_directories = false
                         }
                     },
-                    winblend = vim.g.custom_blend + (vim.g.neovide and 20 or 0),
+                    winblend = vim.g.custom_blend,
                     mappings = {
                         i = {
                             ["<CR>"] = actions.select_default + actions.center,
