@@ -19,6 +19,16 @@ local function load_autocmd()
             group = custom_auto_cmd,
         }
     )
+    api.nvim_create_autocmd(
+        { "InsertLeave" },
+        {
+            pattern = { "*.*" },
+            callback = function()
+                vim.snippet.stop()
+            end,
+            group = custom_auto_cmd,
+        }
+    )
 end
 
 local function load_custom_map()
