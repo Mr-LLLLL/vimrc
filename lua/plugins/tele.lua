@@ -1,5 +1,7 @@
 local km = vim.keymap
 local api = vim.api
+local fn = vim.fn
+local uv = vim.uv
 
 return {
     {
@@ -79,13 +81,25 @@ return {
                             ["<LeftMouse>"] = actions.select_default + actions.center,
                             ["<ScrollWheelDown>"] = actions.move_selection_next,
                             ["<ScrollWheelUp>"] = actions.move_selection_previous,
-                            ["<m-s>"] = function() vim.cmd("Telescope") end,
+                            ["<m-s>"] = require("telescope.builtin").builtin,
                         }
                     }
                 },
                 pickers = {
                     oldfiles = {
                         only_cwd = true
+                    },
+                    live_grep = {
+                        mappings = {
+                            i = {
+                                ["<c-g>"] = function()
+                                    local parent_path = fn.fnamemodify(uv.cwd(), ":h")
+                                    uv.chdir(parent_path)
+                                    vim.notify(parent_path)
+                                    require("telescope.builtin").live_grep()
+                                end
+                            }
+                        }
                     },
                     builtin = {
                         include_extensions = true
