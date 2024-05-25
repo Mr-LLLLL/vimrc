@@ -13,10 +13,13 @@ return {
         dependencies = {
             'nvim-telescope/telescope-fzf-native.nvim',
             "tsakirist/telescope-lazy.nvim",
+            -- 'nvim-telescope/telescope-file-browser.nvim',
+            'Mr-LLLLL/telescope-file-browser.nvim',
         },
         config = function()
             local glyphs = require("common").glyphs
             local actions = require("telescope.actions")
+            local fb_actions = require("telescope._extensions.file_browser.actions")
             require('telescope').setup({
                 defaults = {
                     path_display = {
@@ -175,23 +178,10 @@ return {
                                     actions.select_tab(opt)
                                     actions.center(opt)
                                 end,
-                                ["<c-h>"] = function()
-                                    local win = api.nvim_get_current_win()
-                                    local pos = api.nvim_win_get_cursor(win)
-                                    if pos[2] > 0 then
-                                        pos[2] = pos[2] - 1
-                                        api.nvim_win_set_cursor(win, pos)
-                                    end
-                                end,
-                                ["<c-e>"] = function()
-                                    local win = api.nvim_get_current_win()
-                                    local line = api.nvim_get_current_line()
-                                    local pos = vim.api.nvim_win_get_cursor(win)
-                                    pos[2] = #line
-                                    vim.api.nvim_win_set_cursor(win, pos)
-                                end,
+                                ["<M-a>"] = fb_actions.create,
                             },
                             n = {
+                                ["a"] = fb_actions.create,
                                 ["<CR>"] = function(opt)
                                     actions.select_default(opt)
                                     actions.center(opt)
@@ -243,9 +233,12 @@ return {
             km.set('n', "<space>sr", "<cmd>Telescope oldfiles<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
             km.set('n', "<space>sl", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
+            km.set('n', "<space>sf", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
+                { noremap = true, silent = true })
 
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("lazy")
+            require("telescope").load_extension('file_browser')
         end
     },
     {
@@ -282,19 +275,6 @@ return {
         },
         config = function()
             require("telescope").load_extension("frecency")
-        end
-    },
-    {
-        'Mr-LLLLL/telescope-file-browser.nvim',
-        -- 'nvim-telescope/telescope-file-browser.nvim',
-        keys = {
-            { "<space>sf", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", { noremap = true, silent = true }, desc = "Telescope FileBrowser" }
-        },
-        dependencies = {
-            'nvim-telescope/telescope.nvim',
-        },
-        config = function()
-            require("telescope").load_extension('file_browser')
         end
     },
     {
