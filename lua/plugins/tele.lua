@@ -1,4 +1,5 @@
 local km = vim.keymap
+local api = vim.api
 
 return {
     {
@@ -158,16 +159,55 @@ return {
                         },
                         mappings = {
                             i = {
-                                ["<CR>"] = require("telescope.actions").select_default,
-                                ["<C-s>"] = actions.select_horizontal,
-                                ["<C-v>"] = actions.select_vertical,
-                                ["<C-t>"] = actions.select_tab,
+                                ["<CR>"] = function(opt)
+                                    actions.select_default(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<C-s>"] = function(opt)
+                                    actions.select_horizontal(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<C-v>"] = function(opt)
+                                    actions.select_vertical(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<C-t>"] = function(opt)
+                                    actions.select_tab(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<c-h>"] = function()
+                                    local win = api.nvim_get_current_win()
+                                    local pos = api.nvim_win_get_cursor(win)
+                                    if pos[2] > 0 then
+                                        pos[2] = pos[2] - 1
+                                        api.nvim_win_set_cursor(win, pos)
+                                    end
+                                end,
+                                ["<c-e>"] = function()
+                                    local win = api.nvim_get_current_win()
+                                    local line = api.nvim_get_current_line()
+                                    local pos = vim.api.nvim_win_get_cursor(win)
+                                    pos[2] = #line
+                                    vim.api.nvim_win_set_cursor(win, pos)
+                                end,
                             },
                             n = {
-                                ["<CR>"] = require("telescope.actions").select_default,
-                                ["<C-s>"] = actions.select_horizontal,
-                                ["<C-v>"] = actions.select_vertical,
-                                ["<C-t>"] = actions.select_tab,
+                                ["<CR>"] = function(opt)
+                                    actions.select_default(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<C-s>"] = function(opt)
+                                    actions.select_horizontal(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<C-v>"] = function(opt)
+                                    actions.select_vertical(opt)
+                                    actions.center(opt)
+                                end,
+                                ["<C-t>"] = function(opt)
+                                    actions.select_tab(opt)
+                                    actions.center(opt)
+                                end,
                             },
                         },
                     },
@@ -248,7 +288,7 @@ return {
         'Mr-LLLLL/telescope-file-browser.nvim',
         -- 'nvim-telescope/telescope-file-browser.nvim',
         keys = {
-            { "<space>sf", "<cmd>Telescope file_browser<CR>", { noremap = true, silent = true }, desc = "Telescope FileBrowser" }
+            { "<space>sf", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", { noremap = true, silent = true }, desc = "Telescope FileBrowser" }
         },
         dependencies = {
             'nvim-telescope/telescope.nvim',
