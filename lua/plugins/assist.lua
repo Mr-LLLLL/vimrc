@@ -512,9 +512,10 @@ return {
         end
     },
     {
-        "ThePrimeagen/harpoon",
+        -- "ThePrimeagen/harpoon",
+        "Mr-LLLLL/harpoon",
         -- keep use this commit.after the commit will be bug cause can't save marks to fs
-        commit = 'e76cb03',
+        branch = 'dev',
         dependencies = { "nvim-lua/plenary.nvim" },
         event = "VeryLazy",
         keys = {
