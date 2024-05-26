@@ -155,11 +155,10 @@ m.get_tele_harpoon   = function()
         attach_mappings = function(prompt_bufnr, map)
             local actions = require("telescope.actions")
             map(
-                { 'i' },
+                { 'i', 'n' },
                 '<M-s>',
                 function() require("telescope").extensions.file_browser.file_browser() end
             )
-            map({ "i", "n" }, "<c-d>", delete_harpoon_mark)
             map({ "i", "n" }, "<c-p>", actions.preview_scrolling_up)
             map({ "i", "n" }, "<c-n>", actions.preview_scrolling_down)
             return true
