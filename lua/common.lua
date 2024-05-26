@@ -150,20 +150,6 @@ m.lsp_on_attach      = function(client, bufnr)
     -- api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-m.get_tele_frecency  = function()
-    require('telescope').extensions.frecency.frecency({
-        workspace = 'CWD',
-        attach_mappings = function(prompt_bufnr, map)
-            map(
-                { 'i' },
-                '<M-s>',
-                function() require("telescope.builtin").oldfiles() end
-            )
-            return true
-        end,
-    })
-end
-
 local function filter_empty_string(list)
     local next = {}
     for idx = 1, #list do
@@ -275,6 +261,20 @@ m.get_tele_harpoon        = function()
     })
 end
 
+m.get_tele_frecency       = function()
+    require('telescope').extensions.frecency.frecency({
+        workspace = 'CWD',
+        attach_mappings = function(prompt_bufnr, map)
+            map(
+                { 'i' },
+                '<M-s>',
+                function() require("telescope.builtin").oldfiles() end
+            )
+            return true
+        end,
+    })
+end
+
 m.get_tele_project        = function()
     local act = require("telescope._extensions.project.actions")
     require("telescope").extensions.project.project {
@@ -286,7 +286,7 @@ m.get_tele_project        = function()
             end)
             map({ 'i', 'n' }, '<c-l>', function()
                 act.change_working_directory(prompt_bufnr, false)
-                require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
+                m.get_tele_frecency()
             end)
             map({ 'n' }, 'e', act.search_in_project_files)
             map({ 'n' }, 'f', act.browse_project_files)
@@ -298,6 +298,7 @@ m.get_tele_project        = function()
             map({ 'i' }, '<c-e>', act.search_in_project_files)
             map({ 'i' }, '<c-f>', act.browse_project_files)
             map({ 'i' }, '<c-s>', function() end)
+            map({ 'i' }, '<c-r>', function() end)
             map({ 'i' }, '<c-v>', function() end)
             map({ 'i' }, '<c-b>', function() end)
             -- map({ 'i' }, '<c-o>', function() vim.cmd("stopinsert") end)

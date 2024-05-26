@@ -120,9 +120,7 @@ return {
                         {
                             desc = ' Frecency Files',
                             group = 'Constant',
-                            action = function()
-                                require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
-                            end,
+                            action = require("common").get_tele_frecency,
                             key = 'r',
                         },
                         {
