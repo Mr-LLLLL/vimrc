@@ -44,8 +44,8 @@ m.lsp_flags          = {
 
 m.registers          = {}
 
-m.register           = function(fn)
-    table.insert(m.registers, fn)
+m.register           = function(func)
+    table.insert(m.registers, func)
 end
 
 m.keymap_desc        = function(opts, desc)
@@ -150,23 +150,147 @@ m.lsp_on_attach      = function(client, bufnr)
     -- api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-m.get_tele_project   = function()
+m.get_tele_frecency  = function()
+    require('telescope').extensions.frecency.frecency({
+        workspace = 'CWD',
+        attach_mappings = function(prompt_bufnr, map)
+            map(
+                { 'i' },
+                '<M-s>',
+                function() require("telescope.builtin").oldfiles() end
+            )
+            return true
+        end,
+    })
+end
+
+local function filter_empty_string(list)
+    local next = {}
+    for idx = 1, #list do
+        if list[idx].value ~= "" then
+            table.insert(next, list[idx])
+        end
+    end
+
+    return next
+end
+
+local generate_new_finder = function()
+    local finders = require("telescope.finders")
+    local harpoon = require("harpoon")
+    local entry_display = require("telescope.pickers.entry_display")
+    local utils = require "telescope.utils"
+    local strings = require "plenary.strings"
+    return finders.new_table({
+        results = filter_empty_string(harpoon:list().items),
+        entry_maker = function(entry)
+            local line = entry.value
+                .. ":"
+                .. entry.context.row
+                .. ":"
+                .. entry.context.col
+
+            local display_array = {}
+            local widths = {}
+
+            local icon, icon_hl = utils.get_devicons(entry.value)
+            icon = icon ~= "" and icon or " "
+            table.insert(display_array, { icon, icon_hl })
+            table.insert(widths, { width = strings.strdisplaywidth(icon) })
+
+            local path_display, path_style = utils.transform_path({}, line)
+            if path_style and type(path_style) == "table" then
+                local filename = path_display:sub(1, path_style[1][1][1])
+                table.insert(display_array, filename)
+                table.insert(widths, { width = #filename })
+
+                local hl = path_style[1][2]
+                local parent_path = path_display:sub(path_style[1][1][1] + 2, path_style[1][1][2])
+                table.insert(display_array, { parent_path, hl })
+                table.insert(widths, { width = #parent_path })
+            else
+                table.insert(widths, { width = #path_display })
+                table.insert(display_array, path_display)
+            end
+
+            local displayer = entry_display.create {
+                separator = " ",
+                items = widths,
+            }
+            local make_display = function()
+                return displayer(display_array)
+            end
+            return {
+                value = entry,
+                ordinal = line,
+                display = make_display,
+                lnum = entry.row,
+                col = entry.col,
+                filename = entry.value,
+            }
+        end,
+    })
+end
+
+local delete_harpoon_mark = function(prompt_bufnr)
+    local action_state = require("telescope.actions.state")
+    local harpoon = require("harpoon")
+    local action_utils = require("telescope.actions.utils")
+
+    local selection = action_state.get_selected_entry()
+    harpoon:list():remove(selection.value)
+
+    local function get_selections()
+        local results = {}
+        action_utils.map_selections(prompt_bufnr, function(entry)
+            table.insert(results, entry)
+        end)
+        return results
+    end
+
+    local selections = get_selections()
+    for _, current_selection in ipairs(selections) do
+        harpoon:list():remove(current_selection.value)
+    end
+
+    local current_picker = action_state.get_current_picker(prompt_bufnr)
+    current_picker:refresh(generate_new_finder(), { reset_prompt = true })
+end
+
+m.get_tele_harpoon        = function()
+    require('telescope').extensions.harpoon.marks({
+        finder = generate_new_finder(),
+        attach_mappings = function(prompt_bufnr, map)
+            local actions = require("telescope.actions")
+            map(
+                { 'i' },
+                '<M-s>',
+                function() require("telescope").extensions.file_browser.file_browser() end
+            )
+            map({ "i", "n" }, "<c-d>", delete_harpoon_mark)
+            map({ "i", "n" }, "<c-p>", actions.preview_scrolling_up)
+            map({ "i", "n" }, "<c-n>", actions.preview_scrolling_down)
+            return true
+        end,
+    })
+end
+
+m.get_tele_project        = function()
     local act = require("telescope._extensions.project.actions")
     require("telescope").extensions.project.project {
         display_type = 'two-segment',
         attach_mappings = function(prompt_bufnr, map)
             map({ 'i', 'n' }, '<cr>', function()
                 act.change_working_directory(prompt_bufnr, false)
-                require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
+                m.get_tele_harpoon()
             end)
-            map({ 'i', 'n' }, '<c-m>', function()
+            map({ 'i', 'n' }, '<c-r>', function()
                 act.change_working_directory(prompt_bufnr, false)
-                local harp = require("harpoon")
-                harp.ui:toggle_quick_menu(harp:list())
+                require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
             end)
             map({ 'n' }, 'e', act.search_in_project_files)
             map({ 'n' }, 'f', act.browse_project_files)
-            map({ 'n' }, 'r', act.recent_project_files)
+            map({ 'n' }, 'r', function() end)
             map({ 'n' }, 'b', function() end)
             map({ 'n' }, 's', function() end)
             map({ 'n' }, 'o', function() end)
@@ -182,10 +306,10 @@ m.get_tele_project   = function()
     }
 end
 
-m.keymaps_backup     = {}
-m.keymaps            = {}
+m.keymaps_backup          = {}
+m.keymaps                 = {}
 
-m.set_key_map        = function(module, keys)
+m.set_key_map             = function(module, keys)
     if not module or module == "" or not keys or m.keymaps[module] then
         return
     end
@@ -244,7 +368,7 @@ m.set_key_map        = function(module, keys)
         })
 end
 
-m.revert_key_map     = function(module)
+m.revert_key_map          = function(module)
     if not module or module == "" or not m.keymaps[module] then
         return
     end

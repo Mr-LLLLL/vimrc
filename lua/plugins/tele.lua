@@ -1,5 +1,4 @@
 local km = vim.keymap
-local api = vim.api
 local fn = vim.fn
 local uv = vim.uv
 
@@ -21,6 +20,7 @@ return {
         config = function()
             local glyphs = require("common").glyphs
             local actions = require("telescope.actions")
+            local builtin = require("telescope.builtin")
             local fb_actions = require("telescope._extensions.file_browser.actions")
             require('telescope').setup({
                 defaults = {
@@ -40,7 +40,6 @@ return {
                             ["<C-l>"] = false,
                             ["<C-u>"] = false,
                             ["<C-d>"] = false,
-                            ["<m-f>"] = false,
                             -- ["<C-o>"] = functioc(c vim.cmd("stopinsert") end,
                             -- ["<esc>"] = actions.close,
                             ["<C-j>"] = actions.move_selection_next,
@@ -57,7 +56,7 @@ return {
                             ["<RightMouse>"] = actions.close,
                             ["<ScrollWheelDown>"] = actions.move_selection_next,
                             ["<ScrollWheelUp>"] = actions.move_selection_previous,
-                            ["<m-s>"] = function() vim.cmd("Telescope") end,
+                            ["<m-f>"] = function() builtin.builtin() end,
                         },
                         n = {
                             ["q"] = actions.close,
@@ -81,13 +80,27 @@ return {
                             ["<LeftMouse>"] = actions.select_default + actions.center,
                             ["<ScrollWheelDown>"] = actions.move_selection_next,
                             ["<ScrollWheelUp>"] = actions.move_selection_previous,
-                            ["<m-s>"] = require("telescope.builtin").builtin,
+                            ["<m-f>"] = function() builtin.builtin() end,
                         }
                     }
                 },
                 pickers = {
+                    buffers = {
+                        mappings = {
+                            i = {
+                                ["<M-s>"] = function()
+                                    builtin.oldfiles()
+                                end
+                            }
+                        }
+                    },
                     oldfiles = {
-                        only_cwd = true
+                        only_cwd = true,
+                        mappings = {
+                            i = {
+                                ["<M-s>"] = require("common").get_tele_frecency,
+                            }
+                        }
                     },
                     live_grep = {
                         mappings = {
@@ -96,8 +109,9 @@ return {
                                     local parent_path = fn.fnamemodify(uv.cwd(), ":h")
                                     uv.chdir(parent_path)
                                     vim.notify(parent_path)
-                                    require("telescope.builtin").live_grep()
-                                end
+                                    builtin.live_grep()
+                                end,
+                                ["<M-s>"] = function() builtin.current_buffer_fuzzy_find() end,
                             }
                         }
                     },
@@ -107,6 +121,13 @@ return {
                     find_files = {
                         no_ignore = true,
                         no_ignore_parent = true,
+                        mappings = {
+                            i = {
+                                ["<M-s>"] = function()
+                                    require("telescope").extensions.file_browser.file_browser()
+                                end,
+                            }
+                        }
                     },
                     diagnostics = {
                         mappings = {
@@ -117,6 +138,11 @@ return {
                     },
                     current_buffer_fuzzy_find = {
                         skip_empty_lines = true,
+                        mappings = {
+                            i = {
+                                ["<M-s>"] = function() builtin.live_grep() end,
+                            }
+                        }
                     },
                 },
                 extensions = {
@@ -193,6 +219,7 @@ return {
                                     actions.center(opt)
                                 end,
                                 ["<M-a>"] = fb_actions.create,
+                                ["<M-s>"] = function() builtin.find_files() end,
                             },
                             n = {
                                 ["a"] = fb_actions.create,
@@ -241,13 +268,14 @@ return {
                 },
             })
 
-            km.set('n', "<space>ss", "<cmd>Telescope<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sp", "<cmd>Telescope resume<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>se", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sr", "<cmd>Telescope oldfiles<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sl", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { noremap = true, silent = true })
-            km.set('n', "<space>sf", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>",
+            km.set('n', "<space>ss", builtin.builtin, { noremap = true, silent = true })
+            km.set('n', "<space>sp", builtin.resume, { noremap = true, silent = true })
+            km.set('n', "<space>se", builtin.live_grep, { noremap = true, silent = true })
+            km.set('n', "<space>sb", builtin.buffers, { noremap = true, silent = true })
+            km.set('n', "<space>sf",
+                function()
+                    require("telescope").extensions.file_browser.file_browser({ path = "%:p:h", select_buffer = true })
+                end,
                 { noremap = true, silent = true })
 
             require("telescope").load_extension("fzf")
@@ -281,7 +309,12 @@ return {
         -- 'Mr-LLLLL/telescope-frecency.nvim',
         'nvim-telescope/telescope-frecency.nvim',
         keys = {
-            { "<space>sm", "<cmd>Telescope frecency workspace=CWD<CR>", { noremap = true, silent = true }, desc = "Telescope Frecency File" }
+            {
+                "<space>sr",
+                require("common").get_tele_frecency,
+                { noremap = true, silent = true },
+                desc = "Telescope Frecency File"
+            }
         },
         dependencies = {
             'kkharji/sqlite.lua',

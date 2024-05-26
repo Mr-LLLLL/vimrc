@@ -1,6 +1,5 @@
 local km = vim.keymap
 local g = vim.g
-local api = vim.api
 
 return {
     {
@@ -514,12 +513,27 @@ return {
     },
     {
         "ThePrimeagen/harpoon",
-        commit = 'e76cb03',
+        branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" },
-        event = "VeryLazy",
+        keys = {
+            {
+                "<space>sm",
+                require("common").get_tele_harpoon,
+                { noremap = true, silent = true, },
+                desc = "Telescope harpoon marks",
+            },
+            {
+                "<leader>f",
+                function()
+                    require("harpoon"):list():add()
+                end,
+                { noremap = true, silent = true },
+                desc = "Add file to harpoon"
+            }
+        },
         config = function()
             local harpoon = require("harpoon")
-            local extensions = require("harpoon.extensions");
+            -- local extensions = require("harpoon.extensions");
 
             harpoon:setup({
                 settings = {
@@ -528,37 +542,32 @@ return {
                 }
             })
 
-            harpoon:extend({
-                UI_CREATE = function(cx)
-                    vim.keymap.set("n", "<C-v>", function()
-                        harpoon.ui:select_menu_item({ vsplit = true })
-                    end, { buffer = cx.bufnr })
+            -- harpoon:extend({
+            --     UI_CREATE = function(cx)
+            --         vim.keymap.set("n", "<C-v>", function()
+            --             harpoon.ui:select_menu_item({ vsplit = true })
+            --         end, { buffer = cx.bufnr })
+            --
+            --         vim.keymap.set("n", "<C-s>", function()
+            --             harpoon.ui:select_menu_item({ split = true })
+            --         end, { buffer = cx.bufnr })
+            --
+            --         vim.keymap.set("n", "<C-t>", function()
+            --             harpoon.ui:select_menu_item({ tabedit = true })
+            --         end, { buffer = cx.bufnr })
+            --     end,
+            -- })
+            -- harpoon:extend(extensions.builtins.navigate_with_number());
 
-                    vim.keymap.set("n", "<C-s>", function()
-                        harpoon.ui:select_menu_item({ split = true })
-                    end, { buffer = cx.bufnr })
-
-                    vim.keymap.set("n", "<C-t>", function()
-                        harpoon.ui:select_menu_item({ tabedit = true })
-                    end, { buffer = cx.bufnr })
-                end,
-            })
-
-            km.set("n", "<space>m", function()
-                harpoon.ui:toggle_quick_menu(harpoon:list())
-            end, { desc = "Open harpoon window" })
             km.set("n", "<leader>sp", function()
                 harpoon:list():prev()
             end, { desc = "Open harpoon previous" })
             km.set("n", "<leader>sn", function()
                 harpoon:list():next()
             end, { desc = "Open harpoon next" })
-            km.set("n", "<leader>f", function()
-                harpoon:list():add()
-            end, { desc = "Add file to harpoon" })
 
-            harpoon:extend(extensions.builtins.navigate_with_number());
             require("lualine-ext").init_harpoon()
+            require("telescope").load_extension('harpoon')
         end
     }
 }

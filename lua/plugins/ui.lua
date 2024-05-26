@@ -93,7 +93,7 @@ return {
                     project = {
                         action = function(path)
                             vim.fn.chdir(path)
-                            require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
+                            require('telescope').extensions.file_browser.file_browser()
                         end,
                     },
                     shortcut = {
@@ -110,12 +110,20 @@ return {
                             key = 'u',
                         },
                         {
+                            desc = ' File Browser',
+                            group = 'Constant',
+                            action = function()
+                                require('telescope').extensions.file_browser.file_browser()
+                            end,
+                            key = 'f',
+                        },
+                        {
                             desc = ' Frecency Files',
                             group = 'Constant',
                             action = function()
                                 require('telescope').extensions.frecency.frecency({ workspace = 'CWD' })
                             end,
-                            key = 'f',
+                            key = 'r',
                         },
                         {
                             desc = ' Projects',
