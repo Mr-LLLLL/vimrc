@@ -151,13 +151,27 @@ m.lsp_on_attach      = function(client, bufnr)
 end
 
 m.get_tele_harpoon   = function()
+    local frecency = function()
+        require('telescope').extensions.frecency.frecency({
+            workspace = 'CWD',
+            attach_mappings = function(prompt_bufnr, map)
+                map(
+                    { 'i' },
+                    '<M-s>',
+                    function() require("telescope").extensions.file_browser.file_browser() end
+                )
+                return true
+            end,
+        })
+    end
+
     require('telescope').extensions.harpoon.marks({
         attach_mappings = function(prompt_bufnr, map)
             local actions = require("telescope.actions")
             map(
                 { 'i', 'n' },
                 '<M-s>',
-                function() require("telescope").extensions.file_browser.file_browser() end
+                frecency
             )
             map({ "i", "n" }, "<c-p>", actions.preview_scrolling_up)
             map({ "i", "n" }, "<c-n>", actions.preview_scrolling_down)
