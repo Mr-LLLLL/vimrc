@@ -88,9 +88,7 @@ return {
                     buffers = {
                         mappings = {
                             i = {
-                                ["<M-s>"] = function()
-                                    builtin.oldfiles()
-                                end
+                                ["<M-s>"] = require("common").get_tele_frecency,
                             }
                         }
                     },
@@ -98,7 +96,26 @@ return {
                         only_cwd = true,
                         mappings = {
                             i = {
-                                ["<M-s>"] = require("common").get_tele_frecency,
+                                ["<M-s>"] = function() builtin.buffers() end
+                            }
+                        }
+                    },
+                    lsp_document_symbols = {
+                        mappings = {
+                            i = {
+                                ["<M-s>"] = function(opt)
+                                    actions.close(opt)
+                                    builtin.current_buffer_fuzzy_find()
+                                end
+                            }
+                        }
+                    },
+                    lsp_dynamic_workspace_symbols = {
+                        mappings = {
+                            i = {
+                                ["<M-s>"] = function()
+                                    builtin.live_grep()
+                                end
                             }
                         }
                     },
@@ -111,7 +128,10 @@ return {
                                     vim.notify(parent_path)
                                     builtin.live_grep()
                                 end,
-                                ["<M-s>"] = function() builtin.current_buffer_fuzzy_find() end,
+                                ["<M-s>"] = function(opt)
+                                    actions.close(opt)
+                                    builtin.lsp_dynamic_workspace_symbols()
+                                end,
                             }
                         }
                     },
@@ -140,7 +160,10 @@ return {
                         skip_empty_lines = true,
                         mappings = {
                             i = {
-                                ["<M-s>"] = function() builtin.live_grep() end,
+                                ["<M-s>"] = function(opt)
+                                    actions.close(opt)
+                                    builtin.lsp_document_symbols()
+                                end,
                             }
                         }
                     },
@@ -271,7 +294,7 @@ return {
             km.set('n', "<space>ss", builtin.builtin, { noremap = true, silent = true, desc = "Telescope" })
             km.set('n', "<space>sp", builtin.resume, { noremap = true, silent = true, desc = "Telescope Resume" })
             km.set('n', "<space>se", builtin.live_grep, { noremap = true, silent = true, desc = "Telescope LiveGrep" })
-            km.set('n', "<space>sb", builtin.buffers, { noremap = true, silent = true, desc = "Telescope Buffers" })
+            -- km.set('n', "<space>sb", builtin.buffers, { noremap = true, silent = true, desc = "Telescope Buffers" })
             km.set('n', "<space>sf",
                 function()
                     require("telescope").extensions.file_browser.file_browser({ path = "%:p:h", select_buffer = true })

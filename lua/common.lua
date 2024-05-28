@@ -123,8 +123,8 @@ m.lsp_attach_mapping = function(bufnr)
 
     km.set('n', '<space>so', function() tele_builtin.lsp_document_symbols() end,
         m.keymap_desc(bufopts, "lsp buf symbols"))
-    km.set('n', '<space>sg', function() tele_builtin.lsp_dynamic_workspace_symbols() end,
-        m.keymap_desc(bufopts, "lsp workspace symbols"))
+    -- km.set('n', '<space>sg', function() tele_builtin.lsp_dynamic_workspace_symbols() end,
+    --     m.keymap_desc(bufopts, "lsp workspace symbols"))
     km.set('n', '<space>a', function() tele_builtin.diagnostics({ root_dir = true }) end,
         m.keymap_desc(bufopts, "lsp diagnostics"))
     km.set('n', '<leader>rn', vim.lsp.buf.rename, m.keymap_desc(bufopts, "lsp rename"))
