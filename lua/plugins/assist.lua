@@ -542,6 +542,22 @@ return {
                 settings = {
                     save_on_toggle = true,
                     sync_on_ui_close = true,
+                    key = function()
+                        local root = vim.fs.root(0, { ".git", ".svn", "Makefile", "mvnw" })
+                        if root and root ~= "." then
+                            return root
+                        end
+                        return vim.loop.cwd()
+                    end
+                },
+                default = {
+                    get_root_dir = function()
+                        local root = vim.fs.root(0, { ".git", ".svn", "Makefile", "mvnw" })
+                        if root and root ~= "." then
+                            return root
+                        end
+                        return vim.loop.cwd()
+                    end,
                 }
             })
 

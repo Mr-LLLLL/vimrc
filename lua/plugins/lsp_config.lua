@@ -189,13 +189,16 @@ local function set_lsp_autocmd()
         { 'BufWritePre' },
         {
             pattern = { "*" },
-            callback = function()
+            callback = function(opt)
                 if m.format_disable then
                     return
                 end
 
-                local clients = vim.lsp.get_active_clients({ bufnr = api.nvim_get_current_buf() })
-                if not vim.tbl_islist(clients) or #clients == 0 then
+                local clients = vim.lsp.get_clients({
+                    bufnr = opt.buf,
+                    method = "textDocument/formatting"
+                })
+                if #clients == 0 then
                     return
                 end
 
@@ -209,7 +212,7 @@ local function set_lsp_autocmd()
                 end
 
                 for _, client in ipairs(clients) do
-                    if client.supports_method("textDocument/formatting") then
+                    if not client.is_stopped() then
                         format()
                         return
                     end
@@ -222,15 +225,18 @@ local function set_lsp_autocmd()
         { "BufEnter", "InsertLeave" },
         {
             pattern = { "*" },
-            callback = function()
-                local clients = vim.lsp.get_active_clients({ bufnr = api.nvim_get_current_buf() })
-                if not vim.tbl_islist(clients) or #clients == 0 then
+            callback = function(opt)
+                local clients = vim.lsp.get_clients({
+                    bufnr = opt.buf,
+                    method = "textDocument/codeLens"
+                })
+                if #clients == 0 then
                     return
                 end
 
                 for _, client in ipairs(clients) do
-                    if client.supports_method("textDocument/codeLens") then
-                        vim.lsp.codelens.refresh()
+                    if not client.is_stopped() then
+                        vim.lsp.codelens.refresh({ bufnr = opt.buf })
                         return
                     end
                 end
