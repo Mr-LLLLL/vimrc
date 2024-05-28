@@ -310,7 +310,7 @@ return {
         'nvim-telescope/telescope-frecency.nvim',
         keys = {
             {
-                "<space>sr",
+                "<space>sl",
                 require("common").get_tele_frecency,
                 { noremap = true, silent = true },
                 desc = "Telescope Frecency File"
