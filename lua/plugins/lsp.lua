@@ -65,7 +65,7 @@ return {
             log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
             -- default is  ~/.cache/nvim/lsp_signature.log
             verbose = false,                                            -- show debug line number
-            bind = true,                                                -- This is mandatory, otherwise border config won't get registered.
+            bind = false,                                               -- This is mandatory, otherwise border config won't get registered.
             -- If you want to hook lspsaga or other signature handler, pls set to false
             doc_lines = 0,                                              -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
             -- set to 0 if you DO NOT want any API comments be shown
