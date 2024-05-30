@@ -54,9 +54,10 @@ local function load_neovide()
     end
 
     -- BUG: fix verticle line have some space in neovide
-    o.linespace                              = -2
+    o.linespace = 0
 
-    g.neovide_fullscreen                     = true
+    -- BUG delay set this value
+    vim.defer_fn(function() g.neovide_fullscreen = true end, 200)
     g.neovide_confirm_quit                   = true
     g.neovide_floating_blur_amount_x         = 0.0
     g.neovide_floating_blur_amount_y         = 0.0
@@ -99,7 +100,7 @@ local function load_neovide()
     km.set(
         { 'n' },
         "<F11>",
-        function() if g.neovide_fullscreen then g.neovide_fullscreen = false else g.neovide_fullscreen = true end end,
+        function() g.neovide_fullscreen = not g.neovide_fullscreen end,
         { noremap = true, silent = true, expr = true, desc = "full screen for neovide" }
     )
 
