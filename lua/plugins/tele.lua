@@ -294,9 +294,6 @@ return {
             km.set('n', "<space>ss", builtin.builtin, { noremap = true, silent = true, desc = "Telescope" })
             km.set('n', "<space>sp", builtin.resume, { noremap = true, silent = true, desc = "Telescope Resume" })
             km.set('n', "<space>se", builtin.live_grep, { noremap = true, silent = true, desc = "Telescope LiveGrep" })
-            km.set('n', "<space>sb",
-                require("telescope").extensions.file_browser.file_browser,
-                { noremap = true, silent = true, desc = "Telescope FileBrowser Workspace" })
             km.set('n', "<space>sf",
                 function()
                     require("telescope").extensions.file_browser.file_browser({ path = "%:p:h", select_buffer = true })
