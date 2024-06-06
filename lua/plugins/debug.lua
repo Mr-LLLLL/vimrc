@@ -251,7 +251,7 @@ end
 return {
     {
         'mfussenegger/nvim-dap',
-        ft = { 'go', 'gomod', 'gowork', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
+        ft = { 'go', 'gomod', 'gowork', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl', 'rust' },
         dependencies = {
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',

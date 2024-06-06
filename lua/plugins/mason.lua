@@ -12,6 +12,7 @@ return {
                 ensure_installed = {
                     -- you can turn off/on auto_update per tool
                     { 'jq',                    auto_update = true },
+                    { "codelldb" },
                     { 'delve' },
                     { 'shfmt' },
                     { 'shellcheck' },
