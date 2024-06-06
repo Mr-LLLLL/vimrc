@@ -7,8 +7,8 @@ return {
         event = "VeryLazy",
         opts = {
             popup_mappings = {
-                scroll_down = '<c-f>', -- binding to scroll down inside the popup
-                scroll_up = '<c-b>',   -- binding to scroll up inside the popup
+                scroll_down = '<c-n>', -- binding to scroll down inside the popup
+                scroll_up = '<c-p>',   -- binding to scroll up inside the popup
             },
             layout = {
                 height = { min = 4, max = 25 }, -- min and max height of the columns

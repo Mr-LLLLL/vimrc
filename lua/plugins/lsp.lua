@@ -121,8 +121,8 @@ return {
                     lines_below = 10,
                 },
                 scroll_preview = {
-                    scroll_down = '<C-f>',
-                    scroll_up = '<C-b>',
+                    scroll_down = '<C-n>',
+                    scroll_up = '<C-p>',
                 },
                 request_timeout = 2000,
                 finder = {
