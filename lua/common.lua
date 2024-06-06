@@ -259,13 +259,16 @@ m.set_key_map        = function(module, keys)
     end
     setmap()
 
-    local ft = api.nvim_buf_get_option(0, 'filetype')
+    local ft = api.nvim_get_option_value("filetype", {})
     local custom_auto_cmd = api.nvim_create_augroup("CustomCacheKeys" .. module, { clear = true })
     api.nvim_create_autocmd(
         { "BufWinEnter" },
         {
-            pattern = { "*." .. ft },
-            callback = function()
+            pattern = "*",
+            callback = function(opt)
+                if ft ~= api.nvim_get_option_value("filetype", { buf = opt.buf }) then
+                    return
+                end
                 setmap()
             end,
             group = custom_auto_cmd,
