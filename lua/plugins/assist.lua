@@ -578,12 +578,12 @@ return {
             -- })
             -- harpoon:extend(extensions.builtins.navigate_with_number());
 
-            km.set("n", "<leader>sp", function()
-                harpoon:list():prev()
-            end, { desc = "Open harpoon previous" })
-            km.set("n", "<leader>sn", function()
-                harpoon:list():next()
-            end, { desc = "Open harpoon next" })
+            -- km.set("n", "<leader>sp", function()
+            --     harpoon:list():prev()
+            -- end, { desc = "Open harpoon previous" })
+            -- km.set("n", "<leader>sn", function()
+            --     harpoon:list():next()
+            -- end, { desc = "Open harpoon next" })
 
             require("lualine-ext").init_harpoon()
             require("telescope").load_extension('harpoon')
