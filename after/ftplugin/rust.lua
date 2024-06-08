@@ -7,4 +7,5 @@ do
     bo.softtabstop  = 4
 
     o.commentstring = "// %s"
+    o.makeprg       = "cargo run"
 end
