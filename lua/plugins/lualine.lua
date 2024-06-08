@@ -110,40 +110,15 @@ return {
         end,
     },
     {
-        'linrongbin16/lsp-progress.nvim',
-        event = "LspAttach",
-        dependencies = {
-            "nvim-lualine/lualine.nvim",
+        "j-hui/fidget.nvim",
+        event = "VeryLazy",
+        opts = {
+            integration = {
+                ["nvim-tree"] = {
+                    enable = true, -- Integrate with nvim-tree/nvim-tree.lua (if installed)
+                },
+            },
         },
-        config = function()
-            require("lsp-progress").setup {
-                format = function(client_messages)
-                    return #client_messages > 0
-                        and (" LSP " .. table.concat(client_messages, " "))
-                        or ""
-                end,
-                decay = 3000,
-            }
-
-            local old = require("lualine").get_config()
-            table.insert(old.sections.lualine_x, 1, require("lsp-progress").progress)
-            require("lualine").setup(old)
-
-            local lualine_augroup = api.nvim_create_augroup("LualineAugroup", { clear = true })
-            api.nvim_create_autocmd(
-                { "User" },
-                {
-                    pattern = "LspProgressStatusUpdated",
-                    callback = function()
-                        require("lualine").refresh({
-                            scope = 'tabpage',
-                            place = { 'statusline' }
-                        })
-                    end,
-                    group = lualine_augroup,
-                }
-            )
-        end
     },
     {
         "SmiteshP/nvim-navic",
