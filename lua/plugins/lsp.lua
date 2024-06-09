@@ -1,4 +1,3 @@
-local api = vim.api
 local km = vim.keymap
 
 local function load_saga_keymap(opts)

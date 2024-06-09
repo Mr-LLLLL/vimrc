@@ -1,5 +1,3 @@
-local api = vim.api
-
 return {
     {
         'nvim-lualine/lualine.nvim',

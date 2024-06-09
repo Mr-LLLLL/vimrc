@@ -1,7 +1,3 @@
-local km = vim.keymap
-local fn = vim.fn
-local api = vim.api
-
 return {
     {
         'RRethy/nvim-treesitter-endwise',
