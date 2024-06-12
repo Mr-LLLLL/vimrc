@@ -427,6 +427,12 @@ return {
         config = function()
             require('illuminate').configure({
                 modes_allowlist = { 'n', 'v', 'V', '' },
+                filetypes_denylist = {
+                    'dirbuf',
+                    'dirvish',
+                    'fugitive',
+                    'httpResult',
+                },
             })
 
             km.set("v", "<a-n>", require("illuminate").goto_next_reference,
