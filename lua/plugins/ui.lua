@@ -427,11 +427,13 @@ return {
         config = function()
             require('illuminate').configure({
                 modes_allowlist = { 'n', 'v', 'V', '' },
-                filetypes_denylist = {
-                    'dirbuf',
-                    'dirvish',
-                    'fugitive',
-                    'httpResult',
+                filetypes_denylist = {},
+                filetypes_allowlist = {
+                    'go',
+                    'rust',
+                    'lua',
+                    'json',
+                    'yaml',
                 },
             })
 
