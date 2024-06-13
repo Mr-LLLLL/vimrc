@@ -238,8 +238,8 @@ return {
                                 -- Similar table but for insert mode. Using 'false' disables
                                 -- existing keybindings.
                                 ["<c-c>"] = function(ui)
-                                    pantran_actions.close(ui)
                                     vim.cmd("stopinsert")
+                                    pantran_actions.close(ui)
                                 end,
                                 -- ["<c-o>"] = function()
                                 --     vim.cmd("stopinsert")
@@ -255,8 +255,8 @@ return {
                         select = {
                             i = {
                                 ["<c-c>"] = function(ui)
-                                    pantran_actions.close(ui)
                                     vim.cmd("stopinsert")
+                                    pantran_actions.close(ui)
                                 end,
                                 ["<C-s>"] = pantran_actions.select_source,
                                 ["<C-t>"] = pantran_actions.select_target,
