@@ -175,9 +175,26 @@ return {
         build = 'cd app && ./install.sh'
     },
     {
+        'voldikss/vim-translator',
+        keys = {
+            { "<space>tt", "<Plug>TranslateW",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate In Float" },
+            { "<space>tt", "<Plug>TranslateWV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate In Float" },
+            { "<space>tr", "<Plug>TranslateR",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate Replace" },
+            { "<space>tr", "<Plug>TranslateRV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate Replace" },
+        },
+        config = function()
+            vim.g.translator_source_lang = 'auto'
+            vim.g.translator_target_lang = 'zh'
+            vim.g.translator_default_engines = { "bing", "google", "haici", "youdao" }
+            vim.g.translator_window_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+
+            api.nvim_set_hl(0, "TranslatorBorder", { link = 'CustomBorder' })
+        end
+    },
+    {
         'potamides/pantran.nvim',
         keys = {
-            { "<space>t", nil, mode = { "n", "v" }, desc = "Pantran" }
+            { "<space>to", nil, mode = { "n", "v" }, desc = "Pantran" }
         },
         config = function()
             local pantran_actions = require("pantran.ui.actions")
@@ -258,10 +275,6 @@ return {
 
             vim.api.nvim_set_hl(0, "PantranBorder", { link = 'CustomBorder' })
             km.set('n', "<space>to", "<cmd>Pantran<CR>i", { noremap = true, silent = true, desc = "pantran panel" })
-            km.set("n", "<space>tt", function() return require("pantran").motion_translate() .. "iw" end,
-                { noremap = true, silent = true, expr = true, desc = "pantran translate" })
-            km.set("x", "<space>tt", require("pantran").motion_translate,
-                { noremap = true, silent = true, expr = true, desc = "pantran translate" })
         end
     },
     {
