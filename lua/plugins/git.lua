@@ -5,32 +5,41 @@ return {
         config = function()
             require('gitsigns').setup({
                 signs = {
-                    add          = { hl = 'GitSignsAdd', text = '│', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
-                    change       = {
-                        hl = 'GitSignsChange',
+                    add          = {
                         text = '│',
-                        numhl = 'GitSignsChangeNr',
-                        linehl = 'GitSignsChangeLn'
+                    },
+                    change       = {
+                        text = '│',
                     },
                     delete       = {
-                        hl = 'GitSignsDelete',
                         text = '_',
-                        numhl = 'GitSignsDeleteNr',
-                        linehl = 'GitSignsDeleteLn'
                     },
                     topdelete    = {
-                        hl = 'GitSignsDelete',
                         text = '‾',
-                        numhl = 'GitSignsDeleteNr',
-                        linehl = 'GitSignsDeleteLn'
                     },
                     changedelete = {
-                        hl = 'GitSignsChange',
                         text = '~',
-                        numhl = 'GitSignsChangeNr',
-                        linehl = 'GitSignsChangeLn'
                     },
-                    untracked    = { hl = 'GitSignsAdd', text = '┆', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
+                    untracked    = {
+                        text = '┆',
+                    },
+                },
+                signs_staged = {
+                    add          = {
+                        text = '│',
+                    },
+                    change       = {
+                        text = '│',
+                    },
+                    delete       = {
+                        text = '_',
+                    },
+                    topdelete    = {
+                        text = '‾',
+                    },
+                    changedelete = {
+                        text = '~',
+                    },
                 },
                 current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
                 current_line_blame_opts = {
@@ -49,17 +58,21 @@ return {
                     end
 
                     -- Navigation
-                    map({ 'n', 'x' }, ']c', function()
-                        if vim.wo.diff then return ']c' end
-                        vim.schedule(function() gs.next_hunk() end)
-                        return '<Ignore>'
-                    end, { expr = true, desc = "Gitsigns forward hunk" })
+                    map('n', ']c', function()
+                        if vim.wo.diff then
+                            vim.cmd.normal({ ']c', bang = true })
+                        else
+                            gs.nav_hunk('next')
+                        end
+                    end)
 
-                    map({ 'n', 'x' }, '[c', function()
-                        if vim.wo.diff then return '[c' end
-                        vim.schedule(function() gs.prev_hunk() end)
-                        return '<Ignore>'
-                    end, { expr = true, desc = "Gitsigns backward hunk" })
+                    map('n', '[c', function()
+                        if vim.wo.diff then
+                            vim.cmd.normal({ '[c', bang = true })
+                        else
+                            gs.nav_hunk('prev')
+                        end
+                    end)
 
                     -- Actions
                     map({ 'n', 'v' }, '<leader>gs', ':Gitsigns stage_hunk<CR>', { desc = "Gitsigns stage hunk" })

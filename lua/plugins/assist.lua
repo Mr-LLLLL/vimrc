@@ -468,7 +468,7 @@ return {
             smart_move_textobj = {
                 disabled = false,
                 -- disabled filetype, default support all language just like treesitter-textobj behavior
-                disabled_filetypes = { "git" },
+                -- disabled_filetypes = { "git" },
                 -- if you want to support some filetypes, uncomment it and fill your language
                 -- enabled_filetypes = {},
                 mapping = {
