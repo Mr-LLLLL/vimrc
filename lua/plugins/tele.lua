@@ -88,15 +88,24 @@ return {
                     buffers = {
                         mappings = {
                             i = {
-                                ["<M-s>"] = require("common").get_tele_frecency,
+                                ["<M-s>"] = function()
+                                    local cwd = vim.loop.cwd()
+                                    require("common").get_tele_frecency()
+                                    vim.fn.chdir(cwd)
+                                end,
                             }
-                        }
+                        },
+                        only_cwd = true,
                     },
                     oldfiles = {
                         only_cwd = true,
                         mappings = {
                             i = {
-                                ["<M-s>"] = function() builtin.buffers() end
+                                ["<M-s>"] = function()
+                                    local cwd = vim.loop.cwd()
+                                    builtin.buffers({ cwd = cwd })
+                                    vim.fn.chdir(cwd)
+                                end
                             }
                         }
                     },
@@ -104,8 +113,10 @@ return {
                         mappings = {
                             i = {
                                 ["<M-s>"] = function(opt)
+                                    local cwd = vim.loop.cwd()
                                     actions.close(opt)
                                     builtin.current_buffer_fuzzy_find()
+                                    vim.fn.chdir(cwd)
                                 end
                             }
                         }
@@ -114,7 +125,9 @@ return {
                         mappings = {
                             i = {
                                 ["<M-s>"] = function()
-                                    builtin.live_grep()
+                                    local cwd = vim.loop.cwd()
+                                    builtin.live_grep({ cmd = cmd })
+                                    vim.fn.chdir(cwd)
                                 end
                             }
                         }
@@ -129,8 +142,10 @@ return {
                                     builtin.live_grep()
                                 end,
                                 ["<M-s>"] = function(opt)
+                                    local cwd = vim.loop.cwd()
                                     actions.close(opt)
                                     builtin.lsp_dynamic_workspace_symbols()
+                                    vim.fn.chdir(cwd)
                                 end,
                             }
                         }
@@ -144,7 +159,9 @@ return {
                         mappings = {
                             i = {
                                 ["<M-s>"] = function()
-                                    require("telescope").extensions.file_browser.file_browser()
+                                    local cwd = vim.loop.cwd()
+                                    require("telescope").extensions.file_browser.file_browser({ cwd = cwd })
+                                    vim.fn.chdir(cwd)
                                 end,
                             }
                         }
@@ -161,8 +178,10 @@ return {
                         mappings = {
                             i = {
                                 ["<M-s>"] = function(opt)
+                                    local cwd = vim.loop.cwd()
                                     actions.close(opt)
                                     builtin.lsp_document_symbols()
+                                    vim.fn.chdir(cwd)
                                 end,
                             }
                         }
@@ -242,7 +261,11 @@ return {
                                     actions.center(opt)
                                 end,
                                 ["<M-a>"] = fb_actions.create,
-                                ["<M-s>"] = function() builtin.find_files() end,
+                                ["<M-s>"] = function()
+                                    local cwd = vim.loop.cwd()
+                                    builtin.find_files({ cwd = cwd })
+                                    vim.fn.chdir(cwd)
+                                end,
                             },
                             n = {
                                 ["a"] = fb_actions.create,

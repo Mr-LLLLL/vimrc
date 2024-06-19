@@ -158,7 +158,11 @@ m.get_tele_harpoon   = function()
                 map(
                     { 'i' },
                     '<M-s>',
-                    function() require("telescope").extensions.file_browser.file_browser() end
+                    function()
+                        local cwd = vim.loop.cwd()
+                        require("telescope").extensions.file_browser.file_browser({ cwd = cwd })
+                        vim.fn.chdir(cwd)
+                    end
                 )
                 return true
             end,
@@ -171,7 +175,11 @@ m.get_tele_harpoon   = function()
             map(
                 { 'i', 'n' },
                 '<M-s>',
-                frecency
+                function()
+                    local cwd = vim.loop.cwd()
+                    frecency()
+                    vim.fn.chdir(cwd)
+                end
             )
             map({ "i", "n" }, "<c-p>", actions.preview_scrolling_up)
             map({ "i", "n" }, "<c-n>", actions.preview_scrolling_down)
@@ -187,7 +195,11 @@ m.get_tele_frecency  = function()
             map(
                 { 'i' },
                 '<M-s>',
-                function() require("telescope.builtin").oldfiles() end
+                function()
+                    local cwd = vim.loop.cwd()
+                    require("telescope.builtin").oldfiles({ cmd = cwd })
+                    vim.fn.chdir(cwd)
+                end
             )
             return true
         end,
