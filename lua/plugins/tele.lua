@@ -339,7 +339,6 @@ return {
             }
         },
         dependencies = {
-            'kkharji/sqlite.lua',
             'nvim-telescope/telescope.nvim',
         },
         config = function()
@@ -370,7 +369,6 @@ return {
             { "<space>sy", "<cmd>Telescope yank_history<CR>", { noremap = true, silent = true }, desc = "Yanky" },
         },
         dependencies = {
-            'kkharji/sqlite.lua',
             'nvim-telescope/telescope.nvim',
         },
         config = function()
@@ -378,7 +376,7 @@ return {
             local actions = require("telescope.actions")
             require("yanky").setup({
                 ring = {
-                    storage = "sqlite"
+                    storage = "shada"
                 },
                 highlight = {
                     on_put = true,
