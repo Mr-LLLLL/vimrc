@@ -6,5 +6,5 @@ do
     bo.softtabstop   = 4
 
     bo.commentstring = "// %s"
-    bo.makeprg       = "go run main.go"
+    bo.makeprg       = "go run ."
 end
