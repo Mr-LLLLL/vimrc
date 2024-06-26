@@ -144,7 +144,22 @@ local function load_lazy()
         },
         ui = {
             border = "rounded",
-        }
+        },
+        pkg = {
+            enabled = true,
+            cache = vim.fn.stdpath("state") .. "/lazy/pkg-cache.lua",
+            -- the first package source that is found for a plugin will be used.
+            sources = {
+                "lazy",
+                "rockspec", -- will only be used when rocks.enabled is true
+                "packspec",
+            },
+        },
+        rocks = {
+            enabled = false,
+            root = vim.fn.stdpath("data") .. "/lazy-rocks",
+            server = "https://nvim-neorocks.github.io/rocks-binaries/",
+        },
     })
 
     vim.api.nvim_set_hl(0, "LazyBackdrop", { bg = require("common").colors.CustomBorderBg })
