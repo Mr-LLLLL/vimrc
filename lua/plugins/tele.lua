@@ -126,7 +126,7 @@ return {
                             i = {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
-                                    builtin.live_grep({ cmd = cmd })
+                                    builtin.live_grep({ cmd = cwd })
                                     vim.fn.chdir(cwd)
                                 end
                             }
