@@ -176,6 +176,7 @@ return {
     },
     {
         'voldikss/vim-translator',
+        cmd = "Translate",
         keys = {
             { "<space>tt", "<Plug>TranslateW",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate In Float" },
             { "<space>tt", "<Plug>TranslateWV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate In Float" },
