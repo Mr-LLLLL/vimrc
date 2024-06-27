@@ -39,6 +39,7 @@ return {
                             ["<C-t>"] = actions.select_tab + actions.center,
                             ["<C-l>"] = false,
                             ["<C-u>"] = false,
+                            ["<c-i>"] = require('telescope.actions').complete_tag,
                             ["<C-d>"] = false,
                             -- ["<C-o>"] = functioc(c vim.cmd("stopinsert") end,
                             -- ["<esc>"] = actions.close,
@@ -91,7 +92,7 @@ return {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
                                     require("common").get_tele_frecency()
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end,
                             }
                         },
@@ -104,7 +105,7 @@ return {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
                                     builtin.buffers({ cwd = cwd })
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end
                             }
                         }
@@ -116,7 +117,7 @@ return {
                                     local cwd = vim.loop.cwd()
                                     actions.close(opt)
                                     builtin.current_buffer_fuzzy_find()
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end
                             }
                         }
@@ -127,7 +128,7 @@ return {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
                                     builtin.live_grep({ cmd = cwd })
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end
                             }
                         }
@@ -145,7 +146,7 @@ return {
                                     local cwd = vim.loop.cwd()
                                     actions.close(opt)
                                     builtin.lsp_dynamic_workspace_symbols()
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end,
                             }
                         }
@@ -161,16 +162,9 @@ return {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
                                     require("telescope").extensions.file_browser.file_browser({ cwd = cwd })
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end,
                             }
-                        }
-                    },
-                    diagnostics = {
-                        mappings = {
-                            i = {
-                                ["<c-i>"] = require('telescope.actions').complete_tag,
-                            },
                         }
                     },
                     current_buffer_fuzzy_find = {
@@ -181,7 +175,7 @@ return {
                                     local cwd = vim.loop.cwd()
                                     actions.close(opt)
                                     builtin.lsp_document_symbols()
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end,
                             }
                         }
@@ -264,7 +258,7 @@ return {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
                                     builtin.find_files({ cwd = cwd })
-                                    vim.fn.chdir(cwd)
+                                    uv.chdir(cwd)
                                 end,
                             },
                             n = {
