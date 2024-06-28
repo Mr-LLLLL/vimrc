@@ -279,17 +279,9 @@ return {
         end
     },
     {
-        "vhyrro/luarocks.nvim",
-        lazy = true,
-        opts = {
-            rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua", "magick" }, -- Specify LuaRocks packages to install
-        },
-        config = true,
-    },
-    {
         'rest-nvim/rest.nvim',
         ft = "http",
-        dependencies = { "vhyrro/luarocks.nvim" },
+        rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua", "magick" },
         config = function()
             require("rest-nvim").setup({
                 client = "curl",
