@@ -62,15 +62,14 @@ return {
                         if vim.wo.diff then
                             vim.cmd.normal({ ']c', bang = true })
                         else
-                            gs.nav_hunk('next')
+                            gs.nav_hunk('next', { target = "all" })
                         end
                     end)
-
                     map('n', '[c', function()
                         if vim.wo.diff then
                             vim.cmd.normal({ '[c', bang = true })
                         else
-                            gs.nav_hunk('prev')
+                            gs.nav_hunk('prev', { target = "all" })
                         end
                     end)
 

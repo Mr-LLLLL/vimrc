@@ -185,6 +185,7 @@ return {
         'mizlan/iswap.nvim',
         keys = {
             { "<leader>ss", "<cmd>ISwapWith<CR>",     { noremap = true, silent = true }, desc = "ISwap" },
+            { "<leader>sm", "<cmd>IMoveWith<CR>",     { noremap = true, silent = true }, desc = "ISwap" },
             { "<leader>S",  "<cmd>ISwapNodeWith<CR>", { noremap = true, silent = true }, desc = "ISwapNode" },
         },
         dependencies = {
