@@ -287,7 +287,15 @@ return {
                     require('kulala').run()
                 end,
                 { noremap = true, silent = true },
-                desc = "Http Request",
+                desc = "Kulala request",
+            },
+            {
+                "<leader>ch",
+                function()
+                    require('kulala').toggle_view()
+                end,
+                { noremap = true, silent = true },
+                desc = "Kulala toggle header",
             },
         },
         init = function()
