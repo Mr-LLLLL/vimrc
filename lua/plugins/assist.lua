@@ -401,6 +401,8 @@ return {
 
             auto_change_conceallevel = true,
 
+            auto_disable_inlayhint = true,
+
             smart_move_textobj = {
                 disabled = false,
                 -- disabled filetype, default support all language just like treesitter-textobj behavior
