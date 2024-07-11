@@ -58,7 +58,7 @@ local function load_neovide()
     o.linespace = -2
 
     -- BUG delay set this value
-    vim.defer_fn(function() g.neovide_fullscreen = true end, 500)
+    vim.defer_fn(function() g.neovide_fullscreen = true end, 300)
     g.neovide_confirm_quit                   = true
     g.neovide_floating_blur_amount_x         = 0.0
     g.neovide_floating_blur_amount_y         = 0.0
