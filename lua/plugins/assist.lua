@@ -6,22 +6,22 @@ return {
         "folke/which-key.nvim",
         event = "VeryLazy",
         opts = {
+            preset = "helix",
             popup_mappings = {
                 scroll_down = '<c-n>', -- binding to scroll down inside the popup
                 scroll_up = '<c-p>',   -- binding to scroll up inside the popup
             },
             layout = {
-                height = { min = 4, max = 25 }, -- min and max height of the columns
                 width = { min = 20, max = 50 }, -- min and max width of the columns
                 spacing = 3,                    -- spacing between columns
                 align = "left",                 -- align columns left, center or right
             },
-            window = {
-                border = "rounded",       -- none, single, double, shadow
-                position = "bottom",      -- bottom, top
-                margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
-                padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-                winblend = vim.g.custom_blend
+            win = {
+                -- border = "rounded", -- none, single, double, shadow
+                padding = { 2, 2 }, -- extra window padding [top, right, bottom, left]
+                wo = {
+                    winblend = vim.g.custom_blend
+                }
             },
             disable = {
                 buftypes = {},
