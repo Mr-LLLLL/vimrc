@@ -7,7 +7,7 @@ return {
         event = "VeryLazy",
         opts = {
             preset = "helix",
-            popup_mappings = {
+            keys = {
                 scroll_down = '<c-n>', -- binding to scroll down inside the popup
                 scroll_up = '<c-p>',   -- binding to scroll up inside the popup
             },
