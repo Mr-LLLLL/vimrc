@@ -313,7 +313,7 @@ return {
             km.set('n', "<space>se", builtin.live_grep, { noremap = true, silent = true, desc = "Telescope LiveGrep" })
             km.set('n', "<space>sf",
                 function()
-                    require("telescope").extensions.file_browser.file_browser({ path = "%:p:h", select_buffer = true })
+                    require("telescope").extensions.file_browser.file_browser()
                 end,
                 { noremap = true, silent = true, desc = "Telescope FileBrowser CWD" })
 
