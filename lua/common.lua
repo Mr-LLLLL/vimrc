@@ -151,22 +151,38 @@ m.lsp_on_attach      = function(client, bufnr)
 end
 
 m.get_tele_harpoon   = function()
-    local frecency = function()
-        require('telescope').extensions.frecency.frecency({
-            workspace = 'CWD',
+    local smartfile = function()
+        require('telescope').extensions.smart_open.smart_open({
+            cwd_only = true,
+            filename_first = true,
             attach_mappings = function(prompt_bufnr, map)
                 map(
                     { 'i' },
                     '<M-s>',
                     function()
                         local cwd = vim.loop.cwd()
-                        require("telescope").extensions.file_browser.file_browser({ cwd = cwd })
+                        require("telescope.builtin").oldfiles({ cmd = cwd })
                         vim.fn.chdir(cwd)
                     end
                 )
                 return true
             end,
         })
+        -- require('telescope').extensions.frecency.frecency({
+        --     workspace = 'CWD',
+        --     attach_mappings = function(prompt_bufnr, map)
+        --         map(
+        --             { 'i' },
+        --             '<M-s>',
+        --             function()
+        --                 local cwd = vim.loop.cwd()
+        --                 require("telescope").extensions.file_browser.file_browser({ cwd = cwd })
+        --                 vim.fn.chdir(cwd)
+        --             end
+        --         )
+        --         return true
+        --     end,
+        -- })
     end
 
     require('telescope').extensions.harpoon.marks({
@@ -177,7 +193,7 @@ m.get_tele_harpoon   = function()
                 '<M-s>',
                 function()
                     local cwd = vim.loop.cwd()
-                    frecency()
+                    smartfile()
                     vim.fn.chdir(cwd)
                 end
             )
@@ -188,9 +204,16 @@ m.get_tele_harpoon   = function()
     })
 end
 
-m.get_tele_frecency  = function()
-    require('telescope').extensions.frecency.frecency({
-        workspace = 'CWD',
+m.get_tele_smartfile = function()
+    require('telescope').extensions.smart_open.smart_open({
+        cwd_only = true,
+        filename_first = true,
+        show_scores = false,
+        ignore_patterns = { "*.git/*", "*/tmp/*" },
+        open_buffer_indicators = {
+            previous = "👀",
+            others = "🙈",
+        },
         attach_mappings = function(prompt_bufnr, map)
             map(
                 { 'i' },
@@ -204,6 +227,21 @@ m.get_tele_frecency  = function()
             return true
         end,
     })
+    -- require('telescope').extensions.frecency.frecency({
+    --     workspace = 'CWD',
+    --     attach_mappings = function(prompt_bufnr, map)
+    --         map(
+    --             { 'i' },
+    --             '<M-s>',
+    --             function()
+    --                 local cwd = vim.loop.cwd()
+    --                 require("telescope.builtin").oldfiles({ cmd = cwd })
+    --                 vim.fn.chdir(cwd)
+    --             end
+    --         )
+    --         return true
+    --     end,
+    -- })
 end
 
 m.get_tele_project   = function()
@@ -217,7 +255,7 @@ m.get_tele_project   = function()
             end)
             map({ 'i', 'n' }, '<c-l>', function()
                 act.change_working_directory(prompt_bufnr, false)
-                m.get_tele_frecency()
+                m.get_tele_smartfile()
             end)
             map({ 'n' }, 'e', act.search_in_project_files)
             map({ 'n' }, 'f', act.browse_project_files)

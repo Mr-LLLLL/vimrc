@@ -91,7 +91,7 @@ return {
                             i = {
                                 ["<M-s>"] = function()
                                     local cwd = vim.loop.cwd()
-                                    require("common").get_tele_frecency()
+                                    require("common").get_tele_smartfile()
                                     uv.chdir(cwd)
                                 end,
                             }
@@ -202,26 +202,26 @@ return {
                         search_by = "title",
                         sync_with_nvim_tree = false, -- default false
                     },
-                    frecency = {
-                        recency_values = {
-                            { age = 10,     value = 200 },
-                            { age = 30,     value = 160 },
-                            { age = 60,     value = 140 },
-                            { age = 120,    value = 120 },
-                            { age = 240,    value = 100 }, -- past 4 hours
-                            { age = 1440,   value = 80 },  -- past day
-                            { age = 4320,   value = 60 },  -- past 3 days
-                            { age = 10080,  value = 40 },  -- past week
-                            { age = 43200,  value = 20 },  -- past month
-                            { age = 129600, value = 10 },  -- past 90 days
-                        },
-                        db_safe_mode = false,
-                        show_filter_column = false,
-                        matcher = "fuzzy",
-                        show_scores = false,
-                        show_unindexed = false,
-                        disable_devicons = false,
-                    },
+                    -- frecency = {
+                    --     recency_values = {
+                    --         { age = 10,     value = 200 },
+                    --         { age = 30,     value = 160 },
+                    --         { age = 60,     value = 140 },
+                    --         { age = 120,    value = 120 },
+                    --         { age = 240,    value = 100 }, -- past 4 hours
+                    --         { age = 1440,   value = 80 },  -- past day
+                    --         { age = 4320,   value = 60 },  -- past 3 days
+                    --         { age = 10080,  value = 40 },  -- past week
+                    --         { age = 43200,  value = 20 },  -- past month
+                    --         { age = 129600, value = 10 },  -- past 90 days
+                    --     },
+                    --     db_safe_mode = false,
+                    --     show_filter_column = false,
+                    --     matcher = "fuzzy",
+                    --     show_scores = false,
+                    --     show_unindexed = false,
+                    --     disable_devicons = false,
+                    -- },
                     file_browser = {
                         respect_gitignore = false,
                         auto_depth = true,
@@ -345,23 +345,42 @@ return {
         end,
     },
     {
-        -- 'Mr-LLLLL/telescope-frecency.nvim',
-        'nvim-telescope/telescope-frecency.nvim',
+        "Mr-LLLLL/smart-open.nvim",
+        branch = "0.2.x",
         keys = {
             {
                 "<space>sl",
-                require("common").get_tele_frecency,
+                require("common").get_tele_smartfile,
                 { noremap = true, silent = true },
-                desc = "Telescope Frecency File"
+                desc = "Telescope Smart File"
             }
         },
-        dependencies = {
-            'nvim-telescope/telescope.nvim',
-        },
         config = function()
-            require("telescope").load_extension("frecency")
-        end
+            require("telescope").load_extension("smart_open")
+        end,
+        dependencies = {
+            "kkharji/sqlite.lua",
+        },
     },
+    -- {
+    --     -- 'Mr-LLLLL/telescope-frecency.nvim',
+    --     'nvim-telescope/telescope-frecency.nvim',
+    --     keys = {
+    --         {
+    --             "<space>sl",
+    --             require("common").get_tele_frecency,
+    --             { noremap = true, silent = true },
+    --             desc = "Telescope Frecency File"
+    --         }
+    --     },
+    --     dependencies = {
+    --         'nvim-telescope/telescope.nvim',
+    --     },
+    --     config = function()
+    --         require("telescope").load_extension("frecency")
+    --         vim.api.nvim_set_hl(0, "TelescopePathSeparator", { link = 'NonText' })
+    --     end
+    -- },
     {
         'nvim-telescope/telescope-project.nvim',
         event = { "CursorHold" },

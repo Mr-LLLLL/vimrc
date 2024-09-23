@@ -118,9 +118,9 @@ return {
                             key = 'f',
                         },
                         {
-                            desc = ' Frecency Files',
+                            desc = ' Smart Files',
                             group = 'Constant',
-                            action = require("common").get_tele_frecency,
+                            action = require("common").get_tele_smartfile,
                             key = 'r',
                         },
                         {
