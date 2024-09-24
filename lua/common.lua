@@ -150,60 +150,6 @@ m.lsp_on_attach      = function(client, bufnr)
     -- api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-m.get_tele_harpoon   = function()
-    local smartfile = function()
-        require('telescope').extensions.smart_open.smart_open({
-            cwd_only = true,
-            filename_first = true,
-            attach_mappings = function(prompt_bufnr, map)
-                map(
-                    { 'i' },
-                    '<M-s>',
-                    function()
-                        local cwd = vim.loop.cwd()
-                        require("telescope.builtin").oldfiles({ cmd = cwd })
-                        vim.fn.chdir(cwd)
-                    end
-                )
-                return true
-            end,
-        })
-        -- require('telescope').extensions.frecency.frecency({
-        --     workspace = 'CWD',
-        --     attach_mappings = function(prompt_bufnr, map)
-        --         map(
-        --             { 'i' },
-        --             '<M-s>',
-        --             function()
-        --                 local cwd = vim.loop.cwd()
-        --                 require("telescope").extensions.file_browser.file_browser({ cwd = cwd })
-        --                 vim.fn.chdir(cwd)
-        --             end
-        --         )
-        --         return true
-        --     end,
-        -- })
-    end
-
-    require('telescope').extensions.harpoon.marks({
-        attach_mappings = function(prompt_bufnr, map)
-            local actions = require("telescope.actions")
-            map(
-                { 'i', 'n' },
-                '<M-s>',
-                function()
-                    local cwd = vim.loop.cwd()
-                    smartfile()
-                    vim.fn.chdir(cwd)
-                end
-            )
-            map({ "i", "n" }, "<c-p>", actions.preview_scrolling_up)
-            map({ "i", "n" }, "<c-n>", actions.preview_scrolling_down)
-            return true
-        end,
-    })
-end
-
 m.get_tele_smartfile = function()
     require('telescope').extensions.smart_open.smart_open({
         cwd_only = true,
@@ -243,6 +189,26 @@ m.get_tele_smartfile = function()
     --         return true
     --     end,
     -- })
+end
+
+m.get_tele_harpoon   = function()
+    require('telescope').extensions.harpoon.marks({
+        attach_mappings = function(prompt_bufnr, map)
+            local actions = require("telescope.actions")
+            map(
+                { 'i', 'n' },
+                '<M-s>',
+                function()
+                    local cwd = vim.loop.cwd()
+                    m.get_tele_smartfile()
+                    vim.fn.chdir(cwd)
+                end
+            )
+            map({ "i", "n" }, "<c-p>", actions.preview_scrolling_up)
+            map({ "i", "n" }, "<c-n>", actions.preview_scrolling_down)
+            return true
+        end,
+    })
 end
 
 m.get_tele_project   = function()

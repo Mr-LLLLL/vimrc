@@ -121,7 +121,7 @@ return {
                             desc = ' Smart Files',
                             group = 'Constant',
                             action = require("common").get_tele_smartfile,
-                            key = 'r',
+                            key = 's',
                         },
                         {
                             desc = ' Projects',
