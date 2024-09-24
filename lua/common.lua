@@ -209,6 +209,7 @@ m.get_tele_smartfile = function()
         cwd_only = true,
         filename_first = true,
         show_scores = false,
+        match_algorithm = "fzf",
         ignore_patterns = { "*.git/*", "*/tmp/*" },
         open_buffer_indicators = {
             previous = "👀",
