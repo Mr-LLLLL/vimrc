@@ -1155,12 +1155,20 @@ return {
     },
     {
         'MeanderingProgrammer/render-markdown.nvim',
+        event = "VeryLazy",
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
             'nvim-tree/nvim-web-devicons',
         },
+        ft = { "markdown", "vimwiki" },
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
-        opts = {},
+        config = function()
+            require('render-markdown').setup({
+                file_types = { 'markdown', 'vimwiki' },
+            })
+
+            vim.treesitter.language.register('markdown', 'vimwiki')
+        end
     }
 }
