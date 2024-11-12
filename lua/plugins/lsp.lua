@@ -395,7 +395,7 @@ return {
             lsp_keymaps = false, -- true: use default keymaps defined in go/lsp.lua
             lsp_codelens = false,
             -- virtual text setup
-            diagnostic = false,
+            diagnostic = {},
             lsp_document_formatting = false,
             -- set to true: use gopls to format
             -- false if you want to use other formatter tool(e.g. efm, nulls)

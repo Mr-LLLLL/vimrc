@@ -40,11 +40,11 @@ local function set_lsp()
         },
     }
 
-    lspconfig.bufls.setup {
+    lspconfig.buf_ls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
-        cmd = { "bufls", "serve" },
+        cmd = { "buf", "beta", "lsp", "--timeout=0", "--log-format=text" },
         filetypes = { "proto" },
         root_dir = lspconfig.util.root_pattern("buf.work.yaml", ".git"),
         single_file_support = true,
