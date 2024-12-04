@@ -64,14 +64,14 @@ return {
                         else
                             gs.nav_hunk('next', { target = "all" })
                         end
-                    end)
+                    end, { desc = "Next Changed" })
                     map('n', '[c', function()
                         if vim.wo.diff then
                             vim.cmd.normal({ '[c', bang = true })
                         else
                             gs.nav_hunk('prev', { target = "all" })
                         end
-                    end)
+                    end, { desc = "Previous Changed" })
 
                     -- Actions
                     map({ 'n', 'v' }, '<leader>gs', ':Gitsigns stage_hunk<CR>', { desc = "Gitsigns stage hunk" })
