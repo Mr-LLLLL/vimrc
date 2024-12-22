@@ -1194,6 +1194,13 @@ return {
                 ["g."] = "actions.toggle_hidden",
                 ["g\\"] = "actions.toggle_trash",
             },
+            columns = {
+                "icon",
+                -- "permissions",
+                "size",
+                -- "mtime",
+            },
+            delete_to_trash = true,
             float = {
                 -- Padding around the floating window
                 padding = 2,
@@ -1213,6 +1220,16 @@ return {
                     return conf
                 end,
             },
+            confirmation = {
+                win_options = {
+                    winblend = vim.g.custom_blend,
+                }
+            },
+            progress = {
+                win_options = {
+                    winblend = vim.g.custom_blend,
+                },
+            },
         },
         keys = {
             { "-", "<cmd>Oil --float<CR>", { noremap = true, silent = true }, desc = "Oil" },
@@ -1220,5 +1237,51 @@ return {
         -- Optional dependencies
         -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
         dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-    }
+    },
+    {
+        "sphamba/smear-cursor.nvim",
+        enabled = not g.neovide,
+        event = "VeryLazy",
+        opts = {
+            -- Smear cursor when switching buffers or windows.
+            smear_between_buffers = true,
+
+            -- Smear cursor when moving within line or to neighbor lines.
+            smear_between_neighbor_lines = true,
+
+            -- Draw the smear in buffer space instead of screen space when scrolling
+            scroll_buffer_space = true,
+
+            -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
+            -- Smears will blend better on all backgrounds.
+            legacy_computing_symbols_support = false,
+        },
+    },
+    {
+        "karb94/neoscroll.nvim",
+        enabled = not g.neovide,
+        event = "VeryLazy",
+        config = function()
+            require('neoscroll').setup({
+                mappings = { -- Keys to be mapped to their corresponding default scrolling animation
+                    '<C-u>', '<C-d>',
+                    '<C-b>', '<C-f>',
+                    -- '<C-y>', '<C-e>',
+                    'zt', 'zz', 'zb',
+                },
+                hide_cursor = true,          -- Hide cursor while scrolling
+                stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+                respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+                cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+                duration_multiplier = 1.0,   -- Global duration multiplier
+                easing = 'linear',           -- Default easing function
+                pre_hook = nil,              -- Function to run before the scrolling animation starts
+                post_hook = nil,             -- Function to run after the scrolling animation ends
+                performance_mode = false,    -- Disable "Performance Mode" on all buffers.
+                ignored_events = {           -- Events ignored while scrolling
+                    'WinScrolled', 'CursorMoved'
+                },
+            })
+        end,
+    },
 }
