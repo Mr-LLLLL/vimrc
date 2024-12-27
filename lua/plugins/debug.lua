@@ -184,7 +184,6 @@ local function user_cmd()
     api.nvim_del_user_command('DapStepOver')
     api.nvim_del_user_command('DapStepInto')
     api.nvim_del_user_command('DapStepOut')
-    api.nvim_del_user_command('DapLoadLaunchJSON')
     api.nvim_del_user_command('DapRestartFrame')
     api.nvim_del_user_command('BreakCondition')
 
