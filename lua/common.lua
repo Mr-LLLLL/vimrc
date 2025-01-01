@@ -53,15 +53,20 @@ m.keymap_desc        = function(opts, desc)
 end
 
 m.lsp_capabilities   = function()
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.preselectSupport = true
-    capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = false
-    }
-
-    return capabilities
+    return require('blink.cmp').get_lsp_capabilities({
+        textDocument = {
+            completion = {
+                completionItem = {
+                    snippetSupport = true,
+                    preselectSupport = true,
+                },
+            },
+            foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = false
+            }
+        },
+    })
 end
 
 m.lsp_attach_mapping = function(bufnr)

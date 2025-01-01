@@ -389,14 +389,14 @@ return {
             g.vim_dadbod_completion_mark = ''
         end,
         config = function()
-            local cmp = require("cmp")
-            cmp.setup.filetype({ 'mysql', 'sql', 'plsql' }, {
-                sources = cmp.config.sources({
-                    { name = 'vim-dadbod-completion' }, -- You can specify the `cmp_git` source if you were installed it.
-                }, {
-                    { name = 'buffer' },
-                })
-            })
+            -- local cmp = require("cmp")
+            -- cmp.setup.filetype({ 'mysql', 'sql', 'plsql' }, {
+            --     sources = cmp.config.sources({
+            --         { name = 'vim-dadbod-completion' }, -- You can specify the `cmp_git` source if you were installed it.
+            --     }, {
+            --         { name = 'buffer' },
+            --     })
+            -- })
 
             require("private.private").load_db()
         end

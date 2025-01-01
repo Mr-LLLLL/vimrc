@@ -87,20 +87,6 @@ local function autopair_insert_space()
     end
 end
 
-local function autopair_confirm_done()
-    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-    local cmp = require('cmp')
-    cmp.event:on(
-        'confirm_done',
-        cmp_autopairs.on_confirm_done({
-            filetypes = {
-                rust = false,
-                go = false,
-            },
-        })
-    )
-end
-
 local function autopair_pairs()
     local npairs = require('nvim-autopairs')
     local Rule = require('nvim-autopairs.rule')
@@ -171,7 +157,6 @@ return {
 
             autopair_multi_line_jump()
             autopair_insert_space()
-            autopair_confirm_done()
             autopair_move_past()
             autopair_pairs()
         end,
