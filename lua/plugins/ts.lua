@@ -20,7 +20,7 @@ return {
 
             require('nvim-treesitter.configs').setup({
                 ensure_installed = "all",
-                ignore_install = {},
+                ignore_install = { "teal" },
                 highlight = {
                     enable = true,
                     disable = function(lang, buf)
