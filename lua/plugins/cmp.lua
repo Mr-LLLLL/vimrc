@@ -117,7 +117,7 @@ return {
                     ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                     ['<C-e>'] = { 'hide' },
                     ['<c-y>'] = { 'select_and_accept' },
-                    ['<CR>'] = { 'select_and_accept' },
+                    ['<CR>'] = { 'select_and_accept', 'fallback' },
 
                     ['<C-k>'] = { 'select_prev', 'fallback' },
                     ['<C-j>'] = { 'select_next', 'fallback' },
@@ -133,7 +133,6 @@ return {
                     ['<c-p>'] = { 'snippet_backward', 'fallback' },
                     cmdline = {
                         preset = 'none',
-
                         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                         ['<C-e>'] = { 'hide' },
                         ['<c-y>'] = { 'select_and_accept' },
