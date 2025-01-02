@@ -117,17 +117,37 @@ return {
                     ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                     ['<C-e>'] = { 'hide' },
                     ['<c-y>'] = { 'select_and_accept' },
+                    ['<CR>'] = { 'select_and_accept' },
 
                     ['<C-k>'] = { 'select_prev', 'fallback' },
                     ['<C-j>'] = { 'select_next', 'fallback' },
                     ['<up>'] = { 'select_prev', 'fallback' },
                     ['<down>'] = { 'select_next', 'fallback' },
+                    ['<Tab>'] = { 'select_next', 'fallback' },
+                    ['<S-Tab>'] = { 'select_prev', 'fallback' },
 
                     ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
                     ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
 
                     ['<c-n>'] = { 'snippet_forward', 'fallback' },
                     ['<c-p>'] = { 'snippet_backward', 'fallback' },
+                    cmdline = {
+                        preset = 'none',
+
+                        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+                        ['<C-e>'] = { 'hide' },
+                        ['<c-y>'] = { 'select_and_accept' },
+
+                        ['<C-k>'] = { 'select_prev', 'fallback' },
+                        ['<C-j>'] = { 'select_next', 'fallback' },
+                        ['<up>'] = { 'select_prev', 'fallback' },
+                        ['<down>'] = { 'select_next', 'fallback' },
+                        ['<Tab>'] = { 'select_next', 'fallback' },
+                        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+
+                        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+                        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+                    }
                 },
 
                 appearance = {
