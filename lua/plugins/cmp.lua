@@ -31,8 +31,8 @@ return {
         config = function()
             require("blink.cmp").setup({
                 enabled = function()
-                    return not vim.tbl_contains({}, vim.bo.filetype)
-                        and vim.bo.buftype ~= "prompt"
+                    return not vim.tbl_contains({ "DressingInput" }, vim.bo.filetype)
+                        and not vim.tbl_contains({ "prompt" }, vim.bo.buftype)
                         and vim.b.completion ~= false
                 end,
                 completion = {
