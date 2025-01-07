@@ -170,7 +170,7 @@ return {
             vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "grey" })
 
             vim.keymap.set("n", "[q", function()
-                require("treesitter-context").go_to_context(vim.v.count1)
+                require("treesitter-context").go_to_context(10000)
             end, { silent = true, desc = "Goto current treesitter contenxt start" })
         end
     },
