@@ -418,7 +418,11 @@ return {
         "Mr-LLLLL/cool-chunk.nvim",
         event = { "CursorHold", "CursorHoldI" },
         config = function()
-            require("cool-chunk").setup({})
+            require("cool-chunk").setup({
+                context = {
+                    jump_support_filetypes = { "lua", "python" }
+                },
+            })
         end,
     },
     {
