@@ -187,14 +187,27 @@ return {
     --         }
     --     end
     -- },
-    -- {
-    --     "Exafunction/codeium.nvim",
-    --     lazy = true,
-    --     dependencies = {
-    --         "nvim-lua/plenary.nvim",
-    --     },
-    --     config = function()
-    --         require("codeium").setup({})
-    --     end
-    -- },
+    {
+        "Exafunction/codeium.nvim",
+        cmd = "Codeium",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        config = function()
+            require("codeium").setup({})
+        end
+    },
+    {
+        "supermaven-inc/supermaven-nvim",
+        cmd = "SupermavenUseFree",
+        config = function()
+            require("supermaven-nvim").setup({
+                keymaps = {
+                    accept_suggestion = "<c-y>",
+                    clear_suggestion = "<C-]>",
+                    accept_word = "<A-y>",
+                },
+            })
+        end,
+    },
 }

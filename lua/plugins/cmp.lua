@@ -13,6 +13,8 @@ return {
         -- optional: provides snippets for the snippet source
         dependencies = {
             'milanglacier/minuet-ai.nvim',
+            "Exafunction/codeium.nvim",
+
             'rafamadriz/friendly-snippets',
             'kristijanhusak/vim-dadbod-completion',
             "mikavilpas/blink-ripgrep.nvim",
@@ -92,18 +94,18 @@ return {
                                             Buffer = "[B]",
                                             LSP = "[LSP]",
                                             Snippets = "[Snip]",
-                                            Dadbod = "[Db]",
-                                            Ripgrep = "[Rg]",
-                                            Emoji = "[Emoj]",
+                                            Dadbod = "[DB]",
+                                            Ripgrep = "[RG]",
+                                            Emoji = "[Emo]",
                                             Path = "[Path]",
-                                            Dict = "[Dict]",
                                             nvim_lua = "[Lua]",
-                                            calc = "[Calc]",
+                                            calc = "[Cal]",
                                             nerdfont = "[Font]",
-                                            minuet = "[AI]",
-                                            avante_commands = "[Avan]",
-                                            avante_mentions = "[Avan]",
-                                            avante_files = "[Avan]",
+                                            minuet = "[Deep]",
+                                            avante_commands = "[Ava]",
+                                            avante_mentions = "[Ava]",
+                                            avante_files = "[Ava]",
+                                            codeium = "[Cod]",
                                         }
                                         return t[ctx.source_name]
                                     end,
@@ -145,7 +147,10 @@ return {
                     preset = 'none',
                     ['<c-/>'] = {
                         function(cmp)
-                            local t = { "minuet" }
+                            local t = {
+                                "minuet",
+                                "codeium",
+                            }
                             for _, v in ipairs(default_source) do
                                 table.insert(t, v)
                             end
@@ -155,7 +160,6 @@ return {
 
                     ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                     ['<C-e>'] = { 'hide' },
-                    ['<c-y>'] = { 'select_and_accept' },
                     ['<CR>'] = { 'select_and_accept', 'fallback' },
 
                     ['<C-k>'] = { 'select_prev', 'fallback' },
@@ -174,7 +178,6 @@ return {
                         preset = 'none',
                         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                         ['<C-e>'] = { 'hide' },
-                        ['<c-y>'] = { 'select_and_accept' },
 
                         ['<C-k>'] = { 'select_prev', 'fallback' },
                         ['<C-j>'] = { 'select_next', 'fallback' },
@@ -214,6 +217,12 @@ return {
                         return {}
                     end,
                     providers = {
+                        codeium = {
+                            name = "codeium",
+                            module = "blink.compat.source",
+                            score_offset = 20, -- show at a higher priority than lsp
+                            opts = {},
+                        },
                         avante_commands = {
                             name = "avante_commands",
                             module = "blink.compat.source",
