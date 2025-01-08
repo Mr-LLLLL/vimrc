@@ -171,7 +171,10 @@ return {
 
             vim.keymap.set("n", "[q", function()
                 require("treesitter-context").go_to_context(10000)
-            end, { silent = true, desc = "Goto current treesitter contenxt start" })
+            end, { silent = true, desc = "Goto contenxt top" })
+            vim.keymap.set("n", "[w", function()
+                require("treesitter-context").go_to_context()
+            end, { silent = true, desc = "Goto contenxt outer" })
         end
     },
     {
