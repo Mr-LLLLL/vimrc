@@ -433,6 +433,7 @@ return {
                 modes_allowlist = { 'n', 'v', 'V', '' },
                 filetypes_denylist = {},
                 filetypes_allowlist = {
+                    'python',
                     'go',
                     'rust',
                     'lua',
