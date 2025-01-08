@@ -104,7 +104,7 @@ return {
                     refresh = "<leader>ar",
                     focus = "<leader>af",
                     toggle = {
-                        default = "<leader>at",
+                        default = "<space>/",
                         debug = "<leader>ad",
                         hint = "<leader>ah",
                         suggestion = "<leader>as",

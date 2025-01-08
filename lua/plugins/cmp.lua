@@ -31,6 +31,9 @@ return {
 
         config = function()
             local default_source = {
+                "avante_commands",
+                "avante_mentions",
+                "avante_files",
                 'nvim_lua',
                 'lsp',
                 'path',
@@ -98,6 +101,9 @@ return {
                                             calc = "[Calc]",
                                             nerdfont = "[Font]",
                                             minuet = "[AI]",
+                                            avante_commands = "[Avan]",
+                                            avante_mentions = "[Avan]",
+                                            avante_files = "[Avan]",
                                         }
                                         return t[ctx.source_name]
                                     end,
@@ -208,6 +214,24 @@ return {
                         return {}
                     end,
                     providers = {
+                        avante_commands = {
+                            name = "avante_commands",
+                            module = "blink.compat.source",
+                            score_offset = 90, -- show at a higher priority than lsp
+                            opts = {},
+                        },
+                        avante_files = {
+                            name = "avante_files",
+                            module = "blink.compat.source",
+                            score_offset = 100, -- show at a higher priority than lsp
+                            opts = {},
+                        },
+                        avante_mentions = {
+                            name = "avante_mentions",
+                            module = "blink.compat.source",
+                            score_offset = 1000, -- show at a higher priority than lsp
+                            opts = {},
+                        },
                         minuet = {
                             name = 'minuet',
                             module = 'minuet.blink',
