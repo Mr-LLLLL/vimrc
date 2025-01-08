@@ -8,7 +8,7 @@ local function load_saga_keymap(opts)
     km.set("n", "gD", "<cmd>Lspsaga finder<CR>", require("common").keymap_desc(opts, "Lspsaga Finder"))
 
     -- Code action
-    km.set({ "n", "v" }, "<leader>a", "<cmd>Lspsaga code_action<CR>",
+    km.set({ "n", "v" }, "<leader>q", "<cmd>Lspsaga code_action<CR>",
         require("common").keymap_desc(opts, "Lspsaga CodeAction"))
 
     -- Rename

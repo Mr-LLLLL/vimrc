@@ -166,6 +166,7 @@ return {
             }
 
             vim.api.nvim_set_hl(0, "TreesitterContext", { bg = require("common").colors.CustomBorderBg, blend = 0 })
+            vim.api.nvim_set_hl(0, "TreesitterContextBottom", { fg = "grey" })
             vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", { fg = "grey" })
 
             vim.keymap.set("n", "[q", function()
