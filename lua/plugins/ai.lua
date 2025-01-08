@@ -140,6 +140,8 @@ return {
                     pattern = { "AvanteInput", "Avante" },
                     callback = function(opts)
                         vim.keymap.set('i', "<c-c>", function()
+                            -- in case occur error
+                            require('blink.cmp.completion.list').hide()
                             vim.cmd("quit!")
                             vim.cmd("stopinsert")
                         end, { noremap = true, silent = true, buffer = opts.buf })
