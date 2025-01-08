@@ -48,7 +48,16 @@ return {
                     -- Insert completion item on selection, don't select by default
                     -- list = { selection = 'auto_insert' },
                     -- or set per mode
-                    list = { selection = function(ctx) return ctx.mode == 'cmdline' and 'auto_insert' or 'preselect' end },
+                    list = {
+                        selection = {
+                            preselect = function(ctx)
+                                return ctx.mode ~= 'cmdline'
+                            end,
+                            auto_insert = function(ctx)
+                                return ctx.mode == "cmdline"
+                            end,
+                        },
+                    },
 
                     menu = {
                         -- Don't automatically show the completion menu
