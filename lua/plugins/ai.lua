@@ -28,7 +28,6 @@ return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
-        lazy = false,
         keys = {
             {
                 "<space>/",
