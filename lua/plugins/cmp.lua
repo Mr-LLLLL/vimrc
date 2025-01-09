@@ -14,6 +14,7 @@ return {
         dependencies = {
             'milanglacier/minuet-ai.nvim',
             "Exafunction/codeium.nvim",
+            "supermaven-inc/supermaven-nvim",
 
             'rafamadriz/friendly-snippets',
             'kristijanhusak/vim-dadbod-completion',
@@ -47,7 +48,8 @@ return {
                 "nerdfont",
                 'snippets',
                 'codeium',
-                -- "codecompanion",
+                'supermaven',
+                'codecompanion',
             }
             require("blink.cmp").setup({
                 enabled = function()
@@ -108,7 +110,8 @@ return {
                                             avante_mentions = "[Ava]",
                                             avante_files = "[Ava]",
                                             codeium = "[Cod]",
-                                            -- CodeCompanion = "[Comp]",
+                                            supermaven = "[Sup]",
+                                            CodeCompanion = "[Comp]",
                                         }
                                         return t[ctx.source_name]
                                     end,
@@ -139,7 +142,7 @@ return {
                     },
 
                     -- Display a preview of the selected item on the current line
-                    ghost_text = { enabled = false },
+                    ghost_text = { enabled = true },
                 },
                 -- 'default' for mappings similar to built-in completion
                 -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
@@ -163,7 +166,7 @@ return {
                     ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                     ['<C-e>'] = { 'hide', "fallback" },
                     ['<CR>'] = { 'select_and_accept', 'fallback' },
-                    -- ['<c-y>'] = { 'select_and_accept' },
+                    ['<c-y>'] = { 'select_and_accept', 'fallback' },
 
                     ['<C-k>'] = { 'select_prev', 'fallback' },
                     ['<C-j>'] = { 'select_next', 'fallback' },
@@ -181,7 +184,7 @@ return {
                         preset = 'none',
                         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                         ['<C-e>'] = { 'hide', "fallback" },
-                        -- ['<c-y>'] = { 'select_and_accept' },
+                        ['<c-y>'] = { 'select_and_accept', 'fallback' },
 
                         ['<C-k>'] = { 'select_prev', 'fallback' },
                         ['<C-j>'] = { 'select_next', 'fallback' },
@@ -221,35 +224,42 @@ return {
                         return {}
                     end,
                     providers = {
-                        codeium = {
-                            name = "codeium",
+                        supermaven = {
+                            name = "supermaven",
                             module = "blink.compat.source",
-                            score_offset = 14, -- show at a higher priority than lsp
+                            score_offset = 6, -- show at a higher priority than lsp
                             async = true,
                             opts = {},
                         },
-                        avante_commands = {
-                            name = "avante_commands",
+                        codeium = {
+                            name = "codeium",
                             module = "blink.compat.source",
-                            score_offset = 20, -- show at a higher priority than lsp
-                            opts = {},
-                        },
-                        avante_files = {
-                            name = "avante_files",
-                            module = "blink.compat.source",
-                            score_offset = 21, -- show at a higher priority than lsp
-                            opts = {},
-                        },
-                        avante_mentions = {
-                            name = "avante_mentions",
-                            module = "blink.compat.source",
-                            score_offset = 22, -- show at a higher priority than lsp
+                            score_offset = 6, -- show at a higher priority than lsp
+                            async = true,
                             opts = {},
                         },
                         minuet = {
                             name = 'minuet',
                             module = 'minuet.blink',
-                            score_offset = 15, -- Gives minuet higher priority among suggestions
+                            score_offset = 6, -- Gives minuet higher priority among suggestions
+                        },
+                        avante_commands = {
+                            name = "avante_commands",
+                            module = "blink.compat.source",
+                            score_offset = 10, -- show at a higher priority than lsp
+                            opts = {},
+                        },
+                        avante_files = {
+                            name = "avante_files",
+                            module = "blink.compat.source",
+                            score_offset = 10, -- show at a higher priority than lsp
+                            opts = {},
+                        },
+                        avante_mentions = {
+                            name = "avante_mentions",
+                            module = "blink.compat.source",
+                            score_offset = 10, -- show at a higher priority than lsp
+                            opts = {},
                         },
                         nvim_lua = {
                             name = 'nvim_lua', -- IMPORTANT: use the same name as you would for nvim-cmp
@@ -272,7 +282,7 @@ return {
                             module = 'blink.compat.source',
 
                             -- all blink.cmp source config options work as normal:
-                            score_offset = 14,
+                            score_offset = 4,
 
                             -- this table is passed directly to the proxied completion source
                             -- as the `option` field in nvim-cmp's source config
@@ -302,7 +312,7 @@ return {
                         emoji = {
                             module = "blink-emoji",
                             name = "Emoji",
-                            score_offset = 15, -- Tune by preference
+                            score_offset = 5, -- Tune by preference
                         },
                         ripgrep = {
                             module = "blink-ripgrep",
@@ -384,6 +394,7 @@ return {
                         dadbod = {
                             name = "Dadbod",
                             module = "vim_dadbod_completion.blink",
+                            score_offset = 5,
                         },
                     },
                 },

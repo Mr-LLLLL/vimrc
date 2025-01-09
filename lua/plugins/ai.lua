@@ -27,19 +27,33 @@ return {
     },
     {
         "olimorris/codecompanion.nvim",
-        enabled = false,
+        enabled = true,
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
         },
-        cmd = "CodeCompanion",
+        event = "VeryLazy",
         keys = {
             {
                 "<space>/",
                 "<cmd>CodeCompanionChat Toggle<cr>",
-                mode = { "n" },
+                mode = { "n", "v" },
                 { noremap = true, silent = true },
                 desc = "CodeCompanion Toggle"
+            },
+            {
+                "<leader>aa",
+                "<cmd>CodeCompanionActions<cr>",
+                mode = { "n", "v" },
+                { noremap = true, silent = true },
+                desc = "CodeCompanion Actions"
+            },
+            {
+                "<leader>ac",
+                "<cmd>CodeCompanionChat Add<cr>",
+                mode = { "v" },
+                { noremap = true, silent = true },
+                desc = "CodeCompanion Actions"
             },
         },
         config = function()
@@ -73,7 +87,7 @@ return {
                         keymaps = {
                             accept_change = {
                                 modes = {
-                                    n = "ga",
+                                    n = "ct",
                                 },
                                 index = 1,
                                 callback = "keymaps.accept_change",
@@ -81,7 +95,7 @@ return {
                             },
                             reject_change = {
                                 modes = {
-                                    n = "gr",
+                                    n = "co",
                                 },
                                 index = 2,
                                 callback = "keymaps.reject_change",
@@ -95,9 +109,17 @@ return {
                     chat = {
                         adapter = "deepseek",
                         keymaps = {
+                            options = {
+                                modes = {
+                                    n = "g?",
+                                },
+                                callback = "keymaps.options",
+                                description = "Options",
+                                hide = true,
+                            },
                             close = {
                                 modes = {
-                                    n = { "<C-c>", "q" },
+                                    n = { "<C-c>" },
                                     i = "<C-c>",
                                 },
                                 index = 4,
@@ -165,11 +187,60 @@ return {
                     end,
                 },
             })
+
+            local tmp = {
+                processing = false,
+                spinner_index = 1,
+                spinner_symbols = {
+                    "⠋",
+                    "⠙",
+                    "⠹",
+                    "⠸",
+                    "⠼",
+                    "⠴",
+                    "⠦",
+                    "⠧",
+                    "⠇",
+                    "⠏",
+                }
+            }
+
+
+            vim.api.nvim_create_autocmd({ "User" }, {
+                pattern = "CodeCompanionRequest*",
+                group = vim.api.nvim_create_augroup("CodeCompanionHooks", {}),
+                callback = function(request)
+                    if request.match == "CodeCompanionRequestStarted" then
+                        tmp.processing = true
+                    elseif request.match == "CodeCompanionRequestFinished" then
+                        tmp.processing = false
+                    end
+                end,
+            })
+
+            -- Function that runs every time statusline is updated
+            local get_info = function()
+                if tmp.processing then
+                    tmp.spinner_index = (tmp.spinner_index % 10) + 1
+                    return tmp.spinner_symbols[tmp.spinner_index]
+                else
+                    return nil
+                end
+            end
+
+            local old = require("lualine").get_config()
+            table.insert(old.sections.lualine_x, #old.sections.lualine_x, {
+                get_info,
+                cond = function() return tmp.processing end,
+                color = { fg = "#cf9f7f" },
+            })
+            vim.cmd([[cab co CodeCompanion]])
+            require("lualine").setup(old)
         end
     },
     {
         "yetone/avante.nvim",
-        enabled = true,
+        enabled = false,
         event = "VeryLazy",
         keys = {
             {
@@ -307,7 +378,7 @@ return {
     -- },
     {
         "Exafunction/codeium.nvim",
-        enabled = true,
+        enabled = false,
         lazy = true,
         dependencies = {
             "nvim-lua/plenary.nvim",
@@ -343,10 +414,12 @@ return {
     },
     {
         "supermaven-inc/supermaven-nvim",
-        event = "InsertEnter",
+        lazy = true,
         enabled = true,
         config = function()
             require("supermaven-nvim").setup({
+                disable_inline_completion = true,
+                disable_keymaps = true,
                 keymaps = {
                     accept_suggestion = "<c-y>",
                     clear_suggestion = "<C-]>",
