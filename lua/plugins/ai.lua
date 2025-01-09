@@ -57,6 +57,7 @@ return {
         },
         config = function()
             require('avante').setup({
+                -- provider = "ollama",
                 provider = "openai",
                 auto_suggestions_provider = "openai", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
                 openai = {
@@ -65,6 +66,14 @@ return {
                     timeout = 30000, -- Timeout in milliseconds
                     temperature = 0,
                     max_tokens = 4096,
+                },
+                vendors = {
+                    ollama = {
+                        __inherited_from = "openai",
+                        api_key_name = "",
+                        endpoint = "http://127.0.0.1:11434/v1",
+                        model = "llama3.1",
+                    },
                 },
                 behaviour = {
                     auto_suggestions = false, -- Experimental stage
@@ -86,7 +95,7 @@ return {
                         prev = "[x",
                     },
                     suggestion = {
-                        accept = "<M-y>",
+                        accept = "<c-y>",
                         next = "<M-]>",
                         prev = "<M-[>",
                         dismiss = "<C-]>",
@@ -150,33 +159,6 @@ return {
             )
         end
     },
-    {
-        "David-Kunz/gen.nvim",
-        cmd = "Gen",
-        config = function()
-            require("gen").setup {
-                model = "llama3.1",     -- The default model to use.
-                host = "localhost",     -- The host running the Ollama service.
-                port = "11434",         -- The port on which the Ollama service is listening.
-                display_mode = "float", -- The display mode. Can be "float" or "split".
-                show_prompt = true,     -- Shows the Prompt submitted to Ollama.
-                show_model = true,      -- Displays which model you are using at the beginning of your chat session.
-                no_auto_close = true,   -- Never closes the window automatically.
-                init = function(options) pcall(io.popen, "ollama serve > /dev/null 2>&1 &") end,
-                -- Function to initialize Ollama
-                command = function(options)
-                    return "curl --silent --no-buffer -X POST http://" ..
-                        options.host .. ":" .. options.port .. "/api/chat -d $body"
-                end,
-                -- The command for the Ollama service. You can use placeholders $prompt, $model and $body (shellescaped).
-                -- This can also be a command string.
-                -- The executed command must return a JSON object with { response, context }
-                -- (context property is optional).
-                -- list_models = '<omitted lua function>', -- Retrieves a list of model names
-                debug = false -- Prints errors and the command which is run.
-            }
-        end
-    },
     -- {
     --     "sourcegraph/sg.nvim",
     --     cmd = { "Cody", "Sourcegraph" },
@@ -189,17 +171,44 @@ return {
     -- },
     {
         "Exafunction/codeium.nvim",
-        cmd = "Codeium",
+        enabled = true,
+        lazy = true,
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
         config = function()
-            require("codeium").setup({})
+            require("codeium").setup({
+                enable_cmp_source = true,
+                virtual_text = {
+                    enabled = false,
+                    -- filetypes = true,
+                    manual = false,
+                    -- map_keys = false,
+                    key_bindings = {
+                        -- Accept the current completion.
+                        accept = "<c-y>",
+                        -- Accept the next word.
+                        accept_word = "<a-y>",
+                        -- Accept the next line.
+                        accept_line = false,
+                        -- Clear the virtual text.
+                        clear = "<c-]>",
+                        -- Cycle to the next completion.
+                        next = "<M-]>",
+                        -- Cycle to the previous completion.
+                        prev = "<M-[>",
+                    }
+                },
+
+            })
+
+            vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = 'NonText' })
         end
     },
     {
         "supermaven-inc/supermaven-nvim",
-        cmd = "SupermavenUseFree",
+        event = "VeryLazy",
+        enabled = true,
         config = function()
             require("supermaven-nvim").setup({
                 keymaps = {

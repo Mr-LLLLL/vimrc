@@ -46,6 +46,7 @@ return {
                 "calc",
                 "nerdfont",
                 'snippets',
+                'codeium',
             }
             require("blink.cmp").setup({
                 enabled = function()
@@ -136,7 +137,7 @@ return {
                     },
 
                     -- Display a preview of the selected item on the current line
-                    ghost_text = { enabled = true },
+                    ghost_text = { enabled = false },
                 },
                 -- 'default' for mappings similar to built-in completion
                 -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
@@ -149,7 +150,6 @@ return {
                         function(cmp)
                             local t = {
                                 "minuet",
-                                "codeium",
                             }
                             for _, v in ipairs(default_source) do
                                 table.insert(t, v)
@@ -161,6 +161,7 @@ return {
                     ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                     ['<C-e>'] = { 'hide' },
                     ['<CR>'] = { 'select_and_accept', 'fallback' },
+                    -- ['<c-y>'] = { 'select_and_accept' },
 
                     ['<C-k>'] = { 'select_prev', 'fallback' },
                     ['<C-j>'] = { 'select_next', 'fallback' },
@@ -178,6 +179,7 @@ return {
                         preset = 'none',
                         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                         ['<C-e>'] = { 'hide' },
+                        -- ['<c-y>'] = { 'select_and_accept' },
 
                         ['<C-k>'] = { 'select_prev', 'fallback' },
                         ['<C-j>'] = { 'select_next', 'fallback' },
@@ -220,7 +222,7 @@ return {
                         codeium = {
                             name = "codeium",
                             module = "blink.compat.source",
-                            score_offset = 20, -- show at a higher priority than lsp
+                            score_offset = 100, -- show at a higher priority than lsp
                             opts = {},
                         },
                         avante_commands = {
