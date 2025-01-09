@@ -119,7 +119,7 @@ return {
                             },
                             close = {
                                 modes = {
-                                    n = { "<C-c>" },
+                                    n = { "<C-q>" },
                                     i = "<C-q>",
                                 },
                                 index = 4,
@@ -243,7 +243,7 @@ return {
                 {
                     pattern = { "codecompanion" },
                     callback = function(opts)
-                        vim.keymap.set('i', "<c-c>", function()
+                        vim.keymap.set({ 'i', 'n' }, "<c-c>", function()
                             -- in case occur error
                             require('blink.cmp.completion.list').hide()
                             vim.cmd("stopinsert")
