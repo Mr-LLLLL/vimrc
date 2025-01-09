@@ -46,14 +46,7 @@ return {
             "nvim-lua/plenary.nvim",
             "MunifTanjim/nui.nvim",
             "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-            {
-                -- Make sure to set this up properly if you have lazy=true
-                'MeanderingProgrammer/render-markdown.nvim',
-                opts = {
-                    file_types = { "markdown", "Avante" },
-                },
-                ft = { "markdown", "Avante" },
-            },
+            'MeanderingProgrammer/render-markdown.nvim',
         },
         config = function()
             require('avante').setup({
@@ -131,7 +124,7 @@ return {
                 },
                 windows = {
                     ask = {
-                        floating = false,        -- Open the 'AvanteAsk' prompt in a floating window
+                        floating = true,         -- Open the 'AvanteAsk' prompt in a floating window
                         border = "rounded",
                         start_insert = true,     -- Start insert mode when opening the ask window
                         ---@alias AvanteInitialDiff "ours" | "theirs"
@@ -207,7 +200,7 @@ return {
     },
     {
         "supermaven-inc/supermaven-nvim",
-        event = "VeryLazy",
+        event = "InsertEnter",
         enabled = true,
         config = function()
             require("supermaven-nvim").setup({

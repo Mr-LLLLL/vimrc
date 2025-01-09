@@ -58,7 +58,6 @@ return {
     },
     {
         "Mr-LLLLL/flash.nvim",
-        event = "VeryLazy",
         branch = "dev",
         opts = {
             use_upper_select_visual_line = true,

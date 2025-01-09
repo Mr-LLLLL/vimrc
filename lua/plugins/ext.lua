@@ -1160,19 +1160,22 @@ return {
             'nvim-treesitter/nvim-treesitter',
             'nvim-tree/nvim-web-devicons',
         },
-        ft = { "markdown", "vimwiki" },
+        ft = { "markdown", "vimwiki", "Avante" },
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
         config = function()
             require('render-markdown').setup({
-                file_types = { 'markdown', 'vimwiki' },
+                file_types = { 'markdown', 'vimwiki', 'Avante' },
             })
 
-            vim.treesitter.language.register('markdown', 'vimwiki')
+            vim.treesitter.language.register('markdown', 'vimwiki', 'Avante')
         end
     },
     {
         'stevearc/oil.nvim',
+        keys = {
+            { "-", "<cmd>Oil --float<CR>", { noremap = true, silent = true }, desc = "Oil" },
+        },
         ---@module 'oil'
         ---@type oil.SetupOpts
         opts = {
@@ -1230,9 +1233,6 @@ return {
                     winblend = vim.g.custom_blend,
                 },
             },
-        },
-        keys = {
-            { "-", "<cmd>Oil --float<CR>", { noremap = true, silent = true }, desc = "Oil" },
         },
         -- Optional dependencies
         -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
