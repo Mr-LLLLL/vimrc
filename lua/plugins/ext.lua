@@ -614,24 +614,24 @@ return {
                             desc =
                             "In the merge-tool: jump to the next conflict"
                         } },
-                        { "n", "<leader>2", actions.conflict_choose("ours"),
+                        { "n", "co", actions.conflict_choose("ours"),
                             {
                                 desc =
                                 "Choose the OURS version of a conflict"
                             } },
-                        { "n", "<leader>3", actions.conflict_choose("theirs"),
+                        { "n", "ct", actions.conflict_choose("theirs"),
                             { desc = "Choose the THEIRS version of a conflict" } },
-                        { "n", "<leader>b", actions.conflict_choose("base"),
+                        { "n", "cb", actions.conflict_choose("base"),
                             {
                                 desc =
                                 "Choose the BASE version of a conflict"
                             } },
-                        { "n", "<leader>a", actions.conflict_choose("all"),
+                        { "n", "ca", actions.conflict_choose("all"),
                             {
                                 desc =
                                 "Choose all the versions of a conflict"
                             } },
-                        { "n", "<leader>x", actions.conflict_choose("none"), { desc = "Delete the conflict region" } },
+                        { "n", "cx", actions.conflict_choose("none"), { desc = "Delete the conflict region" } },
                     },
                     diff1 = {
                         -- Mappings in single window diff layouts
