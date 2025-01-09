@@ -1160,15 +1160,15 @@ return {
             'nvim-treesitter/nvim-treesitter',
             'nvim-tree/nvim-web-devicons',
         },
-        ft = { "markdown", "vimwiki", "Avante" },
+        ft = { "markdown", "vimwiki", "Avante", "codecompanion" },
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
         config = function()
             require('render-markdown').setup({
-                file_types = { 'markdown', 'vimwiki', 'Avante' },
+                file_types = { 'markdown', 'vimwiki', 'Avante', "codecompanion" },
             })
 
-            vim.treesitter.language.register('markdown', 'vimwiki', 'Avante')
+            vim.treesitter.language.register('markdown', 'vimwiki', 'Avante', "codecompanion")
         end
     },
     {

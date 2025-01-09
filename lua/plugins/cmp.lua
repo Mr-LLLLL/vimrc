@@ -47,6 +47,7 @@ return {
                 "nerdfont",
                 'snippets',
                 'codeium',
+                -- "codecompanion",
             }
             require("blink.cmp").setup({
                 enabled = function()
@@ -107,6 +108,7 @@ return {
                                             avante_mentions = "[Ava]",
                                             avante_files = "[Ava]",
                                             codeium = "[Cod]",
+                                            -- CodeCompanion = "[Comp]",
                                         }
                                         return t[ctx.source_name]
                                     end,
@@ -222,31 +224,32 @@ return {
                         codeium = {
                             name = "codeium",
                             module = "blink.compat.source",
-                            score_offset = 100, -- show at a higher priority than lsp
+                            score_offset = 14, -- show at a higher priority than lsp
+                            async = true,
                             opts = {},
                         },
                         avante_commands = {
                             name = "avante_commands",
                             module = "blink.compat.source",
-                            score_offset = 90, -- show at a higher priority than lsp
+                            score_offset = 20, -- show at a higher priority than lsp
                             opts = {},
                         },
                         avante_files = {
                             name = "avante_files",
                             module = "blink.compat.source",
-                            score_offset = 100, -- show at a higher priority than lsp
+                            score_offset = 21, -- show at a higher priority than lsp
                             opts = {},
                         },
                         avante_mentions = {
                             name = "avante_mentions",
                             module = "blink.compat.source",
-                            score_offset = 1000, -- show at a higher priority than lsp
+                            score_offset = 22, -- show at a higher priority than lsp
                             opts = {},
                         },
                         minuet = {
                             name = 'minuet',
                             module = 'minuet.blink',
-                            score_offset = 8, -- Gives minuet higher priority among suggestions
+                            score_offset = 15, -- Gives minuet higher priority among suggestions
                         },
                         nvim_lua = {
                             name = 'nvim_lua', -- IMPORTANT: use the same name as you would for nvim-cmp
@@ -304,6 +307,7 @@ return {
                         ripgrep = {
                             module = "blink-ripgrep",
                             name = "Ripgrep",
+                            async = true,
 
                             score_offset = -5,
                             -- the options below are optional, some default values are shown

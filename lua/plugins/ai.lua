@@ -26,7 +26,150 @@ return {
         end
     },
     {
+        "olimorris/codecompanion.nvim",
+        enabled = false,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        cmd = "CodeCompanion",
+        keys = {
+            {
+                "<space>/",
+                "<cmd>CodeCompanionChat Toggle<cr>",
+                mode = { "n" },
+                { noremap = true, silent = true },
+                desc = "CodeCompanion Toggle"
+            },
+        },
+        config = function()
+            require("codecompanion").setup({
+                opts = {
+                    language = "English" -- Default is "English"
+                },
+
+                display = {
+                    action_palette = {
+                        width = 95,
+                        height = 10,
+                        prompt = "Prompt ",                     -- Prompt used for interactive LLM calls
+                        provider = "telescope",                 -- default|telescope|mini_pick
+                        opts = {
+                            show_default_actions = true,        -- Show the default actions in the action palette?
+                            show_default_prompt_library = true, -- Show the default prompt library in the action palette?
+                        },
+                    },
+                    chat = {
+                        window = {
+                            layout = "vertical", -- float|vertical|horizontal|buffer
+                            position = "right",  -- left|right|top|bottom (nil will default depending on vim.opt.splitright|vim.opt.splitbelow)
+                            border = "rounded",
+                        },
+                    }
+                },
+                strategies = {
+                    inline = {
+                        adapter = "deepseek",
+                        keymaps = {
+                            accept_change = {
+                                modes = {
+                                    n = "ga",
+                                },
+                                index = 1,
+                                callback = "keymaps.accept_change",
+                                description = "Accept change",
+                            },
+                            reject_change = {
+                                modes = {
+                                    n = "gr",
+                                },
+                                index = 2,
+                                callback = "keymaps.reject_change",
+                                description = "Reject change",
+                            },
+                        },
+                    },
+                    cmd = {
+                        adapter = "deepseek",
+                    },
+                    chat = {
+                        adapter = "deepseek",
+                        keymaps = {
+                            close = {
+                                modes = {
+                                    n = { "<C-c>", "q" },
+                                    i = "<C-c>",
+                                },
+                                index = 4,
+                                callback = "keymaps.close",
+                                description = "Close Chat",
+                            },
+                            send = {
+                                modes = {
+                                    n = { "<cr>" },
+                                    i = "<C-cr>",
+                                },
+                                index = 2,
+                                callback = "keymaps.send",
+                                description = "Send",
+                            },
+                            stop = {
+                                modes = {
+                                    n = "s",
+                                    i = "<c-s>",
+                                },
+                                index = 5,
+                                callback = "keymaps.stop",
+                                description = "Stop Request",
+                            },
+                        }
+                    }
+                },
+                adapters = {
+                    ollama = function()
+                        return require("codecompanion.adapters").extend("ollama", {
+                            env = {
+                                url = "http://127.0.0.1:11434",
+                                api_key = "",
+                            },
+                            schema = {
+                                model = {
+                                    default = "llama3.1",
+                                }
+                            },
+                            parameters = {
+                                sync = true,
+                            },
+                        })
+                    end,
+                    deepseek = function()
+                        return require("codecompanion.adapters").extend("openai_compatible", {
+                            env = {
+                                url = "https://api.deepseek.com",
+                                api_key = "OPENAI_API_KEY",
+                                caht_url = "/chat/completions",
+                            },
+                            schema = {
+                                model = {
+                                    default = "deepseek-coder",
+                                }
+                            },
+                            headers = {
+                                ["Content-Type"] = "application/json",
+                                ["Authorization"] = "Bearer ${api_key}",
+                            },
+                            parameters = {
+                                sync = true,
+                            },
+                        })
+                    end,
+                },
+            })
+        end
+    },
+    {
         "yetone/avante.nvim",
+        enabled = true,
         event = "VeryLazy",
         keys = {
             {
