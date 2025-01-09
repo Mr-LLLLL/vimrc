@@ -237,7 +237,7 @@ return {
             })
             require("lualine").setup(old)
 
-            vim.cmd([[cab co CodeCompanion]])
+            vim.cmd([[cab cc CodeCompanion]])
             vim.api.nvim_create_autocmd(
                 { "Filetype" },
                 {
