@@ -120,7 +120,7 @@ return {
                             close = {
                                 modes = {
                                     n = { "<C-c>" },
-                                    i = "<C-c>",
+                                    i = "<C-q>",
                                 },
                                 index = 4,
                                 callback = "keymaps.close",
@@ -206,9 +206,10 @@ return {
             }
 
 
+            local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
             vim.api.nvim_create_autocmd({ "User" }, {
                 pattern = "CodeCompanionRequest*",
-                group = vim.api.nvim_create_augroup("CodeCompanionHooks", {}),
+                group = group,
                 callback = function(request)
                     if request.match == "CodeCompanionRequestStarted" then
                         tmp.processing = true
@@ -234,8 +235,24 @@ return {
                 cond = function() return tmp.processing end,
                 color = { fg = "#cf9f7f" },
             })
-            vim.cmd([[cab co CodeCompanion]])
             require("lualine").setup(old)
+
+            vim.cmd([[cab co CodeCompanion]])
+            vim.api.nvim_create_autocmd(
+                { "Filetype" },
+                {
+                    pattern = { "codecompanion" },
+                    callback = function(opts)
+                        vim.keymap.set('i', "<c-c>", function()
+                            -- in case occur error
+                            require('blink.cmp.completion.list').hide()
+                            vim.cmd("stopinsert")
+                            vim.cmd("CodeCompanionChat Toggle")
+                        end, { noremap = true, silent = true, buffer = opts.buf })
+                    end,
+                    group = group,
+                }
+            )
         end
     },
     {
@@ -357,8 +374,8 @@ return {
                         vim.keymap.set('i', "<c-c>", function()
                             -- in case occur error
                             require('blink.cmp.completion.list').hide()
-                            vim.cmd("quit!")
                             vim.cmd("stopinsert")
+                            require("avante").toggle()
                         end, { noremap = true, silent = true, buffer = opts.buf })
                     end,
                     group = vim.api.nvim_create_augroup("AvanteAutocmd", { clear = true }),
