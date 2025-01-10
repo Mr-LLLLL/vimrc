@@ -499,32 +499,43 @@ return {
                 }
             })
 
-            -- harpoon:extend({
-            --     UI_CREATE = function(cx)
-            --         vim.keymap.set("n", "<C-v>", function()
-            --             harpoon.ui:select_menu_item({ vsplit = true })
-            --         end, { buffer = cx.bufnr })
-            --
-            --         vim.keymap.set("n", "<C-s>", function()
-            --             harpoon.ui:select_menu_item({ split = true })
-            --         end, { buffer = cx.bufnr })
-            --
-            --         vim.keymap.set("n", "<C-t>", function()
-            --             harpoon.ui:select_menu_item({ tabedit = true })
-            --         end, { buffer = cx.bufnr })
-            --     end,
-            -- })
-            -- harpoon:extend(extensions.builtins.navigate_with_number());
-
-            -- km.set("n", "<leader>sp", function()
-            --     harpoon:list():prev()
-            -- end, { desc = "Open harpoon previous" })
-            -- km.set("n", "<leader>sn", function()
-            --     harpoon:list():next()
-            -- end, { desc = "Open harpoon next" })
-
             require("lualine-ext").init_harpoon()
             require("telescope").load_extension('harpoon')
         end
     },
+    {
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        config = function()
+            local snacks = require("snacks")
+            require("snacks").setup({
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+                bigfile = {
+                    enabled = true,
+
+                    notify = true,            -- show notification when big file detected
+                    size = 1.5 * 1024 * 1024, -- 1.5MB
+                    -- Enable or disable features when big file detected
+                    ---@param ctx {buf: number, ft:string}
+                    setup = function(ctx)
+                        vim.cmd([[NoMatchParen]])
+                        snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
+                        vim.b.minianimate_disable = true
+                        vim.schedule(function()
+                            vim.bo[ctx.buf].syntax = ctx.ft
+                        end)
+                    end,
+
+                },
+                notifier = { enabled = false },
+                quickfile = { enabled = true },
+                statuscolumn = { enabled = false },
+                words = { enabled = false },
+                dashboard = { enabled = false },
+            })
+        end,
+    }
 }
