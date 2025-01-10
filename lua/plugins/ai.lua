@@ -43,24 +43,24 @@ return {
             },
             {
                 "<leader>aa",
-                ":CodeCompanion",
+                ":CodeCompanion ",
                 mode = { "n", "v" },
                 { noremap = true, silent = true },
-                desc = "CodeCompanion Actions"
+                desc = "CodeCompanion"
             },
             {
                 "<leader>ac",
-                ":CodeCompanionCmd",
+                ":CodeCompanionCmd ",
                 mode = { "n" },
                 { noremap = true, silent = true },
-                desc = "CodeCompanion Actions"
+                desc = "CodeCompanion Commands"
             },
             {
                 "<leader>ap",
                 "<cmd>CodeCompanionChat Add<cr>",
                 mode = { "v" },
                 { noremap = true, silent = true },
-                desc = "CodeCompanion Actions"
+                desc = "CodeCompanionChat Add"
             },
         },
         config = function()

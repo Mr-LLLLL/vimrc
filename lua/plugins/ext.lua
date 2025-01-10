@@ -174,110 +174,110 @@ return {
         ft = "markdown",
         build = 'cd app && ./install.sh'
     },
-    {
-        'voldikss/vim-translator',
-        cmd = "Translate",
-        keys = {
-            { "<space>tt", "<Plug>TranslateW",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate In Float" },
-            { "<space>tt", "<Plug>TranslateWV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate In Float" },
-            { "<space>tr", "<Plug>TranslateR",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate Replace" },
-            { "<space>tr", "<Plug>TranslateRV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate Replace" },
-        },
-        config = function()
-            vim.g.translator_source_lang = 'auto'
-            vim.g.translator_target_lang = 'zh'
-            vim.g.translator_default_engines = { "bing", "google", "haici", "youdao" }
-            vim.g.translator_window_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-
-            api.nvim_set_hl(0, "TranslatorBorder", { link = 'CustomBorder' })
-        end
-    },
-    {
-        'potamides/pantran.nvim',
-        keys = {
-            { "<space>to", nil, mode = { "n", "v" }, desc = "Pantran" }
-        },
-        config = function()
-            local pantran_actions = require("pantran.ui.actions")
-            require("pantran").setup {
-                -- Default engine to use for translation. To list valid engine names run
-                -- `:lua =vim.tbl_keys(require("pantran.engines"))`.
-                default_engine = "google",
-                -- Configuration for individual engines goes here.
-                window = {
-                    window_config = {
-                        border = "rounded"
-                    },
-                },
-                engines = {
-                    google = {
-                        -- Default languages can be defined on a per engine basis. In this case
-                        -- `:lua vim.pretty_print(require("pantran.engines").google:languages())
-                        default_source = "auto",
-                        default_target = "zh-CN",
-                        fallback = {
-                            default_source = "auto",
-                            default_target = "zh-CN",
-                        }
-                    },
-                },
-                controls = {
-                    mappings = {
-                        edit = {
-                            n = {
-                                -- Use this table to add additional mappings for the normal mode in
-                                -- the translation window. Either strings or function references are
-                                -- supported.
-                                ["<C-c>"] = pantran_actions.close,
-                                ["<C-a>"] = pantran_actions.append_close_translation,
-                                ["<C-r>"] = pantran_actions.replace_close_translation,
-                                ["<C-s>"] = pantran_actions.select_source,
-                                ["<C-t>"] = pantran_actions.select_target,
-                                ["<C-e>"] = pantran_actions.select_engine,
-                            },
-                            i = {
-                                -- Similar table but for insert mode. Using 'false' disables
-                                -- existing keybindings.
-                                ["<c-c>"] = function(ui)
-                                    vim.cmd("stopinsert")
-                                    pantran_actions.close(ui)
-                                end,
-                                -- ["<c-o>"] = function()
-                                --     vim.cmd("stopinsert")
-                                -- end,
-                                ["<C-r>"] = pantran_actions.replace_close_translation,
-                                ["<C-a>"] = pantran_actions.append_close_translation,
-                                ["<C-s>"] = pantran_actions.select_source,
-                                ["<C-t>"] = pantran_actions.select_target,
-                                ["<C-e>"] = pantran_actions.select_engine,
-                            }
-                        },
-                        -- Keybindings here are used in the selection window.
-                        select = {
-                            i = {
-                                ["<c-c>"] = function(ui)
-                                    vim.cmd("stopinsert")
-                                    pantran_actions.close(ui)
-                                end,
-                                ["<C-s>"] = pantran_actions.select_source,
-                                ["<C-t>"] = pantran_actions.select_target,
-                                ["<C-e>"] = pantran_actions.select_engine,
-                            },
-                            n = {
-                                ["<C-c>"] = pantran_actions.close,
-                                ["<C-s>"] = pantran_actions.select_source,
-                                ["<C-t>"] = pantran_actions.select_target,
-                                ["<C-e>"] = pantran_actions.select_engine,
-                            }
-                        }
-                    }
-                },
-            }
-
-            vim.api.nvim_set_hl(0, "PantranBorder", { link = 'CustomBorder' })
-            km.set('n', "<space>to", "<cmd>Pantran<CR>i", { noremap = true, silent = true, desc = "pantran panel" })
-        end
-    },
+    -- {
+    --     'voldikss/vim-translator',
+    --     cmd = "Translate",
+    --     keys = {
+    --         { "<space>tt", "<Plug>TranslateW",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate In Float" },
+    --         { "<space>tt", "<Plug>TranslateWV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate In Float" },
+    --         { "<space>tr", "<Plug>TranslateR",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate Replace" },
+    --         { "<space>tr", "<Plug>TranslateRV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate Replace" },
+    --     },
+    --     config = function()
+    --         vim.g.translator_source_lang = 'auto'
+    --         vim.g.translator_target_lang = 'zh'
+    --         vim.g.translator_default_engines = { "bing", "google", "haici", "youdao" }
+    --         vim.g.translator_window_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+    --
+    --         api.nvim_set_hl(0, "TranslatorBorder", { link = 'CustomBorder' })
+    --     end
+    -- },
+    -- {
+    --     'potamides/pantran.nvim',
+    --     keys = {
+    --         { "<space>to", nil, mode = { "n", "v" }, desc = "Pantran" }
+    --     },
+    --     config = function()
+    --         local pantran_actions = require("pantran.ui.actions")
+    --         require("pantran").setup {
+    --             -- Default engine to use for translation. To list valid engine names run
+    --             -- `:lua =vim.tbl_keys(require("pantran.engines"))`.
+    --             default_engine = "google",
+    --             -- Configuration for individual engines goes here.
+    --             window = {
+    --                 window_config = {
+    --                     border = "rounded"
+    --                 },
+    --             },
+    --             engines = {
+    --                 google = {
+    --                     -- Default languages can be defined on a per engine basis. In this case
+    --                     -- `:lua vim.pretty_print(require("pantran.engines").google:languages())
+    --                     default_source = "auto",
+    --                     default_target = "zh-CN",
+    --                     fallback = {
+    --                         default_source = "auto",
+    --                         default_target = "zh-CN",
+    --                     }
+    --                 },
+    --             },
+    --             controls = {
+    --                 mappings = {
+    --                     edit = {
+    --                         n = {
+    --                             -- Use this table to add additional mappings for the normal mode in
+    --                             -- the translation window. Either strings or function references are
+    --                             -- supported.
+    --                             ["<C-c>"] = pantran_actions.close,
+    --                             ["<C-a>"] = pantran_actions.append_close_translation,
+    --                             ["<C-r>"] = pantran_actions.replace_close_translation,
+    --                             ["<C-s>"] = pantran_actions.select_source,
+    --                             ["<C-t>"] = pantran_actions.select_target,
+    --                             ["<C-e>"] = pantran_actions.select_engine,
+    --                         },
+    --                         i = {
+    --                             -- Similar table but for insert mode. Using 'false' disables
+    --                             -- existing keybindings.
+    --                             ["<c-c>"] = function(ui)
+    --                                 vim.cmd("stopinsert")
+    --                                 pantran_actions.close(ui)
+    --                             end,
+    --                             -- ["<c-o>"] = function()
+    --                             --     vim.cmd("stopinsert")
+    --                             -- end,
+    --                             ["<C-r>"] = pantran_actions.replace_close_translation,
+    --                             ["<C-a>"] = pantran_actions.append_close_translation,
+    --                             ["<C-s>"] = pantran_actions.select_source,
+    --                             ["<C-t>"] = pantran_actions.select_target,
+    --                             ["<C-e>"] = pantran_actions.select_engine,
+    --                         }
+    --                     },
+    --                     -- Keybindings here are used in the selection window.
+    --                     select = {
+    --                         i = {
+    --                             ["<c-c>"] = function(ui)
+    --                                 vim.cmd("stopinsert")
+    --                                 pantran_actions.close(ui)
+    --                             end,
+    --                             ["<C-s>"] = pantran_actions.select_source,
+    --                             ["<C-t>"] = pantran_actions.select_target,
+    --                             ["<C-e>"] = pantran_actions.select_engine,
+    --                         },
+    --                         n = {
+    --                             ["<C-c>"] = pantran_actions.close,
+    --                             ["<C-s>"] = pantran_actions.select_source,
+    --                             ["<C-t>"] = pantran_actions.select_target,
+    --                             ["<C-e>"] = pantran_actions.select_engine,
+    --                         }
+    --                     }
+    --                 }
+    --             },
+    --         }
+    --
+    --         vim.api.nvim_set_hl(0, "PantranBorder", { link = 'CustomBorder' })
+    --         km.set('n', "<space>to", "<cmd>Pantran<CR>i", { noremap = true, silent = true, desc = "pantran panel" })
+    --     end
+    -- },
     {
         'mistweaverco/kulala.nvim',
         keys = {
@@ -401,10 +401,10 @@ return {
             require("private.private").load_db()
         end
     },
-    {
-        'eandrju/cellular-automaton.nvim',
-        cmd = "CellularAutomaton",
-    },
+    -- {
+    --     'eandrju/cellular-automaton.nvim',
+    --     cmd = "CellularAutomaton",
+    -- },
     {
         'windwp/nvim-spectre',
         cmd = "Spectre",

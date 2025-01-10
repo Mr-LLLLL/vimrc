@@ -78,6 +78,19 @@ return {
             api.nvim_set_hl(0, "NvimTreeNormal", { link = 'Normal' })
             api.nvim_set_hl(0, "NvimTreeWinSeparator", { link = 'CustomBorder' })
             api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { link = 'EndOfBuffer' })
+            local prev = { new_name = "", old_name = "" } -- Prevents duplicate events
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "NvimTreeSetup",
+                callback = function()
+                    local events = require("nvim-tree.api").events
+                    events.subscribe(events.Event.NodeRenamed, function(data)
+                        if prev.new_name ~= data.new_name or prev.old_name ~= data.old_name then
+                            data = data
+                            Snacks.rename.on_rename_file(data.old_name, data.new_name)
+                        end
+                    end)
+                end,
+            })
         end
     },
     {
@@ -425,31 +438,31 @@ return {
             })
         end,
     },
-    {
-        "RRethy/vim-illuminate",
-        event = "CursorHold",
-        config = function()
-            require('illuminate').configure({
-                modes_allowlist = { 'n', 'v', 'V', '' },
-                filetypes_denylist = {},
-                filetypes_allowlist = {
-                    'python',
-                    'go',
-                    'rust',
-                    'lua',
-                    'json',
-                    'yaml',
-                },
-            })
-
-            km.set("v", "<a-n>", require("illuminate").goto_next_reference,
-                { noremap = true, silent = true, desc = "illuminate move to next reference" })
-            km.set("v", "<a-p>", require("illuminate").goto_prev_reference,
-                { noremap = true, silent = true, desc = "illuminate move to prev reference" })
-            km.set("n", "<a-i>", require("illuminate").textobj_select,
-                { noremap = true, silent = true, desc = "illuminate visual current node" })
-        end
-    },
+    -- {
+    --     "RRethy/vim-illuminate",
+    --     event = "CursorHold",
+    --     config = function()
+    --         require('illuminate').configure({
+    --             modes_allowlist = { 'n', 'v', 'V', '' },
+    --             filetypes_denylist = {},
+    --             filetypes_allowlist = {
+    --                 'python',
+    --                 'go',
+    --                 'rust',
+    --                 'lua',
+    --                 'json',
+    --                 'yaml',
+    --             },
+    --         })
+    --
+    --         km.set("v", "<a-n>", require("illuminate").goto_next_reference,
+    --             { noremap = true, silent = true, desc = "illuminate move to next reference" })
+    --         km.set("v", "<a-p>", require("illuminate").goto_prev_reference,
+    --             { noremap = true, silent = true, desc = "illuminate move to prev reference" })
+    --         km.set("n", "<a-i>", require("illuminate").textobj_select,
+    --             { noremap = true, silent = true, desc = "illuminate visual current node" })
+    --     end
+    -- },
     {
         'kevinhwang91/nvim-ufo',
         event = "VeryLazy",

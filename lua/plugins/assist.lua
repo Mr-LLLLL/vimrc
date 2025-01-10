@@ -235,17 +235,17 @@ return {
             require("telescope").load_extension("refactoring")
         end
     },
-    {
-        "danymat/neogen",
-        version = "*",
-        cmd = "Neogen",
-        dependencies = "nvim-treesitter/nvim-treesitter",
-        config = function()
-            require('neogen').setup {
-                snippet_engine = "nvim"
-            }
-        end,
-    },
+    -- {
+    --     "danymat/neogen",
+    --     version = "*",
+    --     cmd = "Neogen",
+    --     dependencies = "nvim-treesitter/nvim-treesitter",
+    --     config = function()
+    --         require('neogen').setup {
+    --             snippet_engine = "nvim"
+    --         }
+    --     end,
+    -- },
     {
         'monaqa/dial.nvim',
         keys = {
@@ -507,34 +507,75 @@ return {
         "folke/snacks.nvim",
         priority = 1000,
         lazy = false,
+        keys = {
+            {
+                "<a-n>",
+                mode = { "n", "o", "x" },
+                function()
+                    Snacks.words.jump(1, true)
+                end,
+                desc = "Jump To Next Word"
+            },
+            {
+                "<a-p>",
+                mode = { "n", "o", "x" },
+                function()
+                    Snacks.words.jump(-1, true)
+                end,
+                desc = "Jump To Previous Word"
+            },
+            { "<leader>gB", function() Snacks.gitbrowse() end,      desc = "Git Browse",           mode = { "n", "v" } },
+
+            { "<leader>.",  function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
+            { "<space>.",   function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+        },
         config = function()
             local snacks = require("snacks")
-            require("snacks").setup({
-                -- your configuration comes here
+            snacks.setup({
+                -- your configurasdftion comes here
                 -- or leave it empty to use the default settings
                 -- refer to the configuration section below
-                bigfile = {
-                    enabled = true,
-
-                    notify = true,            -- show notification when big file detected
-                    size = 1.5 * 1024 * 1024, -- 1.5MB
-                    -- Enable or disable features when big file detected
-                    ---@param ctx {buf: number, ft:string}
-                    setup = function(ctx)
-                        vim.cmd([[NoMatchParen]])
-                        snacks.util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
-                        vim.b.minianimate_disable = true
-                        vim.schedule(function()
-                            vim.bo[ctx.buf].syntax = ctx.ft
-                        end)
-                    end,
-
-                },
-                notifier = { enabled = false },
+                bigfile = { enabled = true },
                 quickfile = { enabled = true },
                 statuscolumn = { enabled = false },
-                words = { enabled = false },
+                notifier = { enabled = false },
+                words = {
+                    enabled = true,
+                    modes = { "n", "v" }, -- modes to show references
+                },
+                scratch = {
+                    enabled = true,
+                    win = {
+                        keys = {
+                            { "<c-c>", "close", mode = { "i", "n" }, desc = "<Close>" },
+                            { "q",     "close", mode = "n",          desc = "<Close>" },
+                        }
+                    },
+                },
                 dashboard = { enabled = false },
+                gitbrowse = {
+                    enabled = true,
+                    ---@type "repo" | "branch" | "file" | "commit"
+                    what = "file", -- what to open. not all remotes support all types
+                },
+                input = { enabled = false },
+                styles = {
+                    scratch = {
+                        width = 0.8,
+                        height = 0.8,
+                        backdrop = 100,
+                        bo = { buftype = "", buflisted = false, bufhidden = "hide", swapfile = false },
+                        minimal = false,
+                        noautocmd = false,
+                        -- position = "right",
+                        zindex = 20,
+                        wo = { winhighlight = "NormalFloat:NormalFloat" },
+                        border = "rounded",
+                        title_pos = "center",
+                        footer_pos = "center",
+                    }
+
+                }
             })
         end,
     }
