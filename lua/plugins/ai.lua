@@ -43,13 +43,20 @@ return {
             },
             {
                 "<leader>aa",
-                "<cmd>CodeCompanionActions<cr>",
+                ":CodeCompanion",
                 mode = { "n", "v" },
                 { noremap = true, silent = true },
                 desc = "CodeCompanion Actions"
             },
             {
                 "<leader>ac",
+                ":CodeCompanionCmd",
+                mode = { "n" },
+                { noremap = true, silent = true },
+                desc = "CodeCompanion Actions"
+            },
+            {
+                "<leader>ap",
                 "<cmd>CodeCompanionChat Add<cr>",
                 mode = { "v" },
                 { noremap = true, silent = true },
@@ -237,7 +244,6 @@ return {
             })
             require("lualine").setup(old)
 
-            vim.cmd([[cab cc CodeCompanion]])
             vim.api.nvim_create_autocmd(
                 { "Filetype" },
                 {
