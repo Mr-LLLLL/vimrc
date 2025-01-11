@@ -524,10 +524,9 @@ return {
                 end,
                 desc = "Jump To Previous Word"
             },
-            { "<leader>gB", function() Snacks.gitbrowse() end,      desc = "Git Browse",           mode = { "n", "v" } },
+            { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse",            mode = { "n", "v" } },
 
-            { "<leader>.",  function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
-            { "<space>.",   function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+            { "<a-f>",      function() Snacks.scratch() end,   desc = "Toggle Scratch Buffer", mode = { "n", "v", "i" } },
         },
         config = function()
             local snacks = require("snacks")
@@ -547,8 +546,17 @@ return {
                     enabled = true,
                     win = {
                         keys = {
-                            { "<c-c>", "close", mode = { "i", "n" }, desc = "<Close>" },
-                            { "q",     "close", mode = "n",          desc = "<Close>" },
+                            { "q",       "close",                                mode = "n", desc = "<Close>" },
+                            { "<space>", function() Snacks.scratch.select() end, mode = "n", desc = "Select Scratch Buffer" },
+                            {
+                                "<a-f>",
+                                function()
+                                    vim.cmd("stopinsert")
+                                    vim.cmd("close")
+                                end,
+                                mode = { "n", "i", "v" },
+                                desc = "<Close>"
+                            },
                         }
                     },
                 },
