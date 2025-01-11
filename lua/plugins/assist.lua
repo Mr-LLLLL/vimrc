@@ -526,7 +526,7 @@ return {
             },
             { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse",            mode = { "n", "v" } },
 
-            { "<a-f>",      function() Snacks.scratch() end,   desc = "Toggle Scratch Buffer", mode = { "n", "v", "i" } },
+            { "<a-f>",      function() Snacks.scratch() end,   desc = "Toggle Scratch Buffer", mode = { "n", "i" } },
         },
         config = function()
             local snacks = require("snacks")

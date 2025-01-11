@@ -415,9 +415,14 @@ return {
     {
         'akinsho/toggleterm.nvim',
         version = "*",
+        cmd = {
+            "SSH",
+            "Mongo",
+            "Redis"
+        },
         keys = {
-            { "<M-w>", nil },
-            { "<M-r>", nil },
+            { "<M-w>", nil, desc = "Toggle Terminal" },
+            { "<M-r>", nil, desc = "New Terminal" },
         },
         config = function()
             require("toggleterm").setup({
