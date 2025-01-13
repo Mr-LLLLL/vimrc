@@ -170,6 +170,7 @@ return {
         lazy = true,
         config = function()
             local glyphs = require("common").glyphs
+            local latest_win_id = 0
             local scroll_to_bottom = function(win, buf)
                 if not api.nvim_win_is_valid(win) or api.nvim_win_get_buf(win) ~= buf then
                     return
@@ -217,6 +218,7 @@ return {
                 timeout = 5000,
                 top_down = true,
                 on_open = function(win)
+                    latest_win_id = win
                     local buf = api.nvim_win_get_buf(win)
                     api.nvim_buf_attach(buf, false, {
                         on_lines = function()
@@ -250,6 +252,11 @@ return {
                 notifyClear()
             end, { noremap = true, silent = true, desc = "refresh screen" })
 
+            vim.keymap.set({ "n", "v", "i" }, "<c-p>", function()
+                if api.nvim_win_is_valid(latest_win_id) then
+                    api.nvim_set_current_win(latest_win_id)
+                end
+            end, { silent = true, desc = "Goto Latest Notify Window" })
             require("telescope").load_extension("notify")
         end
     },
