@@ -546,8 +546,9 @@ return {
                     enabled = true,
                     win = {
                         keys = {
-                            { "q",       "close",                                mode = "n", desc = "<Close>" },
-                            { "<space>", function() Snacks.scratch.select() end, mode = "n", desc = "Select Scratch Buffer" },
+                            { "<c-s>",   function() vim.cmd("%d") end,           mode = { "n", "i", "v" }, desc = "Clear" },
+                            { "q",       "close",                                mode = "n",               desc = "<Close>" },
+                            { "<space>", function() Snacks.scratch.select() end, mode = "n",               desc = "Select Scratch Buffer" },
                             {
                                 "<a-f>",
                                 function()

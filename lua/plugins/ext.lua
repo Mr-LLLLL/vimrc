@@ -1243,4 +1243,22 @@ return {
         -- dependencies = { { "echasnovski/mini.icons", opts = {} } },
         dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
     },
+    {
+        'voldikss/vim-translator',
+        cmd = "Translate",
+        keys = {
+            { "<space>tt", "<Plug>TranslateW",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate In Float" },
+            { "<space>tt", "<Plug>TranslateWV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate In Float" },
+            { "<space>tr", "<Plug>TranslateR",  { noremap = true, silent = true }, mode = { "n" }, desc = "Translate Replace" },
+            { "<space>tr", "<Plug>TranslateRV", { noremap = true, silent = true }, mode = { "v" }, desc = "Translate Replace" },
+        },
+        config = function()
+            vim.g.translator_source_lang = 'auto'
+            vim.g.translator_target_lang = 'zh'
+            vim.g.translator_default_engines = { "bing", "google", "haici", "youdao" }
+            vim.g.translator_window_borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+
+            api.nvim_set_hl(0, "TranslatorBorder", { link = 'CustomBorder' })
+        end
+    },
 }
