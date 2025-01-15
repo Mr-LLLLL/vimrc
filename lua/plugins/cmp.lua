@@ -13,8 +13,8 @@ return {
         -- optional: provides snippets for the snippet source
         dependencies = {
             'milanglacier/minuet-ai.nvim',
-            "Exafunction/codeium.nvim",
-            "supermaven-inc/supermaven-nvim",
+            -- "Exafunction/codeium.nvim",
+            -- "supermaven-inc/supermaven-nvim",
 
             'rafamadriz/friendly-snippets',
             'kristijanhusak/vim-dadbod-completion',
@@ -47,8 +47,8 @@ return {
                 "calc",
                 "nerdfont",
                 'snippets',
-                'codeium',
-                'supermaven',
+                -- 'codeium',
+                -- 'supermaven',
                 'codecompanion',
             }
             require("blink.cmp").setup({
@@ -221,20 +221,20 @@ return {
                         return {}
                     end,
                     providers = {
-                        supermaven = {
-                            name = "supermaven",
-                            module = "blink.compat.source",
-                            score_offset = 6, -- show at a higher priority than lsp
-                            async = true,
-                            opts = {},
-                        },
-                        codeium = {
-                            name = "codeium",
-                            module = "blink.compat.source",
-                            score_offset = 6, -- show at a higher priority than lsp
-                            async = true,
-                            opts = {},
-                        },
+                        -- supermaven = {
+                        --     name = "supermaven",
+                        --     module = "blink.compat.source",
+                        --     score_offset = 6, -- show at a higher priority than lsp
+                        --     async = true,
+                        --     opts = {},
+                        -- },
+                        -- codeium = {
+                        --     name = "codeium",
+                        --     module = "blink.compat.source",
+                        --     score_offset = 6, -- show at a higher priority than lsp
+                        --     async = true,
+                        --     opts = {},
+                        -- },
                         minuet = {
                             name = 'minuet',
                             module = 'minuet.blink',

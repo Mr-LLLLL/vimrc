@@ -261,134 +261,134 @@ return {
             )
         end
     },
-    {
-        "yetone/avante.nvim",
-        enabled = false,
-        event = "VeryLazy",
-        keys = {
-            {
-                "<space>/",
-                function()
-                    require("avante").toggle()
-                end,
-                mode = { "n" },
-                { noremap = true, silent = true },
-                desc = "Avante Toggle"
-            },
-        },
-        version = false, -- set this to "*" if you want to always pull the latest change, false to update on release
-        build = "make",
-        dependencies = {
-            "stevearc/dressing.nvim",
-            "nvim-lua/plenary.nvim",
-            "MunifTanjim/nui.nvim",
-            "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-            'MeanderingProgrammer/render-markdown.nvim',
-        },
-        config = function()
-            require('avante').setup({
-                -- provider = "ollama",
-                provider = "openai",
-                auto_suggestions_provider = "openai", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
-                openai = {
-                    endpoint = "https://api.deepseek.com/v1",
-                    model = "deepseek-coder",
-                    timeout = 30000, -- Timeout in milliseconds
-                    temperature = 0,
-                    max_tokens = 4096,
-                },
-                vendors = {
-                    ollama = {
-                        __inherited_from = "openai",
-                        api_key_name = "",
-                        endpoint = "http://127.0.0.1:11434/v1",
-                        model = "llama3.1",
-                    },
-                },
-                behaviour = {
-                    auto_suggestions = false, -- Experimental stage
-                    auto_set_highlight_group = true,
-                    auto_set_keymaps = true,
-                    auto_apply_diff_after_generation = false,
-                    support_paste_from_clipboard = false,
-                    minimize_diff = true,
-                },
-                mappings = {
-                    --- @class AvanteConflictMappings
-                    diff = {
-                        ours = "co",
-                        theirs = "ct",
-                        all_theirs = "ca",
-                        both = "cb",
-                        cursor = "cc",
-                        next = "]x",
-                        prev = "[x",
-                    },
-                    suggestion = {
-                        accept = "<c-y>",
-                        next = "<M-]>",
-                        prev = "<M-[>",
-                        dismiss = "<C-]>",
-                    },
-                    jump = {
-                        next = "]]",
-                        prev = "[[",
-                    },
-                    submit = {
-                        normal = "<CR>",
-                        insert = "<C-CR>",
-                    },
-                    ask = "<leader>aa",
-                    edit = "<leader>ae",
-                    refresh = "<leader>ar",
-                    focus = "<leader>af",
-                    toggle = {
-                        default = "<space>/",
-                        debug = "<leader>ad",
-                        hint = "<leader>ah",
-                        suggestion = "<leader>as",
-                        repomap = "<leader>aR",
-                    },
-                    sidebar = {
-                        apply_all = "A",
-                        apply_cursor = "a",
-                        switch_windows = "<Tab>",
-                        reverse_switch_windows = "<S-Tab>",
-                    },
-                    files = {
-                        add_current = "<leader>ac", -- Add current buffer to selected files
-                    },
-                },
-                windows = {
-                    ask = {
-                        floating = true,         -- Open the 'AvanteAsk' prompt in a floating window
-                        border = "rounded",
-                        start_insert = true,     -- Start insert mode when opening the ask window
-                        ---@alias AvanteInitialDiff "ours" | "theirs"
-                        focus_on_apply = "ours", -- which diff to focus after applying
-                    },
-                }
-
-            })
-
-            vim.api.nvim_set_hl(0, "AvanteInlineHint", { link = 'NonText' })
-            vim.api.nvim_create_autocmd(
-                { "Filetype" },
-                {
-                    pattern = { "AvanteInput", "Avante" },
-                    callback = function(opts)
-                        vim.keymap.set('i', "<c-c>", function()
-                            -- in case occur error
-                            require('blink.cmp.completion.list').hide()
-                            vim.cmd("stopinsert")
-                            require("avante").toggle()
-                        end, { noremap = true, silent = true, buffer = opts.buf })
-                    end,
-                    group = vim.api.nvim_create_augroup("AvanteAutocmd", { clear = true }),
-                }
-            )
-        end
-    },
+    -- {
+    --     "yetone/avante.nvim",
+    --     enabled = false,
+    --     event = "VeryLazy",
+    --     keys = {
+    --         {
+    --             "<space>/",
+    --             function()
+    --                 require("avante").toggle()
+    --             end,
+    --             mode = { "n" },
+    --             { noremap = true, silent = true },
+    --             desc = "Avante Toggle"
+    --         },
+    --     },
+    --     version = false, -- set this to "*" if you want to always pull the latest change, false to update on release
+    --     build = "make",
+    --     dependencies = {
+    --         "stevearc/dressing.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+    --         'MeanderingProgrammer/render-markdown.nvim',
+    --     },
+    --     config = function()
+    --         require('avante').setup({
+    --             -- provider = "ollama",
+    --             provider = "openai",
+    --             auto_suggestions_provider = "openai", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
+    --             openai = {
+    --                 endpoint = "https://api.deepseek.com/v1",
+    --                 model = "deepseek-coder",
+    --                 timeout = 30000, -- Timeout in milliseconds
+    --                 temperature = 0,
+    --                 max_tokens = 4096,
+    --             },
+    --             vendors = {
+    --                 ollama = {
+    --                     __inherited_from = "openai",
+    --                     api_key_name = "",
+    --                     endpoint = "http://127.0.0.1:11434/v1",
+    --                     model = "llama3.1",
+    --                 },
+    --             },
+    --             behaviour = {
+    --                 auto_suggestions = false, -- Experimental stage
+    --                 auto_set_highlight_group = true,
+    --                 auto_set_keymaps = true,
+    --                 auto_apply_diff_after_generation = false,
+    --                 support_paste_from_clipboard = false,
+    --                 minimize_diff = true,
+    --             },
+    --             mappings = {
+    --                 --- @class AvanteConflictMappings
+    --                 diff = {
+    --                     ours = "co",
+    --                     theirs = "ct",
+    --                     all_theirs = "ca",
+    --                     both = "cb",
+    --                     cursor = "cc",
+    --                     next = "]x",
+    --                     prev = "[x",
+    --                 },
+    --                 suggestion = {
+    --                     accept = "<c-y>",
+    --                     next = "<M-]>",
+    --                     prev = "<M-[>",
+    --                     dismiss = "<C-]>",
+    --                 },
+    --                 jump = {
+    --                     next = "]]",
+    --                     prev = "[[",
+    --                 },
+    --                 submit = {
+    --                     normal = "<CR>",
+    --                     insert = "<C-CR>",
+    --                 },
+    --                 ask = "<leader>aa",
+    --                 edit = "<leader>ae",
+    --                 refresh = "<leader>ar",
+    --                 focus = "<leader>af",
+    --                 toggle = {
+    --                     default = "<space>/",
+    --                     debug = "<leader>ad",
+    --                     hint = "<leader>ah",
+    --                     suggestion = "<leader>as",
+    --                     repomap = "<leader>aR",
+    --                 },
+    --                 sidebar = {
+    --                     apply_all = "A",
+    --                     apply_cursor = "a",
+    --                     switch_windows = "<Tab>",
+    --                     reverse_switch_windows = "<S-Tab>",
+    --                 },
+    --                 files = {
+    --                     add_current = "<leader>ac", -- Add current buffer to selected files
+    --                 },
+    --             },
+    --             windows = {
+    --                 ask = {
+    --                     floating = true,         -- Open the 'AvanteAsk' prompt in a floating window
+    --                     border = "rounded",
+    --                     start_insert = true,     -- Start insert mode when opening the ask window
+    --                     ---@alias AvanteInitialDiff "ours" | "theirs"
+    --                     focus_on_apply = "ours", -- which diff to focus after applying
+    --                 },
+    --             }
+    --
+    --         })
+    --
+    --         vim.api.nvim_set_hl(0, "AvanteInlineHint", { link = 'NonText' })
+    --         vim.api.nvim_create_autocmd(
+    --             { "Filetype" },
+    --             {
+    --                 pattern = { "AvanteInput", "Avante" },
+    --                 callback = function(opts)
+    --                     vim.keymap.set('i', "<c-c>", function()
+    --                         -- in case occur error
+    --                         require('blink.cmp.completion.list').hide()
+    --                         vim.cmd("stopinsert")
+    --                         require("avante").toggle()
+    --                     end, { noremap = true, silent = true, buffer = opts.buf })
+    --                 end,
+    --                 group = vim.api.nvim_create_augroup("AvanteAutocmd", { clear = true }),
+    --             }
+    --         )
+    --     end
+    -- },
     -- {
     --     "sourcegraph/sg.nvim",
     --     cmd = { "Cody", "Sourcegraph" },
@@ -399,56 +399,56 @@ return {
     --         }
     --     end
     -- },
-    {
-        "Exafunction/codeium.nvim",
-        enabled = true,
-        lazy = true,
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        config = function()
-            require("codeium").setup({
-                enable_cmp_source = true,
-                virtual_text = {
-                    enabled = false,
-                    -- filetypes = true,
-                    manual = false,
-                    -- map_keys = false,
-                    key_bindings = {
-                        -- Accept the current completion.
-                        accept = "<c-y>",
-                        -- Accept the next word.
-                        accept_word = "<a-y>",
-                        -- Accept the next line.
-                        accept_line = false,
-                        -- Clear the virtual text.
-                        clear = "<c-]>",
-                        -- Cycle to the next completion.
-                        next = "<M-]>",
-                        -- Cycle to the previous completion.
-                        prev = "<M-[>",
-                    }
-                },
-
-            })
-
-            vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = 'NonText' })
-        end
-    },
-    {
-        "supermaven-inc/supermaven-nvim",
-        lazy = true,
-        enabled = false,
-        config = function()
-            require("supermaven-nvim").setup({
-                disable_inline_completion = true,
-                disable_keymaps = true,
-                keymaps = {
-                    accept_suggestion = "<c-y>",
-                    clear_suggestion = "<C-]>",
-                    accept_word = "<A-y>",
-                },
-            })
-        end,
-    },
+    -- {
+    --     "Exafunction/codeium.nvim",
+    --     enabled = false,
+    --     lazy = true,
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --     },
+    --     config = function()
+    --         require("codeium").setup({
+    --             enable_cmp_source = true,
+    --             virtual_text = {
+    --                 enabled = false,
+    --                 -- filetypes = true,
+    --                 manual = false,
+    --                 -- map_keys = false,
+    --                 key_bindings = {
+    --                     -- Accept the current completion.
+    --                     accept = "<c-y>",
+    --                     -- Accept the next word.
+    --                     accept_word = "<a-y>",
+    --                     -- Accept the next line.
+    --                     accept_line = false,
+    --                     -- Clear the virtual text.
+    --                     clear = "<c-]>",
+    --                     -- Cycle to the next completion.
+    --                     next = "<M-]>",
+    --                     -- Cycle to the previous completion.
+    --                     prev = "<M-[>",
+    --                 }
+    --             },
+    --
+    --         })
+    --
+    --         vim.api.nvim_set_hl(0, "CodeiumSuggestion", { link = 'NonText' })
+    --     end
+    -- },
+    -- {
+    --     "supermaven-inc/supermaven-nvim",
+    --     lazy = true,
+    --     enabled = false,
+    --     config = function()
+    --         require("supermaven-nvim").setup({
+    --             disable_inline_completion = true,
+    --             disable_keymaps = true,
+    --             keymaps = {
+    --                 accept_suggestion = "<c-y>",
+    --                 clear_suggestion = "<C-]>",
+    --                 accept_word = "<A-y>",
+    --             },
+    --         })
+    --     end,
+    -- },
 }
