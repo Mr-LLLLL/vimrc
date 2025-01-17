@@ -57,10 +57,47 @@ return {
             },
             {
                 "<leader>ap",
-                "<cmd>CodeCompanionChat Add<cr>",
+                function()
+                    vim.cmd("CodeCompanionChat Add")
+                    vim.cmd("normal! ")
+                end,
                 mode = { "v" },
                 { noremap = true, silent = true },
                 desc = "CodeCompanionChat Add"
+            },
+            {
+                "<leader>af",
+                function()
+                    local wins = vim.api.nvim_list_wins()
+                    for _, win in pairs(wins) do
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        if "codecompanion" == vim.api.nvim_get_option_value("filetype", { buf = buf }) then
+                            vim.api.nvim_set_current_win(win)
+                            vim.cmd("normal! G")
+                        end
+                    end
+                end,
+                mode = { "n" },
+                { noremap = true, silent = true },
+                desc = "CodeCompanionChat Forcus"
+            },
+            {
+                "<leader>af",
+                function()
+                    vim.cmd("CodeCompanionChat Add")
+                    vim.cmd("normal! ")
+                    local wins = vim.api.nvim_list_wins()
+                    for _, win in pairs(wins) do
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        if "codecompanion" == vim.api.nvim_get_option_value("filetype", { buf = buf }) then
+                            vim.api.nvim_set_current_win(win)
+                            vim.cmd("normal! G")
+                        end
+                    end
+                end,
+                mode = { "v" },
+                { noremap = true, silent = true },
+                desc = "CodeCompanionChat Forcus"
             },
         },
         config = function()
