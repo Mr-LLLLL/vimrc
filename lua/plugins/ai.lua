@@ -58,8 +58,8 @@ return {
             {
                 "<leader>ap",
                 function()
-                    vim.cmd("CodeCompanionChat Add")
-                    vim.cmd("normal! ")
+                    vim.cmd("CodeCompanionChat Add") -- by default if chat is not open, it will add the selection and focus
+                    vim.cmd("normal! \27")           -- escape key
                 end,
                 mode = { "v" },
                 { noremap = true, silent = true },
@@ -68,34 +68,29 @@ return {
             {
                 "<leader>af",
                 function()
-                    local wins = vim.api.nvim_list_wins()
-                    for _, win in pairs(wins) do
-                        local buf = vim.api.nvim_win_get_buf(win)
-                        if "codecompanion" == vim.api.nvim_get_option_value("filetype", { buf = buf }) then
-                            vim.api.nvim_set_current_win(win)
-                            vim.cmd("normal! G")
-                        end
-                    end
+                    vim.cmd("CodeCompanionChat Add") -- by default if chat is not open, it will add the selection and focus
+                    vim.cmd("normal! \27")           -- escape key
+
+                    vim.api.nvim_set_current_win(require("codecompanion").last_chat().ui.winnr)
+                    vim.cmd("normal! G")
                 end,
-                mode = { "n" },
+                mode = { "v" },
                 { noremap = true, silent = true },
                 desc = "CodeCompanionChat Forcus"
             },
             {
                 "<leader>af",
                 function()
-                    vim.cmd("CodeCompanionChat Add")
-                    vim.cmd("normal! ")
-                    local wins = vim.api.nvim_list_wins()
-                    for _, win in pairs(wins) do
-                        local buf = vim.api.nvim_win_get_buf(win)
-                        if "codecompanion" == vim.api.nvim_get_option_value("filetype", { buf = buf }) then
-                            vim.api.nvim_set_current_win(win)
-                            vim.cmd("normal! G")
-                        end
+                    local cc   = require("codecompanion")
+                    local chat = cc.last_chat()
+                    if chat and vim.api.nvim_win_is_valid(chat.ui.winnr) then
+                        vim.api.nvim_set_current_win(chat.ui.winnr)
+                        vim.cmd("normal! G")
+                    else
+                        vim.cmd("CodeCompanionChat Toggle")
                     end
                 end,
-                mode = { "v" },
+                mode = { "n" },
                 { noremap = true, silent = true },
                 desc = "CodeCompanionChat Forcus"
             },
