@@ -1,10 +1,10 @@
 local bo = vim.bo
 
 do
-    bo.tabstop       = 4
-    bo.shiftwidth    = 4
-    bo.softtabstop   = 4
+    bo.tabstop       = 2
+    bo.shiftwidth    = 2
+    bo.softtabstop   = 2
 
-    bo.commentstring = "// %s"
+    bo.commentstring = "# %s"
     bo.makeprg       = "python %"
 end
