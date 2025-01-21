@@ -183,6 +183,14 @@ return {
                                 callback = "keymaps.stop",
                                 description = "Stop Request",
                             },
+                            clear = {
+                                modes = {
+                                    n = "<c-l>",
+                                },
+                                index = 6,
+                                callback = "keymaps.clear",
+                                description = "Clear Chat",
+                            },
                         }
                     }
                 },
