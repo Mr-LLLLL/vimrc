@@ -22,7 +22,6 @@ return {
             "moyiz/blink-emoji.nvim",
             'hrsh7th/cmp-calc',
             'chrisgrieser/cmp-nerdfont',
-            'hrsh7th/cmp-nvim-lua',
         },
         event = "InsertEnter",
         -- use a release tag to download pre-built binaries
@@ -37,7 +36,7 @@ return {
                 "avante_commands",
                 "avante_mentions",
                 "avante_files",
-                'nvim_lua',
+                'lazydev',
                 'lsp',
                 'path',
                 'buffer',
@@ -102,7 +101,6 @@ return {
                                             Ripgrep = "[RG]",
                                             Emoji = "[Emo]",
                                             Path = "[Path]",
-                                            nvim_lua = "[Lua]",
                                             calc = "[Cal]",
                                             nerdfont = "[Font]",
                                             minuet = "[Deep]",
@@ -112,6 +110,7 @@ return {
                                             codeium = "[Cod]",
                                             supermaven = "[Sup]",
                                             CodeCompanion = "[Comp]",
+                                            LazyDev = "[Lua]",
                                         }
                                         return t[ctx.source_name]
                                     end,
@@ -221,6 +220,12 @@ return {
                         return {}
                     end,
                     providers = {
+                        lazydev = {
+                            name = "LazyDev",
+                            module = "lazydev.integrations.blink",
+                            -- make lazydev completions top priority (see `:h blink.cmp`)
+                            score_offset = 100,
+                        },
                         -- supermaven = {
                         --     name = "supermaven",
                         --     module = "blink.compat.source",
@@ -257,22 +262,6 @@ return {
                             module = "blink.compat.source",
                             score_offset = 10, -- show at a higher priority than lsp
                             opts = {},
-                        },
-                        nvim_lua = {
-                            name = 'nvim_lua', -- IMPORTANT: use the same name as you would for nvim-cmp
-                            module = 'blink.compat.source',
-
-                            -- all blink.cmp source config options work as normal:
-                            score_offset = 5,
-
-                            -- this table is passed directly to the proxied completion source
-                            -- as the `option` field in nvim-cmp's source config
-                            --
-                            -- this is NOT the same as the opts in a plugin's lazy.nvim spec
-                            opts = {
-                                -- this is an option from cmp-digraphs
-                                -- cache_digraphs_on_start = true,
-                            },
                         },
                         nerdfont = {
                             name = 'nerdfont', -- IMPORTANT: use the same name as you would for nvim-cmp
