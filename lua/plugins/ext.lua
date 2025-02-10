@@ -289,14 +289,6 @@ return {
                 { noremap = true, silent = true },
                 desc = "Kulala request",
             },
-            {
-                "<leader>ch",
-                function()
-                    require('kulala').toggle_view()
-                end,
-                { noremap = true, silent = true },
-                desc = "Kulala toggle header",
-            },
         },
         init = function()
             vim.filetype.add({
@@ -306,7 +298,52 @@ return {
             })
         end,
         config = function()
-            require("kulala").setup()
+            require("kulala").setup({
+                kulala_keymaps = {
+                    ["Show headers"] = {
+                        "H",
+                        function()
+                            require("kulala.ui").show_headers()
+                        end,
+                    },
+                    ["Show body"] = {
+                        "B",
+                        function()
+                            require("kulala.ui").show_body()
+                        end,
+                    },
+                    ["Show headers and body"] = {
+                        "A",
+                        function()
+                            require("kulala.ui").show_headers_body()
+                        end,
+                    },
+                    ["Show verbose"] = {
+                        "D",
+                        function()
+                            require("kulala.ui").show_verbose()
+                        end,
+                    },
+                    ["Show script output"] = {
+                        "O",
+                        function()
+                            require("kulala.ui").show_script_output()
+                        end,
+                    },
+                    ["Show stats"] = {
+                        "S",
+                        function()
+                            require("kulala.ui").show_stats()
+                        end,
+                    },
+                    ["Close"] = {
+                        "q",
+                        function()
+                            require("kulala.ui").close_kulala_buffer()
+                        end,
+                    },
+                }
+            })
         end
     },
     -- {
