@@ -179,7 +179,10 @@ return {
 
                     ['<c-n>'] = { 'snippet_forward', 'fallback' },
                     ['<c-p>'] = { 'snippet_backward', 'fallback' },
-                    cmdline = {
+                },
+                cmdline = {
+                    enabled = true,
+                    keymap = {
                         preset = 'none',
                         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
                         ['<C-e>'] = { 'hide', "fallback" },
@@ -194,7 +197,27 @@ return {
 
                         ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
                         ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
-                    }
+                    },
+                    sources = function()
+                        local type = vim.fn.getcmdtype()
+                        -- Search forward and backward
+                        if type == '/' or type == '?' then return { 'buffer' } end
+                        -- Commands
+                        if type == ':' or type == '@' then return { 'cmdline', 'path' } end
+
+                        return {}
+                    end,
+                    completion = {
+                        menu = {
+                            draw = {
+                                columns = {
+                                    { 'kind_icon' },
+                                    { 'label',      'label_description', gap = 1 },
+                                    { 'source_name' },
+                                },
+                            },
+                        },
+                    },
                 },
 
                 appearance = {
@@ -210,14 +233,6 @@ return {
                 sources = {
                     default = function()
                         return default_source
-                    end,
-                    cmdline = function()
-                        local type = vim.fn.getcmdtype()
-                        -- Search forward and backward
-                        if type == '/' or type == '?' then return { 'buffer' } end
-                        -- Commands
-                        if type == ':' or type == '@' then return { 'cmdline', 'path' } end
-                        return {}
                     end,
                     providers = {
                         lazydev = {
