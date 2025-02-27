@@ -208,6 +208,12 @@ return {
                         return {}
                     end,
                     completion = {
+                        list = {
+                            selection = {
+                                preselect = false,
+                                auto_insert = true
+                            },
+                        },
                         menu = {
                             auto_show = true,
                             draw = {
@@ -218,6 +224,7 @@ return {
                                 },
                             },
                         },
+                        ghost_text = { enabled = true },
                     },
                 },
 
