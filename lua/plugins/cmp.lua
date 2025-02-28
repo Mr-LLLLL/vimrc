@@ -114,7 +114,7 @@ return {
                                         }
                                         return t[ctx.source_name]
                                     end,
-                                    highlight = 'BlinkCmpSource',
+                                    highlight = 'CmpItemMenu',
                                 },
 
                             },

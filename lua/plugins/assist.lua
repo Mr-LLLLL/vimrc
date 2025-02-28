@@ -592,7 +592,6 @@ return {
         "hat0uma/csvview.nvim",
         ---@module "csvview"
         ---@type CsvView.Options
-        ft = { "csv" },
         cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
         opts = {
             parser = { comments = { "#", "//" } },
