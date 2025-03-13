@@ -72,10 +72,10 @@ return {
                     list = {
                         selection = {
                             preselect = function(ctx)
-                                return ctx.mode ~= 'cmdline'
+                                return true
                             end,
                             auto_insert = function(ctx)
-                                return ctx.mode == "cmdline"
+                                return false
                             end,
                         },
                     },
