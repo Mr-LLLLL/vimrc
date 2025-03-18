@@ -417,9 +417,9 @@ return {
                     enabled = true,
                     window = {
                         border = "rounded",
-                        max_height = 1,
                         winblend = vim.g.custom_blend,
                         winhighlight = 'FloatBorder:FloatBorder',
+                        show_documentation = false,
                     }
                 }
             })
