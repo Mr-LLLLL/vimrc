@@ -90,6 +90,11 @@ return {
                                 kind_icon = {
                                     ellipsis = true,
                                 },
+                                label_description = {
+                                    width = { max = 30 },
+                                    text = function(ctx) return ctx.label_description end,
+                                    highlight = 'CmpItemMenu',
+                                },
                                 source_name = {
                                     width = { max = 30 },
                                     text = function(ctx)
