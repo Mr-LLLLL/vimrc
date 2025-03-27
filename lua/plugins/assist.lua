@@ -384,7 +384,7 @@ return {
             -- always use `q` to quit preview windows
             quit_with_q = true,
 
-            no_match_paren_in_insert_mode = false,
+            no_match_paren_in_insert_mode = true,
             -- in qf window, use <cr> jump to
             jump_quickfix_item = true,
             -- define some useful keymap for generic. details see init_keymap function

@@ -63,10 +63,19 @@ local function load_hi()
     api.nvim_set_hl(0, "LspInfoBorder", { link = 'CustomBorder' })
 end
 
+local function del_km()
+    vim.keymap.del('n', "grn")
+    vim.keymap.del({ 'n', 'x' }, "gra")
+    vim.keymap.del('n', "grr")
+    vim.keymap.del('n', "gri")
+    vim.keymap.del('n', "gO")
+end
+
 local function load()
     load_custom_map()
     load_autocmd()
     load_hi()
+    del_km()
 end
 
 load()
