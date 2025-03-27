@@ -200,7 +200,7 @@ return {
             end
 
             require("notify").setup({
-                background_colour = "Normal",
+                background_colour = require("common").colors.CustomBorderBg,
                 fps = 30,
                 icons = {
                     DEBUG = glyphs["debug"],
