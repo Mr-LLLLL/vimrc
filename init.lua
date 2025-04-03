@@ -54,11 +54,7 @@ local function load_neovide()
         return
     end
 
-    -- BUG: fix verticle line have some space in neovide
-    o.linespace = -2
-
-    -- BUG delay set this value
-    vim.defer_fn(function() g.neovide_fullscreen = true end, 500)
+    g.neovide_fullscreen                     = true
     g.neovide_confirm_quit                   = true
     g.neovide_floating_blur_amount_x         = 0.0
     g.neovide_floating_blur_amount_y         = 0.0
@@ -66,12 +62,12 @@ local function load_neovide()
     g.neovide_floating_z_height              = 10
     g.neovide_light_angle_degrees            = 45
     g.neovide_light_radius                   = 5
-    g.neovide_transparency                   = 1.0
-    g.neovide_scroll_animation_length        = 0.3
+    g.neovide_opacity                        = 1.0
+    g.neovide_scroll_animation_length        = 0.150
+    g.neovide_cursor_animation_length        = 0.04
     g.neovide_scroll_animation_far_lines     = 1
     g.neovide_cursor_trail_size              = 0.8
     g.neovide_cursor_antialiasing            = true
-    -- g.neovide_cursor_animation_length=1.00
     g.neovide_cursor_unfocused_outline_width = 0.125
     g.neovide_hide_mouse_when_typing         = true
     g.neovide_underline_automatic_scaling    = true
