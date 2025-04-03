@@ -63,8 +63,8 @@ local function load_neovide()
     g.neovide_light_angle_degrees            = 45
     g.neovide_light_radius                   = 5
     g.neovide_opacity                        = 1.0
-    g.neovide_scroll_animation_length        = 0.150
-    g.neovide_cursor_animation_length        = 0.04
+    g.neovide_scroll_animation_length        = 0.3
+    g.neovide_cursor_animation_length        = 0.3
     g.neovide_scroll_animation_far_lines     = 1
     g.neovide_cursor_trail_size              = 0.8
     g.neovide_cursor_antialiasing            = true
@@ -76,7 +76,7 @@ local function load_neovide()
     g.neovide_remember_window_size           = true
     g.neovide_profiler                       = false
     g.neovide_cursor_vfx_mode                = "pixiedust"
-    g.neovide_cursor_vfx_particle_density    = 50.0
+    g.neovide_cursor_vfx_particle_density    = 20.0
     g.neovide_cursor_vfx_opacity             = 200.0
     g.neovide_cursor_vfx_particle_phase      = 1.5
     g.neovide_cursor_vfx_particle_curl       = 1.0
