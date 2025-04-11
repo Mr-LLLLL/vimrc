@@ -218,6 +218,7 @@ end
 
 m.get_tele_project   = function()
     local act = require("telescope._extensions.project.actions")
+    local tele_act = require("telescope.actions")
     require("telescope").extensions.project.project {
         display_type = 'two-segment',
         attach_mappings = function(prompt_bufnr, map)
@@ -242,6 +243,7 @@ m.get_tele_project   = function()
             map({ 'i' }, '<c-r>', function() end)
             map({ 'i' }, '<c-v>', function() end)
             map({ 'i' }, '<c-b>', function() end)
+            map({ 'i' }, '<c-c>', tele_act.close)
             -- map({ 'i' }, '<c-o>', function() vim.cmd("stopinsert") end)
             return true
         end,
