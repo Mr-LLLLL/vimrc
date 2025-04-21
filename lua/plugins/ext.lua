@@ -336,6 +336,12 @@ return {
                             require("kulala.ui").show_stats()
                         end,
                     },
+                    ["Show help"] = {
+                        "g?",
+                        function()
+                            require("kulala.ui").show_help()
+                        end,
+                    },
                     ["Close"] = {
                         "q",
                         function()
