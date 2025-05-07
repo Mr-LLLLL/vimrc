@@ -24,6 +24,9 @@ return {
                         text = '┆',
                     },
                 },
+                preview_config = {
+                    border = 'rounded',
+                },
                 signs_staged = {
                     add          = {
                         text = '│',
