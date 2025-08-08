@@ -348,7 +348,7 @@ return {
                                 -- The number of lines to show around each match in the preview
                                 -- (documentation) window. For example, 5 means to show 5 lines
                                 -- before, then the match, and another 5 lines after the match.
-                                context_size = 5,
+                                -- context_size = 5,
 
                                 -- The maximum file size of a file that ripgrep should include in
                                 -- its search. Useful when your project contains large files that
@@ -356,7 +356,7 @@ return {
                                 -- Examples:
                                 -- "1024" (bytes by default), "200K", "1M", "1G", which will
                                 -- exclude files larger than that size.
-                                max_filesize = "1M",
+                                -- max_filesize = "1M",
 
                                 -- Specifies how to find the root of the project where the ripgrep
                                 -- search will start from. Accepts the same options as the marker
@@ -372,7 +372,7 @@ return {
                                 -- accepts. Defaults to "--ignore-case". See `rg --help` for all the
                                 -- available options ripgrep supports, but you can try
                                 -- "--case-sensitive" or "--smart-case".
-                                search_casing = "--ignore-case",
+                                -- search_casing = "--ignore-case",
 
                                 -- (advanced) Any additional options you want to give to ripgrep.
                                 -- See `rg -h` for a list of all available options. Might be
@@ -380,7 +380,7 @@ return {
                                 -- If you have an idea for a default, please open an issue!
                                 --
                                 -- Not everything will work (obviously).
-                                additional_rg_options = {},
+                                -- additional_rg_options = {},
 
                                 -- When a result is found for a file whose filetype does not have a
                                 -- treesitter parser installed, fall back to regex based highlighting
