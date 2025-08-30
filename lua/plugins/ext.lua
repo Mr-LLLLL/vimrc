@@ -299,6 +299,9 @@ return {
         end,
         config = function()
             require("kulala").setup({
+                ui = {
+                    max_response_size = 3276800,
+                },
                 kulala_keymaps = {
                     ["Show headers"] = {
                         "H",

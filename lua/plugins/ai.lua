@@ -195,43 +195,45 @@ return {
                     }
                 },
                 adapters = {
-                    ollama = function()
-                        return require("codecompanion.adapters").extend("ollama", {
-                            env = {
-                                url = "http://127.0.0.1:11434",
-                                api_key = "",
-                            },
-                            schema = {
-                                model = {
-                                    default = "llama3.1",
-                                }
-                            },
-                            parameters = {
-                                sync = true,
-                            },
-                        })
-                    end,
-                    deepseek = function()
-                        return require("codecompanion.adapters").extend("openai_compatible", {
-                            env = {
-                                url = "https://api.deepseek.com",
-                                api_key = "OPENAI_API_KEY",
-                                caht_url = "/chat/completions",
-                            },
-                            schema = {
-                                model = {
-                                    default = "deepseek-coder",
-                                }
-                            },
-                            headers = {
-                                ["Content-Type"] = "application/json",
-                                ["Authorization"] = "Bearer ${api_key}",
-                            },
-                            parameters = {
-                                sync = true,
-                            },
-                        })
-                    end,
+                    http = {
+                        ollama = function()
+                            return require("codecompanion.adapters").extend("ollama", {
+                                env = {
+                                    url = "http://127.0.0.1:11434",
+                                    api_key = "",
+                                },
+                                schema = {
+                                    model = {
+                                        default = "llama3.1",
+                                    }
+                                },
+                                parameters = {
+                                    sync = true,
+                                },
+                            })
+                        end,
+                        deepseek = function()
+                            return require("codecompanion.adapters").extend("openai_compatible", {
+                                env = {
+                                    url = "https://api.deepseek.com",
+                                    api_key = "OPENAI_API_KEY",
+                                    caht_url = "/chat/completions",
+                                },
+                                schema = {
+                                    model = {
+                                        default = "deepseek-coder",
+                                    }
+                                },
+                                headers = {
+                                    ["Content-Type"] = "application/json",
+                                    ["Authorization"] = "Bearer ${api_key}",
+                                },
+                                parameters = {
+                                    sync = true,
+                                },
+                            })
+                        end,
+                    }
                 },
             })
 
