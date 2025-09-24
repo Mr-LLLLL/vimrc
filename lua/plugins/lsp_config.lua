@@ -7,16 +7,13 @@ local function set_lsp()
     local lsp_flags = require("common").lsp_flags
     local capabilities = require("common").lsp_capabilities()
 
-    local lspconfig = require("lspconfig")
-    lspconfig.lua_ls.setup {
+    vim.lsp.config('lua_ls', {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "lua-language-server" },
         filetypes = { "lua" },
         log_level = 2,
-        root_dir = lspconfig.util.root_pattern(".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml",
-            "stylua.toml", "selene.toml", "selene.yml", ".git"),
         single_file_support = true,
         settings = {
             Lua = {
@@ -38,36 +35,33 @@ local function set_lsp()
                 },
             },
         },
-    }
+    })
 
-    lspconfig.buf_ls.setup {
+    vim.lsp.config('buf_ls',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "buf", "beta", "lsp", "--timeout=0", "--log-format=text" },
         filetypes = { "proto" },
-        root_dir = lspconfig.util.root_pattern("buf.work.yaml", ".git"),
         single_file_support = true,
-    }
+    })
 
-    lspconfig.jsonls.setup {
+    vim.lsp.config('jsonls',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "vscode-json-language-server", "--stdio" },
         filetypes = { "json", "jsonc" },
         init_options = { provideFormatter = true },
-        root_dir = lspconfig.util.find_git_ancestor,
         single_file_support = true,
-    }
+    })
 
-    lspconfig.yamlls.setup {
+    vim.lsp.config('yamlls',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "yaml-language-server", "--stdio" },
         filetypes = { "yaml", "yaml.docker-compose" },
-        root_dir = lspconfig.util.find_git_ancestor,
         single_file_support = true,
         setting = {
             redhat = {
@@ -76,26 +70,24 @@ local function set_lsp()
                 }
             }
         }
-    }
+    })
 
-    lspconfig.taplo.setup {
+    vim.lsp.config('taplo', {
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "taplo", "lsp", "stdio" },
         filetypes = { "toml" },
-        root_dir = lspconfig.util.find_git_ancestor,
         single_file_support = true,
-    }
+    })
 
-    lspconfig.pyright.setup {
+    vim.lsp.config('pyright',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "pyright-langserver", "--stdio" },
         filetypes = { "python" },
         single_file_support = true,
-        root_dir = lspconfig.util.find_git_ancestor,
         settings = {
             {
                 python = {
@@ -107,27 +99,18 @@ local function set_lsp()
                 }
             }
         }
-    }
+    })
 
-    lspconfig.clangd.setup {
+    vim.lsp.config('clangd',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
         cmd = { "clangd" },
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda", --[[ "proto" ]] },
         single_file_support = true,
-        root_dir = lspconfig.util.root_pattern(
-            '.clangd',
-            '.clang-tidy',
-            '.clang-format',
-            'compile_commands.json',
-            'compile_flags.txt',
-            'configure.ac',
-            '.git'
-        )
-    }
+    })
 
-    lspconfig.bashls.setup {
+    vim.lsp.config('bashls',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -135,10 +118,9 @@ local function set_lsp()
         cmd_env = { GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)" },
         filetypes = { "sh" },
         single_file_support = true,
-        root_dir = lspconfig.util.find_git_ancestor
-    }
+    })
 
-    lspconfig.vimls.setup {
+    vim.lsp.config('vimls',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -163,11 +145,10 @@ local function set_lsp()
             },
             vimruntime = ""
         },
-        root_dir = lspconfig.util.find_git_ancestor,
         single_file_support = true,
-    }
+    })
 
-    lspconfig.gradle_ls.setup {
+    vim.lsp.config('gradle_ls',{
         on_attach = on_attach,
         capabilities = capabilities,
         flags = lsp_flags,
@@ -178,9 +159,8 @@ local function set_lsp()
                 gradleWrapperEnabled = true
             }
         },
-        root_dir = lspconfig.util.root_pattern("settings.gradle"),
         single_file_support = true,
-    }
+    })
 end
 
 local function set_lsp_autocmd()
@@ -317,7 +297,6 @@ return {
             }
 
             vim.diagnostic.config(config)
-            require('lspconfig.ui.windows').default_options.border = 'rounded'
 
             set_lsp_autocmd()
             set_lsp()
