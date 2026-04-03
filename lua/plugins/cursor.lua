@@ -164,28 +164,19 @@ return {
     {
         'kylechui/nvim-surround',
         keys = {
-            { "y",  nil, mode = "n" },
-            { "dx", nil, mode = "n" },
-            { "cx", nil, mode = "n" },
-            { "X",  nil, mode = "x" },
-            { "gX", nil, mode = "x" },
+            { "yx",  "<Plug>(nvim-surround-normal)",          mode = { "n" }, desc = "Add a surrounding pair around a motion (normal mode)" },
+            { "yxx", "<Plug>(nvim-surround-normal-cur)",      mode = { "n" }, desc = "Add a surrounding pair around the current line (normal mode)" },
+            { "yX",  "<Plug>(nvim-surround-normal-line)",     mode = { "n" }, desc = "Add a surrounding pair around a motion, on new lines (normal mode)" },
+            { "yXX", "<Plug>(nvim-surround-normal-cur-line)", mode = { "n" }, desc = "Add a surrounding pair around the current line, on new lines (normal mode)" },
+            { "dx",  "<Plug>(nvim-surround-delete)",          mode = { "n" }, desc = "Delete a surrounding pair" },
+            { "cx",  "<Plug>(nvim-surround-change)",          mode = { "n" }, desc = "Change a surrounding pair" },
+            { "X",   "<Plug>(nvim-surround-visual)",          mode = { "x" }, desc = "Add a surrounding pair around a visual selection" },
+            { "gX",  "<Plug>(nvim-surround-visual-line)",     mode = { "x" }, desc = "Add a surrounding pair around a visual selection, on new lines" }
         },
         version = "*",
         config = function()
-            require("nvim-surround").setup({
-                keymaps = {
-                    insert = false,
-                    insert_line = false,
-                    normal = "yx",
-                    normal_cur = "yxx",
-                    normal_line = "yX",
-                    normal_cur_line = "yXX",
-                    visual = "X",
-                    visual_line = "gX",
-                    delete = "dx",
-                    change = "cx",
-                },
-            })
+            g.nvim_surround_no_normal_mappings = true
+            require("nvim-surround").setup({})
         end
     },
     {

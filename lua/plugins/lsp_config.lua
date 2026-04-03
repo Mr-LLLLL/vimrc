@@ -36,6 +36,8 @@ local function set_lsp()
             },
         },
     })
+    vim.lsp.enable("lua_ls")
+    
 
     vim.lsp.config('buf_ls',{
         on_attach = on_attach,
@@ -45,6 +47,7 @@ local function set_lsp()
         filetypes = { "proto" },
         single_file_support = true,
     })
+    vim.lsp.enable("buf_ls")
 
     vim.lsp.config('jsonls',{
         on_attach = on_attach,
@@ -55,6 +58,7 @@ local function set_lsp()
         init_options = { provideFormatter = true },
         single_file_support = true,
     })
+    vim.lsp.enable("jsonls")
 
     vim.lsp.config('yamlls',{
         on_attach = on_attach,
@@ -71,6 +75,7 @@ local function set_lsp()
             }
         }
     })
+    vim.lsp.enable("yamlls")
 
     vim.lsp.config('taplo', {
         on_attach = on_attach,
@@ -80,6 +85,7 @@ local function set_lsp()
         filetypes = { "toml" },
         single_file_support = true,
     })
+    vim.lsp.enable("taplo")
 
     vim.lsp.config('pyright',{
         on_attach = on_attach,
@@ -100,6 +106,7 @@ local function set_lsp()
             }
         }
     })
+    vim.lsp.enable("pyright")
 
     vim.lsp.config('clangd',{
         on_attach = on_attach,
@@ -109,6 +116,7 @@ local function set_lsp()
         filetypes = { "c", "cpp", "objc", "objcpp", "cuda", --[[ "proto" ]] },
         single_file_support = true,
     })
+    vim.lsp.enable("clangd")
 
     vim.lsp.config('bashls',{
         on_attach = on_attach,
@@ -119,6 +127,7 @@ local function set_lsp()
         filetypes = { "sh" },
         single_file_support = true,
     })
+    vim.lsp.enable("bashls")
 
     vim.lsp.config('vimls',{
         on_attach = on_attach,
@@ -147,6 +156,7 @@ local function set_lsp()
         },
         single_file_support = true,
     })
+    vim.lsp.enable("vimls")
 
     vim.lsp.config('gradle_ls',{
         on_attach = on_attach,
@@ -161,6 +171,7 @@ local function set_lsp()
         },
         single_file_support = true,
     })
+    vim.lsp.enable("gradle_ls")
 end
 
 local function set_lsp_autocmd()
