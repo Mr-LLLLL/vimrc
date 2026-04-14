@@ -32,6 +32,7 @@ return {
                 "vim",
                 "yaml",
                 "zsh",
+                "http",
             }
 
             vim.api.nvim_create_autocmd("FileType", {
