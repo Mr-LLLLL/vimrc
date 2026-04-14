@@ -203,7 +203,7 @@ local function set_lsp_autocmd()
                 end
 
                 for _, client in ipairs(clients) do
-                    if not client.is_stopped() then
+                    if not client:is_stopped() then
                         format()
                         return
                     end
@@ -226,8 +226,8 @@ local function set_lsp_autocmd()
                 end
 
                 for _, client in ipairs(clients) do
-                    if not client.is_stopped() then
-                        vim.lsp.codelens.refresh({ bufnr = opt.buf })
+                    if not client:is_stopped() then
+                        vim.lsp.codelens.enable(true, { bufnr = opt.buf })
                         return
                     end
                 end
