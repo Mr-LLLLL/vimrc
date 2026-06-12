@@ -303,6 +303,8 @@ return {
                     max_response_size = 3276800,
                 },
                 kulala_keymaps = {
+                    ["Previous tab"] = nil,
+                    ["Next tab"] = nil,
                     ["Show headers"] = {
                         "H",
                         function()
