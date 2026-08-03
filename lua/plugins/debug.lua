@@ -96,6 +96,7 @@ local get_dapui_conf = function()
             edit = "e",
             -- repl = "r",
             toggle = "t",
+            watch = "w",
         },
         -- Use this to override mappings for specific elements
         element_mappings = {
