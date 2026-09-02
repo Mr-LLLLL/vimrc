@@ -198,43 +198,41 @@ return {
             -- },
         },
     },
-    {
-        'ThePrimeagen/refactoring.nvim',
-        dependencies = {
-            'nvim-telescope/telescope.nvim',
-        },
-        keys = {
-            { "<leader>rf", nil, mode = { "n", "v" }, desc = "Refactor" }
-        },
-        config = function()
-            require('refactoring').setup({
-                -- prompt for return type
-                prompt_func_return_type = {
-                    go = true,
-                    cpp = true,
-                    c = true,
-                    java = true,
-                },
-                -- prompt for function parameters
-                prompt_func_param_type = {
-                    go = true,
-                    cpp = true,
-                    c = true,
-                    java = true,
-                },
-            })
-
-            -- remap to open the Telescope refactoring menu in visual mode
-            km.set(
-                { 'v', 'n' },
-                "<leader>rf",
-                "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
-                { noremap = true }
-            )
-
-            require("telescope").load_extension("refactoring")
-        end
-    },
+    -- {
+    --     'ThePrimeagen/refactoring.nvim',
+    --     dependencies = {
+    --         "lewis6991/async.nvim",
+    --     },
+    --     keys = {
+    --         { "<leader>rf", nil, mode = { "n", "x" }, desc = "Refactor" }
+    --     },
+    --     config = function()
+    --         require('refactoring').setup({
+    --             -- prompt for return type
+    --             prompt_func_return_type = {
+    --                 go = true,
+    --                 cpp = true,
+    --                 c = true,
+    --                 java = true,
+    --             },
+    --             -- prompt for function parameters
+    --             prompt_func_param_type = {
+    --                 go = true,
+    --                 cpp = true,
+    --                 c = true,
+    --                 java = true,
+    --             },
+    --         })
+    --
+    --         -- remap to open the Telescope refactoring menu in visual mode
+    --         km.set({ "n", "x" }, "<leader>rf", function()
+    --             -- this keymap doesn't select any textobject by default, so you may need to provide one each time you use it.
+    --             require("refactoring").select_refactor()
+    --         end, { desc = "Select refactor" })
+    --
+    --         -- require("telescope").load_extension("refactoring")
+    --     end
+    -- },
     -- {
     --     "danymat/neogen",
     --     version = "*",
