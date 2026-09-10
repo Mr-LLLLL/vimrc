@@ -268,6 +268,12 @@ return {
                         --     async = true,
                         --     opts = {},
                         -- },
+                        codecompanion = {
+                            name = 'CodeCompanion',
+                            module = "codecompanion.providers.completion.blink",
+                            enabled = true,
+                            score_offset = -1,
+                        },
                         minuet = {
                             name = 'minuet',
                             module = 'minuet.blink',
