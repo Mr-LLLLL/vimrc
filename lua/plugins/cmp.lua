@@ -252,6 +252,9 @@ return {
                             name = "LazyDev",
                             module = "lazydev.integrations.blink",
                             -- make lazydev completions top priority (see `:h blink.cmp`)
+                            enabled = function()
+                                return vim.bo.filetype == "lua"
+                            end,
                             score_offset = 100,
                         },
                         -- supermaven = {
@@ -271,8 +274,10 @@ return {
                         codecompanion = {
                             name = 'CodeCompanion',
                             module = "codecompanion.providers.completion.blink",
-                            enabled = true,
-                            score_offset = -1,
+                            enabled = function()
+                                return vim.bo.filetype == "codecompanion"
+                            end,
+                            score_offset = 10,
                         },
                         minuet = {
                             name = 'minuet',
@@ -414,6 +419,9 @@ return {
                         dadbod = {
                             name = "Dadbod",
                             module = "vim_dadbod_completion.blink",
+                            enabled = function()
+                                return vim.bo.filetype == "sql"
+                            end,
                             score_offset = 5,
                         },
                     },

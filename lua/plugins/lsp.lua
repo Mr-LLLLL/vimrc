@@ -365,6 +365,7 @@ return {
             icons = { breakpoint = '🧘', currentpos = '🏃' }, -- setup to `false` to disable icons setup
             verbose = false, -- output loginf in messages
             lsp_cfg = {
+                cmd = { "gopls", "-remote=auto" },
                 on_attach = require("common").lsp_on_attach,
                 capabilities = require("common").lsp_capabilities(),
                 flags = require("common").lsp_flags,
