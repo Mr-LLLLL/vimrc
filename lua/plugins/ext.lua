@@ -852,6 +852,34 @@ return {
             -- see below for full list of optional dependencies 👇
         },
         config = function()
+            -- obsidian.nvim bails out with a FileNotFoundError when the workspace directory
+            -- does not exist yet, so resolve it up front and create it on first use.
+            -- Export OBSIDIAN_VAULT to point at a different vault without editing this file.
+            local function ensure_dir(path)
+                if vim.fn.isdirectory(path) == 1 then
+                    return true
+                end
+                return pcall(vim.fn.mkdir, path, "p") and vim.fn.isdirectory(path) == 1
+            end
+
+            local vault = vim.fn.expand(vim.env.OBSIDIAN_VAULT or "~/Documents/notes")
+            if not ensure_dir(vault) then
+                -- Don't take the whole markdown filetype down with us if the vault cannot be
+                -- created (read-only home, typo in OBSIDIAN_VAULT, ...).
+                vim.notify(
+                    ("obsidian.nvim: cannot create vault '%s'. Set OBSIDIAN_VAULT to a writable path."):format(vault),
+                    vim.log.levels.WARN
+                )
+                return
+            end
+
+            -- `templates.subdir` below is validated by obsidian.nvim, so make sure it exists too.
+            ensure_dir(vault .. "/templates")
+
+            -- obsidian.nvim registers its completion sources through `cmp`. blink.cmp provides
+            -- that shim via blink.compat, so only turn the sources on when one of them is around.
+            local has_cmp = (pcall(require, "cmp"))
+
             require("obsidian").setup({
                 -- A list of workspace names, paths, and configuration overrides.
                 -- If you use the Obsidian app, the 'path' of a workspace should generally be
@@ -862,7 +890,7 @@ return {
                 workspaces = {
                     {
                         name = "personal",
-                        path = "~/Documents/notes",
+                        path = vault,
                     },
                 },
 
@@ -888,10 +916,11 @@ return {
                     template = nil
                 },
 
-                -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
+                -- Optional, completion of wiki links, local markdown links, and tags.
                 completion = {
-                    -- Set to false to disable completion.
-                    nvim_cmp = true,
+                    -- Set to false to disable completion. `has_cmp` is computed above: it is true
+                    -- when nvim-cmp (or the blink.compat shim) is available.
+                    nvim_cmp = has_cmp,
                     -- Trigger completion at 2 chars.
                     min_chars = 2,
                 },
@@ -1019,9 +1048,9 @@ return {
                 -- URL it will be ignored but you can customize this behavior here.
                 ---@param url string
                 follow_url_func = function(url)
-                    -- Open the URL in the default web browser.
-                    vim.fn.jobstart({ "open", url }) -- Mac OS
-                    -- vim.fn.jobstart({"xdg-open", url})  -- linux
+                    -- Open the URL in the default web browser ("open" is macOS only).
+                    local cmd = vim.fn.has("mac") == 1 and "open" or "xdg-open"
+                    vim.fn.jobstart({ cmd, url }, { detach = true })
                 end,
 
                 -- Optional, set to true if you use the Obsidian Advanced URI plugin.

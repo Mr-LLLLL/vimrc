@@ -168,7 +168,16 @@ return {
                             send = {
                                 modes = {
                                     n = { "<cr>" },
-                                    i = "<C-cr>",
+                                    -- Alt+Enter instead of Ctrl+Enter: legacy terminals
+                                    -- (Windows Terminal included) cannot send <C-CR> at all,
+                                    -- they report it as a plain CR. Alt+Enter at least arrives
+                                    -- as ESC CR, which Neovim decodes as <M-CR>.
+                                    -- WT binds alt+enter to fullscreen by default, so either
+                                    -- unbind that or, better, make WT send the CSI-u form:
+                                    --   { "keys": "alt+enter",
+                                    --     "command": { "action": "sendInput",
+                                    --                  "input": "\u001b[13;3u" } }
+                                    i = "<a-cr>",
                                 },
                                 index = 2,
                                 callback = "keymaps.send",

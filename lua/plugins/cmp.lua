@@ -45,6 +45,9 @@ return {
                 "emoji",
                 "calc",
                 "nerdfont",
+                "obsidian",
+                "obsidian_new",
+                "obsidian_tags",
                 'snippets',
                 -- 'codeium',
                 -- 'supermaven',
@@ -333,6 +336,32 @@ return {
                                 -- this is an option from cmp-digraphs
                                 -- cache_digraphs_on_start = true,
                             },
+                        },
+                        obsidian = {
+                            name = 'obsidian',
+                            module = 'blink.compat.source',
+                            -- obsidian.nvim only registers these sources from `setup()`,
+                            -- which happens when a markdown buffer is opened.
+                            enabled = function()
+                                return vim.bo.filetype == 'markdown'
+                            end,
+                            score_offset = 4,
+                        },
+                        obsidian_new = {
+                            name = 'obsidian_new',
+                            module = 'blink.compat.source',
+                            enabled = function()
+                                return vim.bo.filetype == 'markdown'
+                            end,
+                            score_offset = 3,
+                        },
+                        obsidian_tags = {
+                            name = 'obsidian_tags',
+                            module = 'blink.compat.source',
+                            enabled = function()
+                                return vim.bo.filetype == 'markdown'
+                            end,
+                            score_offset = 3,
                         },
                         emoji = {
                             module = "blink-emoji",

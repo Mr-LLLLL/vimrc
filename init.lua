@@ -2,7 +2,55 @@ local o = vim.o
 local km = vim.keymap
 local g = vim.g
 
+-- WSL has no clipboard tool of its own, so +/* silently do nothing out of the box.
+-- Prefer win32yank.exe when it is installed, otherwise use the clip.exe/powershell
+-- pair every WSL distro ships, and fall back to OSC 52 for terminals that support it.
+local function setup_wsl_clipboard()
+    if vim.fn.has("wsl") ~= 1 then
+        return
+    end
+
+    if vim.fn.executable("win32yank.exe") == 1 then
+        g.clipboard = {
+            name = "wsl-win32yank",
+            copy = {
+                ["+"] = { "win32yank.exe", "-i", "--crlf" },
+                ["*"] = { "win32yank.exe", "-i", "--crlf" },
+            },
+            paste = {
+                ["+"] = { "win32yank.exe", "-o", "--lf" },
+                ["*"] = { "win32yank.exe", "-o", "--lf" },
+            },
+            cache_enabled = 1,
+        }
+    elseif vim.fn.executable("clip.exe") == 1 and vim.fn.executable("powershell.exe") == 1 then
+        local paste = {
+            "powershell.exe",
+            "-NoLogo",
+            "-NoProfile",
+            "-c",
+            '[Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        }
+        g.clipboard = {
+            name = "wsl-clip",
+            copy = {
+                ["+"] = { "clip.exe" },
+                ["*"] = { "clip.exe" },
+            },
+            paste = {
+                ["+"] = paste,
+                ["*"] = paste,
+            },
+            -- clip.exe does not stick around, so there is nothing to cache against.
+            cache_enabled = 0,
+        }
+    else
+        g.clipboard = "osc52"
+    end
+end
+
 local function load_base()
+    setup_wsl_clipboard()
     g.mapleader                          = ","
     g.custom_blend                       = 10
 
@@ -48,6 +96,15 @@ local function load_base()
     o.writebackup                        = false
 
     o.list                               = true
+
+    -- Terminals cannot report <C-/> as-is: it usually arrives as <C-_> (0x1F), and with
+    -- the Windows Terminal `sendInput` snippet it arrives as a CSI-u sequence that nvim
+    -- decodes back into <C-/>. Map both so "/" search works outside of neovide as well.
+    local function start_search()
+        vim.fn.feedkeys("/", "n")
+    end
+    km.set({ "n", "x" }, "<C-/>", start_search, { noremap = true, silent = true, desc = "Search" })
+    km.set({ "n", "x" }, "<C-_>", start_search, { noremap = true, silent = true, desc = "Search (ctrl-/ fallback)" })
 end
 
 local function load_neovide()
@@ -111,10 +168,6 @@ local function load_neovide()
         { noremap = true, silent = true, expr = true, desc = "scale in for neovide" })
     km.set({ 'n' }, "<c-->", function() scale(1 / 1.25) end,
         { noremap = true, silent = true, expr = true, desc = "scale out for neovide" })
-    -- only neovide support <c-/>, don't suport this in neovim
-    km.set({ 'n', 'x' }, "<c-/>", function()
-        vim.fn.feedkeys("/", "n")
-    end, { noremap = true, silent = true, desc = "search" })
 end
 
 local function load_lazy()
