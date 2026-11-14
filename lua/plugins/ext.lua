@@ -278,153 +278,123 @@ return {
     --         km.set('n', "<space>to", "<cmd>Pantran<CR>i", { noremap = true, silent = true, desc = "pantran panel" })
     --     end
     -- },
-    {
-        'mistweaverco/kulala.nvim',
-        keys = {
-            {
-                "<leader>cc",
-                function()
-                    require('kulala').run()
-                end,
-                { noremap = true, silent = true },
-                desc = "Kulala request",
-            },
-        },
-        init = function()
-            vim.filetype.add({
-                extension = {
-                    http = "http"
-                }
-            })
-        end,
-        config = function()
-            require("kulala").setup({
-                ui = {
-                    max_response_size = 3276800,
-                },
-                kulala_keymaps = {
-                    ["Previous tab"] = false,
-                    ["Next tab"] = false,
-                    ["Show headers"] = {
-                        "H",
-                        function()
-                            require("kulala.ui").show_headers()
-                        end,
-                    },
-                    ["Show body"] = {
-                        "B",
-                        function()
-                            require("kulala.ui").show_body()
-                        end,
-                    },
-                    ["Show headers and body"] = {
-                        "A",
-                        function()
-                            require("kulala.ui").show_headers_body()
-                        end,
-                    },
-                    ["Show verbose"] = {
-                        "D",
-                        function()
-                            require("kulala.ui").show_verbose()
-                        end,
-                    },
-                    ["Show script output"] = {
-                        "O",
-                        function()
-                            require("kulala.ui").show_script_output()
-                        end,
-                    },
-                    ["Show stats"] = {
-                        "S",
-                        function()
-                            require("kulala.ui").show_stats()
-                        end,
-                    },
-                    ["Show help"] = {
-                        "g?",
-                        function()
-                            require("kulala.ui").show_help()
-                        end,
-                    },
-                    ["Close"] = {
-                        "q",
-                        function()
-                            require("kulala.ui").close_kulala_buffer()
-                        end,
-                    },
-                }
-            })
-        end
-    },
     -- {
-    --     'rest-nvim/rest.nvim',
-    --     ft = "http",
-    --     rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua", "magick" },
+    --     'mistweaverco/kulala.nvim',
+    --     keys = {
+    --         {
+    --             "<leader>cc",
+    --             function()
+    --                 require('kulala').run()
+    --             end,
+    --             { noremap = true, silent = true },
+    --             desc = "Kulala request",
+    --         },
+    --     },
+    --     init = function()
+    --         vim.filetype.add({
+    --             extension = {
+    --                 http = "http"
+    --             }
+    --         })
+    --     end,
     --     config = function()
-    --         require("rest-nvim").setup({
-    --             client = "curl",
-    --             env_file = ".env",
-    --             env_pattern = "\\.env$",
-    --             env_edit_command = "tabedit",
-    --             custom_dynamic_variables = {},
-    --             logs = {
-    --                 level = "info",
-    --                 save = true,
+    --         require("kulala").setup({
+    --             ui = {
+    --                 max_response_size = 3276800,
     --             },
-    --             -- Skip SSL verification, useful for unknown certificates
-    --             skip_ssl_verification = true,
-    --             -- Encode URL before making request
-    --             encode_url = false,
-    --             -- Highlight request on run
-    --             highlight = {
-    --                 enable = true,
-    --                 timeout = 750,
-    --             },
-    --             result = {
-    --                 split = {
-    --                     horizontal = false,
-    --                     in_place = false,
-    --                     stay_in_current_window_after_split = true,
+    --             kulala_keymaps = {
+    --                 ["Previous tab"] = false,
+    --                 ["Next tab"] = false,
+    --                 ["Show headers"] = {
+    --                     "H",
+    --                     function()
+    --                         require("kulala.ui").show_headers()
+    --                     end,
     --                 },
-    --                 behavior = {
-    --                     show_info = {
-    --                         url = true,
-    --                         headers = true,
-    --                         http_info = true,
-    --                         curl_command = true,
-    --                     },
-    --                     -- executables or functions for formatting response body [optional]
-    --                     -- set them to nil if you want to disable them
-    --                     formatters = {
-    --                         json = "jq",
-    --                         html = function(body)
-    --                             if vim.fn.executable("tidy") == 0 then
-    --                                 return body, { found = false, name = "tidy" }
-    --                             end
-    --                             local fmt_body = vim.fn.system({
-    --                                 "tidy",
-    --                                 "-i",
-    --                                 "-q",
-    --                                 "--tidy-mark", "no",
-    --                                 "--show-body-only", "auto",
-    --                                 "--show-errors", "0",
-    --                                 "--show-warnings", "0",
-    --                                 "-",
-    --                             }, body):gsub("\n$", "")
-    --
-    --                             return fmt_body, { found = true, name = "tidy" }
-    --                         end,
-    --                     },
-    --                 }
-    --             },
-    --             keybinds = {
-    --                 { "<leader>cc", "<cmd>Rest run<cr>",      "Rest Run" },
-    --                 { "<leader>cp", "<cmd>Rest run last<cr>", "Rest Run Last" },
-    --             },
+    --                 ["Show body"] = {
+    --                     "B",
+    --                     function()
+    --                         require("kulala.ui").show_body()
+    --                     end,
+    --                 },
+    --                 ["Show headers and body"] = {
+    --                     "A",
+    --                     function()
+    --                         require("kulala.ui").show_headers_body()
+    --                     end,
+    --                 },
+    --                 ["Show verbose"] = {
+    --                     "D",
+    --                     function()
+    --                         require("kulala.ui").show_verbose()
+    --                     end,
+    --                 },
+    --                 ["Show script output"] = {
+    --                     "O",
+    --                     function()
+    --                         require("kulala.ui").show_script_output()
+    --                     end,
+    --                 },
+    --                 ["Show stats"] = {
+    --                     "S",
+    --                     function()
+    --                         require("kulala.ui").show_stats()
+    --                     end,
+    --                 },
+    --                 ["Show help"] = {
+    --                     "g?",
+    --                     function()
+    --                         require("kulala.ui").show_help()
+    --                     end,
+    --                 },
+    --                 ["Close"] = {
+    --                     "q",
+    --                     function()
+    --                         require("kulala.ui").close_kulala_buffer()
+    --                     end,
+    --                 },
+    --             }
     --         })
     --     end
     -- },
+    {
+        'rest-nvim/rest.nvim',
+        ft = "http",
+        keys = {
+            { "<leader>c", "<cmd>Rest run<cr>", ft = "http", desc = "Rest Run" },
+        },
+        config = function()
+            require("rest-nvim").setup({
+                custom_dynamic_variables = {},
+                env = {
+                    -- 原 env_pattern，v3 里用于查找 .env 文件
+                    pattern = "\\.env$",
+                },
+                -- v3 的日志固定写入 stdpath("log") .. "/rest-nvim.log"
+                _log_level = vim.log.levels.INFO,
+                request = {
+                    -- Skip SSL verification, useful for unknown certificates
+                    skip_ssl_verification = true,
+                    hooks = {
+                        -- Encode URL before making request
+                        encode_url = false,
+                    },
+                },
+                response = {
+                    hooks = {
+                        -- 解码 URL，并在响应体上启用 gq/formatexpr 格式化
+                        decode_url = true,
+                        format = true,
+                    },
+                },
+                -- Highlight request on run
+                highlight = {
+                    enable = true,
+                    timeout = 750,
+                },
+            })
+        end
+    },
     {
         'kristijanhusak/vim-dadbod-ui',
         cmd = "DBUI",

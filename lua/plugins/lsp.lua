@@ -237,6 +237,12 @@ return {
         'mfussenegger/nvim-jdtls',
         ft = "java",
         config = function()
+            -- mason 包根目录（跟着 stdpath 走，不再写死用户名）
+            local pkg = vim.fn.stdpath("data") .. "/mason/packages"
+            -- jdtls 的 equinox launcher 版本随升级变化，动态取最新的
+            local launcher_jars = vim.fn.glob(pkg .. "/jdtls/plugins/org.eclipse.equinox.launcher_*.jar", false, true)
+            local launcher_jar = launcher_jars[1]
+
             local on_attach = function(client, bufnr)
                 require("common").lsp_on_attach(client, bufnr)
                 require('jdtls').setup_dap({ hotcodereplace = 'auto' })
@@ -245,16 +251,14 @@ return {
 
             -- This bundles definition is the same as in the previous section (java-debug installation)
             local bundles = {
-                vim.fn.glob(
-                    "/home/ubuntu/.local/share/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-                    1),
+                vim.fn.glob(pkg .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", 1),
             };
 
             -- This is the new part
             vim.list_extend(
                 bundles,
                 vim.split(
-                    vim.fn.glob("/home/ubuntu/.local/share/nvim/mason/packages/java-test/extension/server/*.jar", 1),
+                    vim.fn.glob(pkg .. "/java-test/extension/server/*.jar", 1),
                     "\n")
             )
             require('jdtls').start_or_attach({
@@ -281,14 +285,14 @@ return {
 
                     -- 💀
                     '-jar',
-                    '/home/ubuntu/.local/share/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+                    launcher_jar,
                     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
                     -- Must point to the                                                     Change this to
                     -- eclipse.jdt.ls installation                                           the actual version
 
 
                     -- 💀
-                    '-configuration', '/home/ubuntu/.local/share/nvim/mason/packages/jdtls/config_linux',
+                    '-configuration', pkg .. '/jdtls/config_linux',
                     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
                     -- Must point to the                      Change to one of `linux`, `win` or `mac`
                     -- eclipse.jdt.ls installation            Depending on your system.
@@ -296,7 +300,7 @@ return {
 
                     -- 💀
                     -- See `data directory configuration` section in the README
-                    '-data', '/home/ubuntu/.cache/jdtls/workspace'
+                    '-data', vim.fn.stdpath('cache') .. '/jdtls/workspace'
                 },
                 -- 💀
                 -- This is the default if not provided, you can remove it. Or adjust as needed.

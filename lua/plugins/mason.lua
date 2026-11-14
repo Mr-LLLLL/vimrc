@@ -25,7 +25,7 @@ return {
                     { 'black' },
                     { 'gopls' },
                     { 'lua-language-server' },
-                    { 'buf-language-server' },
+                    { 'buf' }, -- 包名已由 buf-language-server 更名为 buf
                     { 'json-lsp' },
                     { 'yaml-language-server' },
                     { 'taplo' },

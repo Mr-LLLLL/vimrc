@@ -317,9 +317,19 @@ return {
                 end,
                 { noremap = true, silent = true, desc = "Telescope FileBrowser" })
 
-            require("telescope").load_extension("fzf")
-            require("telescope").load_extension("lazy")
-            require("telescope").load_extension('file_browser')
+            -- 扩展缺失/未编译时只告警，避免整个 telescope config 失败
+            local function load_ext(name)
+                local ok, err = pcall(function()
+                    require("telescope").load_extension(name)
+                end)
+                if not ok then
+                    vim.notify(string.format("telescope 扩展 %s 加载失败: %s", name, err), vim.log.levels.WARN)
+                end
+            end
+
+            load_ext("fzf")
+            load_ext("lazy")
+            load_ext("file_browser")
         end
     },
     {
