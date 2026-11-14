@@ -404,7 +404,7 @@ return {
         init = function()
             g.db_ui_show_database_icon = 1
             g.db_ui_use_nerd_fonts = 1
-            g.vim_dadbod_completion_mark = ''
+            g.vim_dadbod_completion_mark = ''
         end,
         config = function()
             -- local cmp = require("cmp")

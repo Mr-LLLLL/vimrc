@@ -324,7 +324,7 @@ return {
                         search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
                         filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
                         lua = { pattern = "^:%s*lua%s+", icon = require("common").glyphs["lua"], lang = "lua" },
-                        help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
+                        help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
                         input = {}, -- Used by input()
                         -- lua = false, -- to disable a format, set to `false`
                     },
@@ -477,7 +477,7 @@ return {
         config = function()
             local handler = function(virtText, lnum, endLnum, width, truncate)
                 local newVirtText = {}
-                local suffix = ('  %d '):format(endLnum - lnum)
+                local suffix = ('  %d '):format(endLnum - lnum)
                 local sufWidth = vim.fn.strdisplaywidth(suffix)
                 local targetWidth = width - sufWidth
                 local curWidth = 0

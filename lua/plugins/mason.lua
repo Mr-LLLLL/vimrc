@@ -93,6 +93,11 @@ return {
             require("mason").setup({
                 ui = {
                     border = "rounded",
+                    icons = {
+                        package_installed = "",   -- check
+                        package_pending = "",    -- spinner
+                        package_uninstalled = "", -- times
+                    },
                 }
             })
         end
