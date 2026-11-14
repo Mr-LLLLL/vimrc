@@ -73,7 +73,6 @@ local function load_base()
     o.smartcase                          = true
     o.ignorecase                         = true
     o.mouse                              = "a"
-    o.splitright                         = true
     o.termguicolors                      = true
     o.clipboard                          = "unnamed,unnamedplus"
     o.background                         = "dark"

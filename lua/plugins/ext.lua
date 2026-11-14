@@ -361,7 +361,8 @@ return {
         'rest-nvim/rest.nvim',
         ft = "http",
         keys = {
-            { "<leader>c", "<cmd>Rest run<cr>", ft = "http", desc = "Rest Run" },
+            -- 用命令修饰符把结果窗口放到最右侧，不改动全局 splitright
+            { "<leader>c", "<cmd>botright vertical Rest run<cr>", ft = "http", desc = "Rest Run" },
         },
         config = function()
             require("rest-nvim").setup({
@@ -392,6 +393,45 @@ return {
                     enable = true,
                     timeout = 750,
                 },
+            })
+
+            -- 兜底：直接执行 `:Rest run` / `:Rest last` 等命令时，也把结果面板挪到最右侧。
+            -- 只在这个临时窗口上做 `wincmd L`，不修改全局 splitright。
+            local function is_rightmost(win)
+                local function right_edge(w)
+                    local info = vim.fn.getwininfo(w)[1]
+                    return info and (info.wincol + info.width - 1) or -1
+                end
+                local edge = right_edge(win)
+                for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                    -- 浮动窗口（如 fidget 通知）不参与左右判断
+                    local config = vim.api.nvim_win_get_config(w)
+                    if config.relative == "" and right_edge(w) > edge then
+                        return false
+                    end
+                end
+                return true
+            end
+
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "rest_nvim_result",
+                callback = function(ev)
+                    -- splitright 已经为 true 时插件本身就开在右边，无需处理
+                    if vim.o.splitright then
+                        return
+                    end
+                    vim.schedule(function()
+                        local win = vim.fn.bufwinid(ev.buf)
+                        if win == -1 or not vim.api.nvim_win_is_valid(win) then
+                            return
+                        end
+                        if not is_rightmost(win) then
+                            vim.api.nvim_win_call(win, function()
+                                vim.cmd("wincmd L")
+                            end)
+                        end
+                    end)
+                end,
             })
         end
     },
