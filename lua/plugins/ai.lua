@@ -177,7 +177,7 @@ return {
                                     --   { "keys": "alt+enter",
                                     --     "command": { "action": "sendInput",
                                     --                  "input": "\u001b[13;3u" } }
-                                    i = "<a-cr>",
+                                    i = "<c-s>",
                                 },
                                 index = 2,
                                 callback = "keymaps.send",
@@ -186,7 +186,7 @@ return {
                             stop = {
                                 modes = {
                                     n = "s",
-                                    i = "<c-s>",
+                                    -- i = "<c-s>",
                                 },
                                 index = 5,
                                 callback = "keymaps.stop",
