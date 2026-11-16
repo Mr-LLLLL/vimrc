@@ -395,6 +395,18 @@ return {
                 },
             })
 
+            -- 去掉请求行 URL 的下划线：@string.special.url 默认 link 到 Underlined。
+            -- 用 language 后缀 .http 覆盖，只影响 http 语法（含 rest_nvim_result 的回显），
+            -- 不改变其它 filetype 里链接的下划线。换主题后 hi clear 会清掉，所以再挂一次。
+            local function clear_url_underline()
+                api.nvim_set_hl(0, "@string.special.url.http", { underline = false })
+            end
+            clear_url_underline()
+            api.nvim_create_autocmd("ColorScheme", {
+                callback = clear_url_underline,
+                desc = "rest.nvim: keep URL without underline",
+            })
+
             -- 兜底：直接执行 `:Rest run` / `:Rest last` 等命令时，也把结果面板挪到最右侧。
             -- 只在这个临时窗口上做 `wincmd L`，不修改全局 splitright。
             local function is_rightmost(win)
