@@ -23,51 +23,6 @@ return {
             api.nvim_set_hl(0, "WinBarNC", { bg = require("common").colors.CustomBorderBg })
             api.nvim_set_hl(0, "TelescopeBorder", { link = 'CustomBorder' })
             api.nvim_set_hl(0, "Visual", { bg = require("common").colors.VisualBg, italic = false, nocombine = true })
-
-            -- Snacks floats (scratch picker, input/list/preview panes) should use the same
-            -- float palette as Telescope and treesitter-context instead of everforest's
-            -- `SnacksPicker -> Normal` / `SnacksPickerBorder -> Grey` links. Keep the
-            -- background on CustomBorderBg and the border on CustomBorder so all floating
-            -- panels line up with the rest of the theme.
-            local colors = require("common").colors
-            local normal_fg = api.nvim_get_hl(0, { name = "Normal" }).fg
-
-            local function set_hl(group, opts)
-                opts.default = false
-                api.nvim_set_hl(0, group, opts)
-            end
-
-            for _, group in ipairs({
-                "SnacksPicker",
-                "SnacksPickerBox",
-                "SnacksPickerList",
-                "SnacksPickerInput",
-                "SnacksPickerPreview",
-            }) do
-                set_hl(group, { bg = colors.CustomBorderBg, fg = normal_fg })
-            end
-
-            for _, group in ipairs({
-                "SnacksPickerBorder",
-                "SnacksPickerBoxBorder",
-                "SnacksPickerListBorder",
-                "SnacksPickerInputBorder",
-                "SnacksPickerPreviewBorder",
-            }) do
-                set_hl(group, { link = "CustomBorder" })
-            end
-
-            for _, group in ipairs({
-                "SnacksPickerTitle",
-                "SnacksPickerBoxTitle",
-                "SnacksPickerListTitle",
-                "SnacksPickerInputTitle",
-                "SnacksPickerPreviewTitle",
-                "SnacksScratchTitle",
-            }) do
-                set_hl(group, { link = "FloatTitle" })
-            end
-            set_hl("SnacksScratch", { link = "NormalFloat" })
         end
     },
     {

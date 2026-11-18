@@ -592,7 +592,63 @@ return {
 
                 }
             })
-        end,
+
+            -- Snacks floats (scratch picker, input/list/preview panes) should share the
+            -- float palette used by Telescope and treesitter-context instead of
+            -- everforest's `SnacksPicker -> Normal` / `SnacksPickerBorder -> Grey` links.
+            -- Keep the background on CustomBorderBg and the border on CustomBorder so all
+            -- floating panels line up with the rest of the theme.
+            local function set_float_hl()
+                local colors = require("common").colors
+                local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal" }).fg
+
+                local function set(group, opts)
+                    opts.default = false
+                    vim.api.nvim_set_hl(0, group, opts)
+                end
+
+                for _, group in ipairs({
+                    "SnacksPicker",
+                    "SnacksPickerBox",
+                    "SnacksPickerList",
+                    "SnacksPickerInput",
+                    "SnacksPickerPreview",
+                }) do
+                    set(group, { bg = colors.CustomBorderBg, fg = normal_fg })
+                end
+
+                for _, group in ipairs({
+                    "SnacksPickerBorder",
+                    "SnacksPickerBoxBorder",
+                    "SnacksPickerListBorder",
+                    "SnacksPickerInputBorder",
+                    "SnacksPickerPreviewBorder",
+                }) do
+                    set(group, { link = "CustomBorder" })
+                end
+
+                for _, group in ipairs({
+                    "SnacksPickerTitle",
+                    "SnacksPickerBoxTitle",
+                    "SnacksPickerListTitle",
+                    "SnacksPickerInputTitle",
+                    "SnacksPickerPreviewTitle",
+                    "SnacksScratchTitle",
+                }) do
+                    set(group, { link = "FloatTitle" })
+                end
+                set("SnacksScratch", { link = "NormalFloat" })
+            end
+
+            set_float_hl()
+            -- everforest is reloaded on `:colorscheme` changes; re-apply so the picker
+            -- floats don't fall back to the colorscheme's default links.
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                group = vim.api.nvim_create_augroup("snacks_float_hl", { clear = true }),
+                callback = set_float_hl,
+                desc = "Align snacks float highlights with telescope",
+            })
+        end
     },
     {
         "hat0uma/csvview.nvim",
