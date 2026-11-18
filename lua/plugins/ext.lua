@@ -358,11 +358,12 @@ return {
     --     end
     -- },
     {
-        'rest-nvim/rest.nvim',
+        'Mr-LLLLL/rest.nvim',
         ft = "http",
         keys = {
             -- 用命令修饰符把结果窗口放到最右侧，不改动全局 splitright
-            { "<leader>c", "<cmd>botright vertical Rest run<cr>", ft = "http", desc = "Rest Run" },
+            { "<leader>cc", "<cmd>botright vertical Rest run<cr>",  ft = "http", desc = "Rest Run" },
+            { "<leader>cl", "<cmd>botright vertical Rest last<cr>", ft = "http", desc = "Rest Last" },
         },
         config = function()
             require("rest-nvim").setup({
@@ -1240,23 +1241,23 @@ return {
             )
         end
     },
-    {
-        "mistricky/codesnap.nvim",
-        build = "make",
-        cmd = "CodeSnap",
-        opts = {
-            mac_window_bar = true,
-            code_font_family = "JetBrainsMono Nerd Font Mono",
-            watermark_font_family = "Pacifico",
-            watermark = "CodeSnapshot",
-            bg_theme = "default",
-            breadcrumbs_separator = "/",
-            has_breadcrumbs = true,
-            show_workspace = true,
-            save_path = "~/Pictures",
-            has_line_number = true,
-        }
-    },
+    -- {
+    --     "mistricky/codesnap.nvim",
+    --     build = "make",
+    --     cmd = "CodeSnap",
+    --     opts = {
+    --         mac_window_bar = true,
+    --         code_font_family = "JetBrainsMono Nerd Font Mono",
+    --         watermark_font_family = "Pacifico",
+    --         watermark = "CodeSnapshot",
+    --         bg_theme = "default",
+    --         breadcrumbs_separator = "/",
+    --         has_breadcrumbs = true,
+    --         show_workspace = true,
+    --         save_path = "~/Pictures",
+    --         has_line_number = true,
+    --     }
+    -- },
     {
         'MeanderingProgrammer/render-markdown.nvim',
         event = "VeryLazy",
