@@ -566,6 +566,14 @@ return {
                     what = "file", -- what to open. not all remotes support all types
                 },
                 input = { enabled = false },
+                -- The picker's default layout inherits the `float` style backdrop, which
+                -- darkens the whole editor behind it and reads as a shadow around the
+                -- window. Telescope has no backdrop, so disable it to keep both aligned.
+                picker = {
+                    layout = {
+                        layout = { backdrop = false },
+                    },
+                },
                 styles = {
                     scratch = {
                         width = 0.8,
