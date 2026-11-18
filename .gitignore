@@ -3,3 +3,4 @@ plugged
 packer_compiled.lua
 lua/private/
 lazy-lock.json
+nvim.log
