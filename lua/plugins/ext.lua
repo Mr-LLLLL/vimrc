@@ -360,6 +360,11 @@ return {
     {
         'Mr-LLLLL/rest.nvim',
         ft = "http",
+        dependencies = {
+            -- v3 的 curl 客户端在加载时就 require 这两个模块，缺任何一个 `:Rest` 都会直接报错
+            'nvim-neotest/nvim-nio',
+            'j-hui/fidget.nvim',
+        },
         keys = {
             -- 用命令修饰符把结果窗口放到最右侧，不改动全局 splitright
             { "<leader>cc", "<cmd>botright vertical Rest run<cr>",  ft = "http", desc = "Rest Run" },
