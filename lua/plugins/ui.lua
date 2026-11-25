@@ -1,6 +1,39 @@
 local km = vim.keymap
 local api = vim.api
 
+-- dashboard-nvim 会把「最近项目」列表用 vim.inspect 序列化进缓存文件（默认
+-- stdpath('cache')/dashboard/cache），下次启动时再用 assert(loadstring(data)) 读回来。
+-- 这里有两个会导致启动直接报错的坑：
+--   1. Neovim 0.11+ 允许 LSP 的 root_dir 是函数（|lsp-root_dir()|），而
+--      dashboard.events 取的是 client.config.root_dir，序列化后变成 "<function 1>"，
+--      生成的 Lua 语法非法 → 下次启动报 unexpected symbol near '<'。
+--   2. 缓存一旦坏了，hyper.lua 的 assert(loadstring(...)) 会在 VimEnter 抛错。
+-- 下面这段在插件加载前跑：校验缓存，坏了就只保留其中的字符串项重写。
+local function sanitize_dashboard_cache()
+    local path = vim.fs.joinpath(vim.fn.stdpath('cache'), 'dashboard', 'cache')
+    local file = io.open(path, 'r')
+    if not file then
+        return
+    end
+    local data = file:read('*a')
+    file:close()
+    if not data or data == '' or loadstring(data) then
+        return
+    end
+    -- 只保留合法字符串项，丢掉 <function N> 这类非序列化值
+    local items = {}
+    for s in data:gmatch('"([^"\\]*)"') do
+        items[#items + 1] = '"' .. s .. '"'
+    end
+    local handle = io.open(path, 'w')
+    if handle then
+        handle:write('return { ' .. table.concat(items, ', ') .. ' }')
+        handle:close()
+    end
+end
+
+sanitize_dashboard_cache()
+
 return {
     {
         'nvim-tree/nvim-tree.lua',
@@ -97,6 +130,62 @@ return {
         'glepnir/dashboard-nvim',
         event = "VimEnter",
         config = function()
+            -- 替换 dashboard.events.register_lsp_root：原实现直接写 client.config.root_dir，
+            -- 该字段可以是函数（见文件顶部说明），会把 "<function 1>" 写进缓存。
+            -- 这里改用已解析的 client.root_dir，并且只接受字符串项、写入时全程 pcall。
+            local events = require('dashboard.events')
+            events.register_lsp_root = function(path)
+                api.nvim_create_autocmd('VimLeavePre', {
+                    callback = function()
+                        local projects = {}
+                        local function add(dir)
+                            if type(dir) == 'string' and dir ~= '' and not vim.tbl_contains(projects, dir) then
+                                projects[#projects + 1] = dir
+                            end
+                        end
+                        for _, client in ipairs(vim.lsp.get_clients()) do
+                            add(client.root_dir)
+                            add(client.config and client.config.root_dir)
+                            for _, folder in ipairs(client.workspace_folders or {}) do
+                                add(folder.name)
+                            end
+                        end
+                        if #projects == 0 then
+                            return
+                        end
+                        local file = io.open(path, 'r+')
+                        if not file then
+                            return
+                        end
+                        local data = file:read('*a') or ''
+                        file:close()
+                        local ok, dump = pcall(loadstring, data)
+                        local prev = {}
+                        if ok and type(dump) == 'function' then
+                            local ok2, list = pcall(dump)
+                            if ok2 and type(list) == 'table' then
+                                prev = list
+                            end
+                        end
+                        if #prev > 10 then
+                            prev = vim.list_slice(prev, 10)
+                        end
+                        local keep = {}
+                        for _, v in ipairs(prev) do
+                            if type(v) == 'string' and not vim.tbl_contains(projects, v) then
+                                keep[#keep + 1] = v
+                            end
+                        end
+                        vim.list_extend(keep, projects)
+                        local handle = io.open(path, 'w')
+                        if handle then
+                            handle:write('return ' .. vim.inspect(keep))
+                            handle:close()
+                        end
+                    end,
+                })
+            end
+
             require('dashboard').setup {
                 theme = 'hyper', --  t theme = 'hyper',
                 config = {
