@@ -36,7 +36,6 @@ return {
                 "avante_commands",
                 "avante_mentions",
                 "avante_files",
-                'lazydev',
                 'lsp',
                 'path',
                 'buffer',
@@ -251,16 +250,7 @@ return {
                         return default_source
                     end,
                     providers = {
-                        lazydev = {
-                            name = "LazyDev",
-                            module = "lazydev.integrations.blink",
-                            -- make lazydev completions top priority (see `:h blink.cmp`)
-                            enabled = function()
-                                return vim.bo.filetype == "lua"
-                            end,
-                            score_offset = 100,
-                        },
-                        -- supermaven = {
+                                                -- supermaven = {
                         --     name = "supermaven",
                         --     module = "blink.compat.source",
                         --     score_offset = 6, -- show at a higher priority than lsp

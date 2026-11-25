@@ -20,15 +20,20 @@ local function set_lsp()
                 runtime = {
                     -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
                     version = 'LuaJIT',
+                    path = { 'lua/?.lua', 'lua/?/init.lua' },
                 },
                 diagnostics = {
                     -- Get the language server to recognize the `vim` global
                     globals = { 'vim' },
                 },
                 workspace = {
-                    -- Make the server aware of Neovim runtime files
-                    -- library = vim.api.nvim_get_runtime_file("", true),
+                    -- 只索引当前工作区，不加载 VIMRUNTIME / 插件目录（会撑到 2GB+）
+                    library = {},
+                    checkThirdParty = false,
+                    maxPreload = 1000,
+                    preloadFileSize = 500,
                 },
+                hint = { enable = false },
                 -- Do not send telemetry data containing a randomized but unique identifier
                 telemetry = {
                     enable = false,
@@ -536,38 +541,4 @@ return {
             })
         end
     },
-    {
-        "folke/lazydev.nvim",
-        ft = "lua", -- only load on lua files
-        opts = {
-            library = {
-                -- Library paths can be absolute
-                "~/.local/share/nvim/lazy/",
-                -- Or relative, which means they will be resolved from the plugin dir.
-                "lazy.nvim",
-                -- It can also be a table with trigger words / mods
-                -- Only load luvit types when the `vim.uv` word is found
-                { path = "${3rd}/luv/library",        words = { "vim%.uv" } },
-                -- always load the LazyVim library
-                "LazyVim",
-                -- Only load the lazyvim library when the `LazyVim` global is found
-                { path = "LazyVim",                   words = { "LazyVim" } },
-                -- Load the wezterm types when the `wezterm` module is required
-                -- Needs `justinsgithub/wezterm-types` to be installed
-                { path = "wezterm-types",             mods = { "wezterm" } },
-                -- Load the xmake types when opening file named `xmake.lua`
-                -- Needs `LelouchHe/xmake-luals-addon` to be installed
-                { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
-            },
-            -- always enable unless `vim.g.lazydev_enabled = false`
-            -- This is the default
-            enabled = function(root_dir)
-                return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
-            end,
-            -- disable when a .luarc.json file is found
-            enabled = function(root_dir)
-                return not vim.uv.fs_stat(root_dir .. "/.luarc.json")
-            end,
-        },
-    },
-}
+    }
