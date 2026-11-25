@@ -106,13 +106,6 @@ return {
         end
     },
     {
-        'junegunn/gv.vim',
-        cmd = "GV",
-        dependencies = {
-            'tpope/vim-fugitive',
-        }
-    },
-    {
         'tpope/vim-fugitive',
         cmd = "G",
     }
