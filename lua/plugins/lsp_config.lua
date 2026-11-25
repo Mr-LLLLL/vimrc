@@ -256,6 +256,90 @@ local function set_lsp_autocmd()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
         end
     end, {})
+    -- nvim 0.12 自带 `:lsp stop [name]`，但它只停「当前 buffer 的」client；
+    -- 按名字停、带补全的写法自己补上：
+    --   :LspStop                停当前 buffer 上的 client
+    --   :LspStop gopls          停所有叫 gopls 的 client（同名多 view 一起停）
+    --   :LspStop gop            名字不用写全，子串匹配
+    --   :LspStop 3              同名多 client 时按 id 精确停一个
+    --   :LspStop! gopls         强制（kill）而不是优雅退出
+    api.nvim_create_user_command("LspStop", function(opts)
+        local seen, targets = {}, {}
+        local function add(client)
+            if client and not seen[client.id] and not client:is_stopped() then
+                seen[client.id] = true
+                targets[#targets + 1] = client
+            end
+        end
+        local clients = vim.lsp.get_clients()
+
+        if #opts.fargs == 0 then
+            for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+                add(client)
+            end
+        end
+        for _, arg in ipairs(opts.fargs) do
+            local id, matched = tonumber(arg), false
+            if id then
+                for _, client in ipairs(clients) do
+                    if client.id == id then
+                        add(client)
+                        matched = true
+                    end
+                end
+            else
+                for _, client in ipairs(clients) do
+                    if client.name == arg then
+                        add(client)
+                        matched = true
+                    end
+                end
+                if not matched then
+                    for _, client in ipairs(clients) do
+                        if client.name:lower():find(arg:lower(), 1, true) then
+                            add(client)
+                            matched = true
+                        end
+                    end
+                end
+            end
+            if not matched then
+                vim.notify("LspStop: no running client matches '" .. arg .. "'", vim.log.levels.WARN)
+            end
+        end
+
+        if #targets == 0 then
+            if #opts.fargs == 0 then
+                vim.notify("LspStop: no client attached to current buffer", vim.log.levels.INFO)
+            end
+            return
+        end
+
+        local labels = {}
+        for _, client in ipairs(targets) do
+            labels[#labels + 1] = string.format("%s(%d)", client.name, client.id)
+            client:stop(opts.bang)
+        end
+        vim.notify("LspStop: stopped " .. table.concat(labels, ", "), vim.log.levels.INFO)
+    end, {
+        nargs = "*",
+        bang = true,
+        desc = "Stop LSP client(s) by name or id (no arg: current buffer)",
+        complete = function(arglead)
+            local items, seen = {}, {}
+            for _, client in ipairs(vim.lsp.get_clients()) do
+                if not seen[client.name] then
+                    seen[client.name] = true
+                    items[#items + 1] = client.name
+                end
+                items[#items + 1] = tostring(client.id)
+            end
+            table.sort(items)
+            return vim.tbl_filter(function(item)
+                return item:sub(1, #arglead) == arglead
+            end, items)
+        end,
+    })
 end
 
 return {
