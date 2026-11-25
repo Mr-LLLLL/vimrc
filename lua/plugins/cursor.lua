@@ -106,6 +106,68 @@ local function autopair_pairs()
     )
 end
 
+-- 跨行删除后收拢括号：
+--   行1: foo(
+--   行2: )
+-- 按一次 <BS> 期望直接得到 "foo()"，而 autopairs 自带的 <BS> 一次只 join 一行。
+-- 这里包装 autopairs 的 <BS>，原生逻辑处理完后再检查是否出现「上一行以未闭合
+-- 开括号结尾 + 当前行只剩闭合括号」，命中则把两行真实合并。
+local function autopair_bs_join()
+    local open_to_close = { ["("] = ")", ["["] = "]", ["{"] = "}" }
+    local esc = require("nvim-autopairs.utils").esc
+
+    local function lines(bufnr, first, last)
+        return vim.api.nvim_buf_get_lines(bufnr, first, last, false)
+    end
+
+    local function closer_after_open(bufnr, row)
+        local prev = lines(bufnr, row - 2, row - 1)[1] or ""
+        local open = prev:match("(%S)%s*$")
+        return open and open_to_close[open] or nil
+    end
+
+    local lhs = "<BS>"
+    local handler = function()
+        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+        -- 只在行首退格、且上一行以开括号结尾时接管
+        if row < 2 or col ~= 0 then
+            return require("nvim-autopairs").autopairs_bs(0)
+        end
+        local close = closer_after_open(0, row)
+        if not close then
+            return require("nvim-autopairs").autopairs_bs(0)
+        end
+        local cur = lines(0, row - 1, row)[1] or ""
+        -- 上一行 foo( / 当前行只有闭括号：直接合并，光标落在括号中间
+        if vim.trim(cur) == close then
+            return esc("<C-G>u<BS>")
+        end
+        -- 上一行 foo( / 当前行空白 / 下一行只有闭括号：一次收拢两行
+        if cur:match("^%s*$") then
+            local next_line = lines(0, row, row + 1)[1]
+            if next_line and vim.trim(next_line) == close then
+                return esc("<C-G>u<BS><C-G>u<Del>")
+            end
+        end
+        return require("nvim-autopairs").autopairs_bs(0)
+    end
+
+    -- autopairs 在 BufEnter 等时机写入自己的 buffer-local <BS>，必须在其之后再覆盖
+    vim.api.nvim_create_autocmd({ "InsertEnter", "FileType" }, {
+        group = vim.api.nvim_create_augroup("CustomAutopairBs", { clear = true }),
+        pattern = "*",
+        callback = function(ev)
+            vim.keymap.set("i", lhs, handler, {
+                expr = true,
+                noremap = true,
+                replace_keycodes = false,
+                buffer = ev.buf,
+                desc = "autopairs merge bracket pair across lines",
+            })
+        end,
+    })
+end
+
 local function autopair_move_past()
     for _, punct in pairs { ",", ";" } do
         require "nvim-autopairs".add_rules {
@@ -159,6 +221,7 @@ return {
             autopair_insert_space()
             autopair_move_past()
             autopair_pairs()
+            autopair_bs_join()
         end,
     },
     {
