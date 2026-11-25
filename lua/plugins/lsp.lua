@@ -399,7 +399,7 @@ return {
                         vulncheck = "Off",
                         -- 软内存上限（3GiB）：实测本机 daemon 稳态 2.7GiB，上限要留足，
                         -- 否则 GC 过度反而是纯 CPU 开销；这里只用来拦住失控膨胀
-                        memoryLimit = 3221225472,
+                        memoryLimit = 3221225472, -- 3GiB
                         -- 收窄 workspace：gopls 每次编辑后诊断的是「workspace 里的包」，
                         -- 打开模块内的嵌套目录时不要再把整个 module 拉进来
                         expandWorkspaceToModule = false,
