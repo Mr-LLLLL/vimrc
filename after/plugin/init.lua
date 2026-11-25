@@ -31,6 +31,62 @@ local function load_autocmd()
     )
 end
 
+-- 外部工具（formatter、git checkout、代码生成……）改动磁盘文件后，直接载入最新内容，
+-- 不再弹 "File has changed" 的确认提示。
+-- 本地也有未保存修改时（v:fcs_reason == "conflict"）同样以磁盘为准，但额外给一条警告，
+-- 因为这种情况下本地编辑会丢失。
+-- 提到函数外保存引用，避免 luv 定时器被 Lua GC 回收
+local autoread_timer
+
+local function load_autoread()
+    vim.o.autoread = true
+
+    local autoread_grp = api.nvim_create_augroup("CustomAutoRead", { clear = true })
+
+    -- 插入模式下不检查，避免把正在输入的内容冲掉
+    -- :checktime 在 autocommand 里调用会被推迟处理，用 vim.schedule 挪回主循环立即执行
+    local function checktime()
+        if vim.fn.mode():find("^i") then
+            return
+        end
+        vim.schedule(function()
+            vim.cmd("silent! checktime")
+        end)
+    end
+
+    api.nvim_create_autocmd(
+        { "FocusGained", "BufEnter", "BufWinEnter", "WinEnter" },
+        { callback = checktime, group = autoread_grp }
+    )
+    -- CursorHold 依赖真实的空闲状态，headless / 未聚焦时不可靠，这里用 1s 轮询兜底
+    -- （:checktime 只是对已载入 buffer 逐个 stat，代价可忽略）
+    autoread_timer = vim.uv.new_timer()
+    autoread_timer:start(1000, 1000, vim.schedule_wrap(function()
+        if vim.fn.mode():find("^i") then
+            return
+        end
+        vim.cmd("silent! checktime")
+    end))
+
+    api.nvim_create_autocmd("FileChangedShell", {
+        group = autoread_grp,
+        callback = function(args)
+            local reason = vim.v.fcs_reason
+            if reason == "conflict" then
+                vim.notify(
+                    ("%s 已被外部修改，已按磁盘版本重载（本地未保存的修改已丢弃）"):format(
+                        vim.fn.fnamemodify(args.file, ":t")
+                    ),
+                    vim.log.levels.WARN
+                )
+            end
+            if reason == "changed" or reason == "conflict" then
+                vim.v.fcs_choice = "reload"
+            end
+        end,
+    })
+end
+
 local function load_custom_map()
     km.set({ 'i' }, "<A-d>", "<esc>lcw", { noremap = true, silent = true, desc = "delete next word" })
     km.set({ 'i' }, "<c-j>", "<Down>", { noremap = true, silent = true, desc = "jump to next line" })
@@ -74,6 +130,7 @@ end
 local function load()
     load_custom_map()
     load_autocmd()
+    load_autoread()
     load_hi()
     del_km()
 end
