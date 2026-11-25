@@ -15,28 +15,13 @@ return {
         },
         config = function()
             local nvim_treesitter = require("nvim-treesitter")
-            local ensure_installed = {
-                "cpp",
-                "diff",
-                "go",
-                "gomod",
-                "gosum",
-                "javascript",
-                "json",
-                "lua",
-                "markdown",
-                "python",
-                "sh",
-                "toml",
-                "typescript",
-                "vim",
-                "yaml",
-                "zsh",
-                "http",
-            }
 
+            -- 注意：`ensure_installed` 是 nvim-treesitter `master` 分支的旧选项，
+            -- `main` 分支已移除（其 setup 只接受 install_dir）。
+            -- 这里改为「按需安装」：打开任意文件类型时，只要该类型有可用 grammar
+            -- 且本地还缺 parser，就自动安装并启动高亮。
             vim.api.nvim_create_autocmd("FileType", {
-                pattern = ensure_installed,
+                pattern = "*",
 
                 callback = function(args)
                     local ft = vim.bo[args.buf].filetype
