@@ -172,7 +172,9 @@ return {
     {
         'iamcco/markdown-preview.nvim',
         ft = "markdown",
-        build = 'cd app && ./install.sh'
+        -- 优先下预编译二进制；GitHub 拉不到时退化为装 npm 依赖，走插件自带的
+        -- node 回退（autoload/mkdp/rpc.vim:44 会用 `node app/index.js` 启动）
+        build = 'cd app && (timeout 60 ./install.sh || npm install --omit=dev --no-audit --no-fund)'
     },
     -- {
     --     'voldikss/vim-translator',
