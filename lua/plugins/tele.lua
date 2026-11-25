@@ -196,6 +196,8 @@ return {
                             "~/.config",
                             { path = "~/.local/share/nvim/lazy", max_depth = 5 },
                         },
+                        -- 不存在的 base_dir（如未创建的 ~/study）不扫描也不打印告警
+                        ignore_missing_dirs = true,
                         hidden_files = false, -- default: false
                         theme = "dropdown",
                         order_by = "recent",
