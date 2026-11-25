@@ -391,7 +391,14 @@ return {
                             upgrade_dependency = true,
                             run_govulncheck = true,
                         },
+                        -- 缓冲被外部改动 reload 后同样会发 didChange，这里按编辑触发诊断；
+                        -- 2s 防抖把连续的外部改动合并成一次深检查
                         diagnosticsTrigger = "Edit",
+                        diagnosticsDelay = "2s",
+                        -- 默认 Prompt 会为了看一眼漏洞弹联网的 govulncheck，这里彻底关掉
+                        vulncheck = "Off",
+                        -- 软内存上限：超了 gopls 自己丢缓存，而不是把机器吃光（约 1.5GiB）
+                        memoryLimit = 1500000000,
                     }
                 }
             },
