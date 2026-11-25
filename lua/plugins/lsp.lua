@@ -397,8 +397,19 @@ return {
                         diagnosticsDelay = "2s",
                         -- 默认 Prompt 会为了看一眼漏洞弹联网的 govulncheck，这里彻底关掉
                         vulncheck = "Off",
-                        -- 软内存上限：超了 gopls 自己丢缓存，而不是把机器吃光（约 1.5GiB）
-                        memoryLimit = 1500000000,
+                        -- 软内存上限（3GiB）：实测本机 daemon 稳态 2.7GiB，上限要留足，
+                        -- 否则 GC 过度反而是纯 CPU 开销；这里只用来拦住失控膨胀
+                        memoryLimit = 3221225472,
+                        -- 收窄 workspace：gopls 每次编辑后诊断的是「workspace 里的包」，
+                        -- 打开模块内的嵌套目录时不要再把整个 module 拉进来
+                        expandWorkspaceToModule = false,
+                        -- 目录过滤：settings 会整体覆盖默认值，所以默认的 .git/node_modules 也要重写
+                        directoryFilters = {
+                            "-**/.git",
+                            "-**/node_modules",
+                            "-**/vendor",
+                            "-**/testdata",
+                        },
                     }
                 }
             },
