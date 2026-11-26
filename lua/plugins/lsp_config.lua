@@ -262,8 +262,8 @@ local function set_lsp_autocmd()
         end
     end, {})
     -- nvim 0.12 自带 `:lsp stop` / `:lsp restart`，但它们只动 client，不碰共享 daemon。
-    -- 这里补一个彻底重启：停 client → 杀共享 daemon（gopls 的 -remote=auto serve 进程）
-    -- → 在当前 buffer 上重新起一个 client。
+    -- 这里补一个彻底重启：停 client →（仅重启 gopls 时）杀共享 daemon
+    -- （gopls 的 -remote=auto serve 进程）→ 在当前 buffer 上重新起一个 client。
     --   :LspRestart            重启当前 buffer 上的 client
     --   :LspRestart gopls      按名字（支持子串）重启所有同名 client
     --   :LspRestart 3          同名多 client 时按 id 指定
@@ -271,7 +271,19 @@ local function set_lsp_autocmd()
         return vim.fn.system({ "ps", "-p", tostring(pid), "-o", "pid=" }):find("%d") ~= nil
     end
 
-    local function lsp_kill_daemons()
+    -- 只有重启 gopls 本身时才需要动共享 daemon；重启 lua_ls 等其它
+    -- server 时顺手动 gopls daemon 纯属误伤。
+    local function lsp_kill_daemons(names)
+        if not vim.tbl_contains(names, "gopls") then
+            return 0
+        end
+        -- 当前 session 里如果还有别的 gopls client（其它 buffer 或另一个
+        -- root 的 go 项目）连着同一个 daemon，杀 daemon 会把它们一起带崩：
+        -- 同样 exit code 2 + WARN，而且它们的 LSP 直接失效。此时只重启
+        -- client、留下 daemon，行为等价于 nvim 自带的 client 重启。
+        if #vim.lsp.get_clients({ name = "gopls" }) > 0 then
+            return 0
+        end
         local daemons = {}
         -- 只杀本进程 XDG_RUNTIME_DIR 下的共享 daemon（同一用户的 nvim session 共用那个 socket）
         local run_dir = vim.env.XDG_RUNTIME_DIR
@@ -374,7 +386,13 @@ local function set_lsp_autocmd()
         end
 
         for _, client in ipairs(targets) do
-            pcall(client.stop, client)
+            -- gopls 的 -remote=auto 代理进程在正常 shutdown 时会打印
+            -- "remote disconnected" 并以 exit code 2 退出，Neovim 会为此弹
+            -- "client quit ... check log for errors" 的 WARN 并往 lsp.log 写
+            -- ERROR。直接 terminate（SIGTERM，signal 15）既不会弹 WARN，
+            -- 也不会把 stderr 写进 lsp.log；daemon 反正接下来要被换掉。
+            local force = client.name == "gopls"
+            pcall(client.stop, client, force and true or nil)
         end
         vim.wait(2000, function()
             for _, client in ipairs(targets) do
@@ -385,7 +403,7 @@ local function set_lsp_autocmd()
             return true
         end, 25)
 
-        local killed = lsp_kill_daemons()
+        local killed = lsp_kill_daemons(names)
 
         local started, started_names, skipped = {}, {}, {}
         local filetype = api.nvim_get_option_value("filetype", { buf = bufnr })
