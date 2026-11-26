@@ -592,24 +592,179 @@ return {
                 return newVirtText
             end
 
-            local function customizeSelector(bufnr)
-                local function handleFallbackException(err, providerName)
-                    if type(err) == 'string' and err:match('UfoFallbackException') then
-                        return require('ufo').getFolds(bufnr, providerName)
+            -- 纯 treesitter 方案，不依赖 LSP：ufo 的自动折叠只认 fold range 的 kind，
+            -- 而 treesitter 的 folds 查询基本不含注释、indent 完全没有 kind。所以这里
+            -- 自己用 treesitter 扫出整行注释块（kind=comment）和 import 块
+            -- （kind=imports），再和 ufo 的 treesitter 折叠范围（函数/类等，kind 是
+            -- 节点名，不在自动折叠列表里）合并；自动折叠只针对 imports + comment。
+            local comment_queries = {}
+            local import_queries = {}
+
+            local comment_node_queries = {
+                '((comment) @comment)',
+                '[(line_comment) (block_comment)] @comment',
+                '[(comment_line) (comment_block)] @comment',
+            }
+
+            -- 常见语言的 import 节点名；逐个试，解析失败的就跳过（各语言语法不同）。
+            local import_node_types = {
+                'import_statement',
+                'import_from_statement',
+                'future_import_statement',
+                'import_declaration',
+                'import_spec',
+                'use_declaration',
+                'extern_crate_declaration',
+                'preproc_include',
+                'namespace_use_declaration',
+                'import_header',
+                'using_directive',
+            }
+
+            local function get_comment_query(lang)
+                local cached = comment_queries[lang]
+                if cached ~= nil then
+                    return cached or nil
+                end
+                comment_queries[lang] = false
+                for _, query in ipairs(comment_node_queries) do
+                    local ok, parsed = pcall(vim.treesitter.query.parse, lang, query)
+                    if ok and parsed then
+                        comment_queries[lang] = parsed
+                        return parsed
+                    end
+                end
+                return nil
+            end
+
+            local function get_import_queries(lang)
+                local cached = import_queries[lang]
+                if cached ~= nil then
+                    return cached
+                end
+                local queries = {}
+                for _, node_type in ipairs(import_node_types) do
+                    local ok, parsed = pcall(vim.treesitter.query.parse, lang,
+                        '(' .. node_type .. ') @import')
+                    if ok and parsed then
+                        table.insert(queries, parsed)
+                    end
+                end
+                import_queries[lang] = queries
+                return queries
+            end
+
+            -- rows -> ranges：连续行合并，单行不成 fold（foldminlines=1 要求 ≥2 行）。
+            local function rows_to_ranges(rows, kind)
+                local lines = vim.tbl_keys(rows)
+                table.sort(lines)
+                local ranges = {}
+                local start_row, end_row
+                for _, row in ipairs(lines) do
+                    if start_row and row == end_row + 1 then
+                        end_row = row
                     else
-                        return require('promise').reject(err)
+                        if start_row and end_row > start_row then
+                            table.insert(ranges, { startLine = start_row, endLine = end_row, kind = kind })
+                        end
+                        start_row, end_row = row, row
+                    end
+                end
+                if start_row and end_row > start_row then
+                    table.insert(ranges, { startLine = start_row, endLine = end_row, kind = kind })
+                end
+                return ranges
+            end
+
+            -- 注释块 + import 块。注释只认整行注释，行尾注释跳过，避免把代码行折进去。
+            local function special_fold_ranges(bufnr)
+                local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+                if not ok or not parser then
+                    return {}, {}
+                end
+                local ok_parse, trees = pcall(parser.parse, parser)
+                if not ok_parse or not trees or not trees[1] then
+                    return {}, {}
+                end
+                local root = trees[1]:root()
+
+                local comment_rows = {}
+                local comment_query = get_comment_query(parser:lang())
+                if comment_query then
+                    local line_cache = {}
+                    for _, node in comment_query:iter_captures(root, bufnr) do
+                        local start_row, start_col, end_row = node:range()
+                        local line = line_cache[start_row]
+                        if not line then
+                            line = vim.api.nvim_buf_get_lines(bufnr, start_row, start_row + 1, false)[1] or ''
+                            line_cache[start_row] = line
+                        end
+                        if start_col <= #(line:match('^%s*') or '') then
+                            for row = start_row, end_row do
+                                comment_rows[row] = true
+                            end
+                        end
                     end
                 end
 
-                return require('ufo').getFolds(bufnr, 'lsp'):catch(function(err)
-                    return handleFallbackException(err, 'treesitter')
-                end):catch(function(err)
-                    return handleFallbackException(err, 'indent')
-                end)
+                local import_rows = {}
+                for _, query in ipairs(get_import_queries(parser:lang())) do
+                    for _, node in query:iter_captures(root, bufnr) do
+                        local start_row, _, end_row = node:range()
+                        for row = start_row, end_row do
+                            import_rows[row] = true
+                        end
+                    end
+                end
+
+                return rows_to_ranges(comment_rows, 'comment'), rows_to_ranges(import_rows, 'imports')
             end
+
+            -- ufo 自己的 treesitter 折叠范围，用来支持函数/类的手动折叠（za/zc/zM）；
+            -- 这些 range 的 kind 是节点名，不会出现在自动折叠列表里。
+            local function base_fold_ranges(bufnr)
+                for _, name in ipairs({ 'treesitter', 'indent' }) do
+                    local ok, ranges = pcall(require('ufo').getFolds, bufnr, name)
+                    if ok and type(ranges) == 'table' and type(ranges.thenCall) ~= 'function' then
+                        return ranges
+                    end
+                end
+                return {}
+            end
+
+            -- 丢弃其它来源自带的注释/import 范围，统一用上面自己扫的，避免重复；
+            -- 其余范围（函数/类/块）保留，但 kind 不在自动折叠列表里。
+            local function merge_fold_ranges(base, comments, imports)
+                local merged = {}
+                for _, range in ipairs(base or {}) do
+                    local kind = range.kind
+                    if type(range.startLine) == 'number' and type(range.endLine) == 'number'
+                        and kind ~= 'comment'
+                        and not (type(kind) == 'string' and kind:match('^import')) then
+                        table.insert(merged, range)
+                    end
+                end
+                vim.list_extend(merged, comments)
+                vim.list_extend(merged, imports)
+                table.sort(merged, function(a, b)
+                    return a.startLine == b.startLine and a.endLine < b.endLine
+                        or a.startLine > b.startLine
+                end)
+                return merged
+            end
+
+            local function folding_provider(bufnr)
+                local ok, comments, imports = pcall(special_fold_ranges, bufnr)
+                if not ok or type(comments) ~= 'table' or type(imports) ~= 'table' then
+                    comments, imports = {}, {}
+                end
+                return merge_fold_ranges(base_fold_ranges(bufnr), comments, imports)
+            end
+
             require('ufo').setup({
                 fold_virt_text_handler = handler,
                 open_fold_hl_timeout = 150,
+                -- 自动折叠 import 块和注释块；函数/类/region 都不在列表里，不会被自动折叠。
                 close_fold_kinds_for_ft = {
                     default = {
                         'imports',
@@ -630,7 +785,7 @@ return {
                     }
                 },
                 provider_selector = function()
-                    return customizeSelector
+                    return { folding_provider }
                 end
             })
 

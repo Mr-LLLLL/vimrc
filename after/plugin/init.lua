@@ -3,6 +3,16 @@ local km = vim.keymap
 
 local function load_autocmd()
     local custom_auto_cmd = api.nvim_create_augroup("CustomAutoCmd", { clear = true })
+
+    -- nvim-ufo 的动态折叠和 view 里保存的折叠状态是冲突的：
+    --   1. 上次用 zM/zm 关掉全部折叠再退出，view 会以 foldlevel=0 保存，
+    --      下次打开 loadview 直接把整个文件恢复成全折叠；
+    --   2. ufo 首次 apply 时会把 loadview 恢复出来的折叠当成“用户手动折叠”
+    --      放进 getRowPairs 原样保留，于是函数也会被自动折上。
+    -- 所以 mkview 不再保存 folds，loadview 之后统一回到 foldlevel=99，
+    -- 折叠交给 ufo 按 kind（只折 comment）重新计算。
+    vim.opt.viewoptions:remove("folds")
+
     api.nvim_create_autocmd(
         { "BufWinLeave" },
         {
@@ -15,7 +25,11 @@ local function load_autocmd()
         { "BufWinEnter" },
         {
             pattern = { "*.*" },
-            command = "silent! loadview",
+            callback = function()
+                vim.cmd("silent! loadview")
+                -- 兼容旧 view 文件：里面仍带着 fold 命令，先全部展开
+                vim.wo.foldlevel = 99
+            end,
             group = custom_auto_cmd,
         }
     )
