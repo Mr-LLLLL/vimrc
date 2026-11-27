@@ -96,6 +96,11 @@ return {
             },
         },
         config = function()
+            -- MiMo 的 key 只放在被 .gitignore 忽略的 lua/private/private.lua 里，
+            -- 这里把它注入成 MIMO_API_KEY 环境变量供 adapter 读取。
+            pcall(function()
+                require("private.private").load_mimo()
+            end)
             require("codecompanion").setup({
                 opts = {
                     language = "English" -- Default is "English"
@@ -122,7 +127,7 @@ return {
                 },
                 strategies = {
                     inline = {
-                        adapter = "deepseek",
+                        adapter = "mimo",
                         keymaps = {
                             accept_change = {
                                 modes = {
@@ -143,10 +148,10 @@ return {
                         },
                     },
                     cmd = {
-                        adapter = "deepseek",
+                        adapter = "mimo",
                     },
                     chat = {
-                        adapter = "deepseek",
+                        adapter = "mimo",
                         keymaps = {
                             options = {
                                 modes = {
@@ -239,6 +244,39 @@ return {
                                 },
                                 parameters = {
                                     sync = true,
+                                },
+                            })
+                        end,
+                        mimo = function()
+                            -- 小米 MiMo：Anthropic 兼容端点；key 来自 MIMO_API_KEY
+                            return require("codecompanion.adapters").extend("anthropic", {
+                                formatted_name = "MiMo",
+                                url = "https://api.xiaomimimo.com/anthropic/v1/messages",
+                                env = {
+                                    api_key = "MIMO_API_KEY",
+                                },
+                                schema = {
+                                    model = {
+                                        default = "mimo-v2.6-pro",
+                                        -- 别用 anthropic 默认的 choices 函数，它会去
+                                        -- https://api.anthropic.com/v1/models 拉列表，
+                                        -- MiMo 的 key 在那边无效，只会刷认证错误。
+                                        choices = {
+                                            ["mimo-v2.6-pro"] = {
+                                                formatted_name = "MiMo V2.6 Pro",
+                                                opts = { can_reason = true },
+                                            },
+                                            ["mimo-v2.6-flash"] = {
+                                                formatted_name = "MiMo V2.6 Flash",
+                                                opts = { can_reason = true },
+                                            },
+                                        },
+                                    }
+                                },
+                                headers = {
+                                    ["content-type"] = "application/json",
+                                    ["x-api-key"] = "${api_key}",
+                                    ["anthropic-version"] = "2023-06-01",
                                 },
                             })
                         end,
